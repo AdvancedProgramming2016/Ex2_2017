@@ -69,6 +69,9 @@
     <Compile Include="Views\MazeGrid.xaml.cs">
       <DependentUpon>MazeGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MultiplePlayerGameMaze.xaml.cs">
+      <DependentUpon>MultiplePlayerGameMaze.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MultiplePlayerMenu.xaml.cs">
       <DependentUpon>MultiplePlayerMenu.xaml</DependentUpon>
     </Compile>
@@ -98,6 +101,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MazeGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MultiplePlayerGameMaze.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
