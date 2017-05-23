@@ -1,0 +1,20 @@
+﻿GameClient
+
+
+winexe
+C#
+.cs
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debug\
+GameClient
+none
+false
+DEBUG;TRACE
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\App.xaml
+8893069534
+
+30-147375484
+141565583169
+MainWindow.xaml;Views\MainWindow.xaml;Views\MazeGrid.xaml;Views\MultiplePlayerGameMaze.xaml;Views\MultiplePlayerMenu.xaml;Views\SettingsMenu.xaml;Views\SinglePlayerGameMaze.xaml;Views\SinglePlayerMenu.xaml;
+
+True
+

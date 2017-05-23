@@ -1,0 +1,24 @@
+﻿<Window x:Class="GameClient.Views.MultiplePlayerGameMaze"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GameClient.Views"
+        mc:Ignorable="d"
+        Title="MultiplePlayerGameMaze" Height="600" Width="600">
+    <Grid>
+        
+        <Button x:Name="BackMainMenuButton" Content="Back to main menu" HorizontalAlignment="Left" Margin="246,52,0,0" VerticalAlignment="Top" Width="151" Click="BackMainMenuButton_Click"/>
+        
+        <local:MazeGrid x:Name="LeftMaze" PlayerPosition="{Binding VM_PlayerPosition}" Maze="{Binding VM_Maze}"
+                                      InitialPosition="{Binding VM_InitialPosition}" DestPosition="{Binding VM_DestPosition}"
+                                      Rows="{Binding VM_Rows}" Cols="{Binding VM_Cols}" HorizontalAlignment="Left" Height="268" Margin="19,224,0,0" VerticalAlignment="Top" Width="258"/>
+        <local:MazeGrid x:Name="RightMaze" PlayerPosition="{Binding VM_OpponentPosition}" Maze="{Binding VM_Maze}"
+                                      InitialPosition="{Binding VM_InitialPosition}" DestPosition="{Binding VM_DestPosition}"
+                                      Rows="{Binding VM_Rows}" Cols="{Binding VM_Cols}" HorizontalAlignment="Left" Height="268" Margin="324,224,0,0" VerticalAlignment="Top" Width="258"/>
+        
+        <TextBox x:Name="MyBoard" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Margin="18,142,0,0"/>
+        <TextBox x:Name="OtherPlayer" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Margin="306,142,0,0"/>
+
+    </Grid>
+</Window>
