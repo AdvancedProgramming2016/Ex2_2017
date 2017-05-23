@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MazeLib;
-using MazeMenu.Model;
+using GameClient.Model;
 using System.Net.Sockets;
 using System.IO;
-using MazeMenu.Model.Listeners;
-using MazeMenu.Model.Parsers;
+using GameClient.Model.Listeners;
+using GameClient.Model.Parsers;
 
-namespace MazeMenu.Model
+namespace GameClient.Model
 {
     public class SinglePlayerGameModel : ISinglePlayerGame
     {

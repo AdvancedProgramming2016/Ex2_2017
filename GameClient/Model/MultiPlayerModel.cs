@@ -9,7 +9,7 @@ using System.Net;
 using System.IO;
 using System.ComponentModel;
 
-namespace MazeMenu.Model
+namespace GameClient.Model
 {
     public class MultiPlayerModel : IMultiPlayerGame
     {

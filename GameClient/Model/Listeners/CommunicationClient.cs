@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeMenu.Model.Listeners
+namespace GameClient.Model.Listeners
 {
     /// <summary>
     /// Handles communication with the server.

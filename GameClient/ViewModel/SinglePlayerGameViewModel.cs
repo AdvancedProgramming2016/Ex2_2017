@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MazeMenu.Model;
+using GameClient.Model;
 using MazeLib;
 
-namespace MazeMenu.ViewModel
+namespace GameClient.ViewModel
 {
     public class SinglePlayerGameViewModel : INotifyPropertyChanged
     {

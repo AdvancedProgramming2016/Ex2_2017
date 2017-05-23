@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeMenu.Model.Parsers
+namespace GameClient.Model.Parsers
 {
     /// <summary>
     /// Parses commands into the right formats.

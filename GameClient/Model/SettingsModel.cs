@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MazeMenu.Model;
+using GameClient.Model;
 
-namespace MazeMenu.Model
+namespace GameClient.Model
 {
     public class SettingsModel : ISettingsModel
     {
@@ -18,11 +18,11 @@ namespace MazeMenu.Model
         public String IpAddress {
             get
             {
-                return MazeMenu.Properties.Settings.Default.IpAddress;
+                return GameClient.Properties.Settings.Default.IpAddress;
             }
             set
             {
-                MazeMenu.Properties.Settings.Default.IpAddress = value;
+                GameClient.Properties.Settings.Default.IpAddress = value;
             }
         }
 
@@ -30,11 +30,11 @@ namespace MazeMenu.Model
         {
             get
             {
-                return MazeMenu.Properties.Settings.Default.Port;
+                return GameClient.Properties.Settings.Default.Port;
             }
             set
             {
-                MazeMenu.Properties.Settings.Default.Port = value;
+                GameClient.Properties.Settings.Default.Port = value;
             }
         }
 
@@ -42,11 +42,11 @@ namespace MazeMenu.Model
         {
             get
             {
-                return MazeMenu.Properties.Settings.Default.DefaultRows;
+                return GameClient.Properties.Settings.Default.DefaultRows;
             }
             set
             {
-                MazeMenu.Properties.Settings.Default.DefaultRows = value;
+                GameClient.Properties.Settings.Default.DefaultRows = value;
             }
         }
 
@@ -54,22 +54,22 @@ namespace MazeMenu.Model
         {
             get
             {
-                return MazeMenu.Properties.Settings.Default.DefaultCols;
+                return GameClient.Properties.Settings.Default.DefaultCols;
             }
             set
             {
-                MazeMenu.Properties.Settings.Default.DefaultCols = value;
+                GameClient.Properties.Settings.Default.DefaultCols = value;
             }
         }
 
         public int DefaultAlgo {
             get
             {
-                return MazeMenu.Properties.Settings.Default.DefaultAlgo;
+                return GameClient.Properties.Settings.Default.DefaultAlgo;
             }
             set
             {
-                MazeMenu.Properties.Settings.Default.DefaultAlgo = value;
+                GameClient.Properties.Settings.Default.DefaultAlgo = value;
             }
         }
 
@@ -80,7 +80,7 @@ namespace MazeMenu.Model
         /// </summary>
         public void SaveSettings()
         {
-            MazeMenu.Properties.Settings.Default.Save();
+            GameClient.Properties.Settings.Default.Save();
         }
     }
 }
