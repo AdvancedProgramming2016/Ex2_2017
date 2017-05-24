@@ -160,6 +160,22 @@ namespace GameClient.ViewModel
             }
         }
 
+        public string VM_DefaultNumberCols
+        {
+            get
+            {
+                return GameClient.Properties.Settings.Default.DefaultCols.ToString();
+            }
+        }
+
+        public string VM_DefaultNumberRows
+        {
+            get
+            {
+                return GameClient.Properties.Settings.Default.DefaultRows.ToString();
+            }
+        }
+
         public string VM_Cols
         {
             get { return this.singlePlayerModel.Maze.Cols.ToString(); }

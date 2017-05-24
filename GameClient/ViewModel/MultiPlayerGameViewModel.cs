@@ -34,6 +34,22 @@ namespace GameClient.ViewModel
                 new PropertyChangedEventArgs(propertyName));
         }
 
+        public string VM_DefaultNumRows
+        {
+            get
+            {
+                return GameClient.Properties.Settings.Default.DefaultRows.ToString();
+            }
+        }
+
+        public string VM_DefaultNumCols
+        {
+            get
+            {
+                return GameClient.Properties.Settings.Default.DefaultCols.ToString();
+            }
+        }
+
         public String VM_Maze
         {
             get

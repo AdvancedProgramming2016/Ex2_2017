@@ -16,9 +16,9 @@
         <TextBlock x:Name="title" HorizontalAlignment="Left" Margin="110,6,0,0" TextWrapping="Wrap" Text="Single player menu" VerticalAlignment="Top"/>
 
         <TextBlock x:Name="numOfRowsBlock" HorizontalAlignment="Left" Margin="3,114,0,0" TextWrapping="Wrap" Text="Number of rows:" VerticalAlignment="Top"/>
-        <TextBox x:Name="numOfRowsBox" HorizontalAlignment="Left" Height="22" Margin="118,114,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="numOfRowsBox" HorizontalAlignment="Left" Height="22" Margin="118,114,0,0" TextWrapping="Wrap" Text="{Binding Path=VM_DefaultNumberRows, Mode=OneWay}" VerticalAlignment="Top" Width="120"/>
 
         <TextBlock x:Name="numOfColsBlock" HorizontalAlignment="Left" Margin="3,156,0,0" TextWrapping="Wrap" Text="Number of columns:" VerticalAlignment="Top"/>
-        <TextBox x:Name="numOfCols" HorizontalAlignment="Left" Height="23" Margin="118,156,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="numOfCols" HorizontalAlignment="Left" Height="23" Margin="118,156,0,0" TextWrapping="Wrap" Text="{Binding Path=VM_DefaultNumberCols, Mode=OneWay}" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

@@ -13,13 +13,13 @@
         <Button x:Name="joinGameButton" Content="Join Game" HorizontalAlignment="Left" Margin="121,68,0,0" VerticalAlignment="Top" Width="75"/>
 
         <TextBlock x:Name="mazeNameBlock" HorizontalAlignment="Left" Margin="34,109,0,0" TextWrapping="Wrap" Text="Maze name:" VerticalAlignment="Top"/>
-        <TextBox x:Name="mazeNameBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="121,108,0,0"/>
+        <TextBox x:Name="mazeNameBox" Text="{Binding VM_MazeName}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="121,108,0,0"/>
 
         <TextBlock x:Name="mazeRowsBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Maze rows:" VerticalAlignment="Top" Margin="34,153,0,0"/>
-        <TextBox x:Name="mazeRowsBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="121,152,0,0"/>
+        <TextBox x:Name="mazeRowsBox" Text="{Binding Path=VM_DefaultNumCols, Mode=OneWay}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="121,152,0,0"/>
 
         <TextBlock x:Name="mazeColBlock" HorizontalAlignment="Left" Margin="34,193,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Maze coloms:"/></TextBlock>
-        <TextBox x:Name="mazeColsBox" HorizontalAlignment="Left" Height="23" Margin="121,192,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="mazeColsBox" Text="{Binding Path=VM_Cols, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="121,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
         <Button x:Name="startGame" Content="Start Game" HorizontalAlignment="Left" Margin="121,239,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
