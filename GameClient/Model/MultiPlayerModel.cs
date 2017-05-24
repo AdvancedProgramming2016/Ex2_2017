@@ -189,5 +189,15 @@ namespace GameClient.Model
         {
             this.GamesList = FromJsonConverter.GamesList(command);
         }
+
+        public void JoinGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartNewGame()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
