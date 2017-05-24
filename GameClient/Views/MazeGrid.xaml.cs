@@ -81,11 +81,11 @@ namespace GameClient.Views
             }
         }
 
-        public string Rows
+        public String Rows
         {
             get
             {
-                return (string)GetValue(RowsProperty);
+                return (String)GetValue(RowsProperty);
             }
             set
             {
@@ -93,11 +93,11 @@ namespace GameClient.Views
             }
         }
 
-        public string Cols
+        public String Cols
         {
             get
             {
-                return (string)GetValue(ColsProperty);
+                return (String)GetValue(ColsProperty);
             }
             set
             {
@@ -142,22 +142,22 @@ namespace GameClient.Views
                 for (int j = 0; j < splitRows[0].Length; j++)
                 {
                     Rectangle currRect = new Rectangle();
+                    char currChar = splitRows[i].ElementAt(j);
 
-                    if ('1' == splitRows[i].ElementAt(j)) // Wall.
+                    switch (currChar)
                     {
-                        currRect.Fill = this.wallColor;
-                    }
-                    else if ('0' == splitRows[i].ElementAt(j)) // Free space.
-                    {
-                        currRect.Fill = this.freeSpaceColor;
-                    }
-                    else if ('*' == splitRows[i].ElementAt(j)) // Source point.
-                    {
-                        currRect.Fill = new SolidColorBrush(Colors.Aqua);
-                    }
-                    else if ('#' == splitRows[i].ElementAt(j)) // Dest point.
-                    {
-                        currRect.Fill = new SolidColorBrush(Colors.Azure);
+                        case '1':
+                            currRect.Fill = this.wallColor;
+                            break;
+                        case '0':
+                            currRect.Fill = this.freeSpaceColor;
+                            break;
+                        case '*':
+                            currRect.Fill = new SolidColorBrush(Colors.Aqua);
+                            break;
+                        case '#':
+                            currRect.Fill = new SolidColorBrush(Colors.Azure);
+                            break;
                     }
 
                     // Color the rectangle and add to the canvas.
@@ -211,6 +211,13 @@ namespace GameClient.Views
         public void HandlePlayerPosChanged(object newPosition)
         {
             string position = newPosition as string;
+
+            // If the player reached the Destination position.
+            if (position.Split(',')[0].Equals(DestPosition.Split(',')[0]) &&
+                position.Split(',')[1].Equals(DestPosition.Split(',')[1]))
+            {
+                MessageBox.Show("Finished!");
+            }
 
             // Update the location of the player.
             Canvas.SetTop(this.playerRect, Convert.ToDouble(position.Split(',')[0]) * this.rectHeight);
