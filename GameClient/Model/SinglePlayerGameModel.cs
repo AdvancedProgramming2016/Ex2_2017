@@ -17,6 +17,7 @@ namespace GameClient.Model
     public class SinglePlayerGameModel : ISinglePlayerGame
     {
         private Maze maze;
+        private string solution;
         private CommunicationClient communicationClient;
 
         public SinglePlayerGameModel()
@@ -51,17 +52,26 @@ namespace GameClient.Model
             }
         }
 
+        public string Solution
+        {
+            get { return this.solution; }
+            set
+            {
+                this.solution = value;
+                this.NotifyPropertyChanged("Solution");
+            }
+        }
 
         /* public Position PlayerPosition
-         {
-             get { return this.playerPosition; }
- 
-             set
-             {
-                 this.playerPosition = value;
-                 this.NotifyPropertyChanged("PlayerPosition");
-             }
-         }*/
+           {
+               get { return this.playerPosition; }
+   
+               set
+               {
+                   this.playerPosition = value;
+                   this.NotifyPropertyChanged("PlayerPosition");
+               }
+           }*/
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -153,7 +163,7 @@ namespace GameClient.Model
 
         private void HandleSolveCommand(string command)
         {
-            //TODO implement
+            Solution = FromJsonConverter.MazeSolution(command);
         }
     }
 }

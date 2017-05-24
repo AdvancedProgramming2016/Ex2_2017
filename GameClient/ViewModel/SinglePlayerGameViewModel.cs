@@ -25,6 +25,7 @@ namespace GameClient.ViewModel
         private string vm_destPosition;
         private string vm_rows;
         private string vm_cols;
+        private string vm_solution;
 
         public SinglePlayerGameViewModel(ISinglePlayerGame singlePlayerModel,
             ISettingsModel settingsModel)
@@ -160,6 +161,19 @@ namespace GameClient.ViewModel
             {
                 this.vm_mazeName = value;
                 NotifyPropertyChanged("VM_MazeName");
+            }
+        }
+
+        public string VM_Solution
+        {
+            get
+            {
+                return this.vm_solution;
+            }
+            set
+            {
+                this.vm_solution = value;
+                NotifyPropertyChanged("VM_Solution");
             }
         }
 
