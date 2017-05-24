@@ -10,13 +10,14 @@ using System.Net.Sockets;
 using System.IO;
 using GameClient.Model.Listeners;
 using GameClient.Model.Parsers;
+using SearchAlgorithmsLib;
 
 namespace GameClient.Model
 {
     public class SinglePlayerGameModel : ISinglePlayerGame
     {
         private Maze maze;
-        // private Position playerPosition;
+        private Position playerPosition;
 
         private CommunicationClient communicationClient;
         //private ServerListener serverListener;
@@ -54,7 +55,7 @@ namespace GameClient.Model
 
         public String NameOfMaze { get; set; }
 
-        /* public Position PlayerPosition
+        public Position PlayerPosition
          {
              get { return this.playerPosition; }
  
@@ -63,7 +64,7 @@ namespace GameClient.Model
                  this.playerPosition = value;
                  this.NotifyPropertyChanged("PlayerPosition");
              }
-         }*/
+         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -83,9 +84,11 @@ namespace GameClient.Model
             throw new NotImplementedException();
         }
 
-        public void SolveMaze()
+        public Solution<String> SolveMaze()
         {
-            throw new NotImplementedException();
+            // TODO: Get the algorithm from the server.
+            Solution<String> algorithmSolution = new Solution<string>(0);
+            return algorithmSolution;
         }
 
         public void GenerateGame(String numOfRows, String numOfCols,
