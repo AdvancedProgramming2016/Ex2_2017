@@ -38,6 +38,14 @@ namespace GameClient.Model
             //  this.serverListener = new ServerListener(tcpClient, new StreamReader(tcpClient.GetStream()));
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this,
+                new PropertyChangedEventArgs(propName));
+        }
+
         public string ServerResponse { get; set; }
 
         public Position PlayerPosition { get; set; }
@@ -75,15 +83,7 @@ namespace GameClient.Model
                }
            }*/
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this,
-                new PropertyChangedEventArgs(propName));
-        }
-
-        /* public void MovePlayer()
+       /* public void MovePlayer()
          {
              throw new NotImplementedException();
          }*/

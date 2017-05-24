@@ -8,108 +8,140 @@ using System.Net.Sockets;
 using System.Net;
 using System.IO;
 using System.ComponentModel;
+using GameClient.Model.Listeners;
+using GameClient.Model.Parsers;
 
 namespace GameClient.Model
 {
     public class MultiPlayerModel : IMultiPlayerGame
     {
-
         private Maze maze;
         private Position playerPosition;
         private Position opponentPosition;
-        private TcpClient tcpClient;
+        private IList<string> gamesList;
+        private CommunicationClient communicationClient;
 
         public MultiPlayerModel(ISettingsModel settingModel)
         {
-
             int port = settingModel.Port;
             string ip = settingModel.IpAddress;
-            IPEndPoint endPoint =
-                new IPEndPoint(IPAddress.Parse(ip), port);
-            this.tcpClient = new TcpClient(); // Tcp Client with the server.
+            communicationClient.Connect(port, ip);
+            communicationClient.PropertyChanged +=
+                delegate(Object sender, PropertyChangedEventArgs e)
+                {
+                    ServerResponse = communicationClient.CommandFromUser;
+                };
         }
+
+        public string ServerResponse { get; set; }
+
+        public string CommandPropertyChanged { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this,
+                new PropertyChangedEventArgs(propName));
+        }
+
         public Maze Maze
         {
-            get
-            {
-                return this.maze;
-            }
+            get { return this.maze; }
 
             set
             {
                 this.maze = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Maze"));
+                this.NotifyPropertyChanged("Maze");
             }
         }
 
         public Position OpponentPosition
         {
-            get
-            {
-                return this.opponentPosition;
-            }
+            get { return this.opponentPosition; }
 
             set
             {
                 this.opponentPosition = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OpponentPosition"));
+                this.NotifyPropertyChanged("OpponentPosition");
             }
         }
 
         public Position PlayerPosition
         {
-            get
-            {
-                return this.playerPosition;
-            }
+            get { return this.playerPosition; }
 
             set
             {
                 this.playerPosition = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PlayerPosition"));
+                this.NotifyPropertyChanged("PlayerPosition");
             }
         }
 
-        //public void JoinGame(Game game)
-        public void JoinGame()
+        public IList<string> GamesList
         {
-
-            // Add new game to the server.
-
-        }
-
-        private void WaitForServerInfo()
-        {
-
-            Task task = Task.Run(() =>
+            get { return this.gamesList; }
+            set
             {
-                NetworkStream stream;
-                //var reader = new StreamReader(stream);
-                //serverListener = new ServerListener(tcpClient, reader);
+                this.gamesList = value;
+                this.NotifyPropertyChanged("GamesList");
+            }
+        }
 
-                //start listener
-                //serverListener.StartListening();
-                while (true)
+        /*  private void WaitForServerInfo()
+            {
+                Task task = Task.Run(() =>
                 {
-                    // Wait for json from server.
-                    stream = this.tcpClient.GetStream();
-                    //Do something.
-                }
-                
-            });
+                    NetworkStream stream;
+                    //var reader = new StreamReader(stream);
+                    //serverListener = new ServerListener(tcpClient, reader);
+    
+                    //start listener
+                    //serverListener.StartListening();
+                    while (true)
+                    {
+                        // Wait for json from server.
+                        stream = this.tcpClient.GetStream();
+                        //Do something.
+                    }
+                });
+    
+                task.Wait();
+            }*/
 
-            task.Wait();
-
-        }
-
-        public void StartNewGame()
+        public void StartNewGame(string numOfRows, string numOfCols,
+            string nameOfMaze)
         {
-            throw new NotImplementedException();
+            string command;
+
+            //Parse into the right format.
+            command = CommandParser.ParseToStartCommand(nameOfMaze,
+                numOfRows,
+                numOfCols);
+
+            CommandPropertyChanged = "start";
+
+            //Send command to the server.
+            communicationClient.SendToServer(command);
+
+            HandleServerResult(ServerResponse);
         }
-        
+
+        public void JoinGame(string gameName)
+        {
+            string command;
+
+            //Parse into the right format.
+            command = CommandParser.ParseToJoinCommand(gameName);
+
+            CommandPropertyChanged = "join";
+
+            //Send command to the server.
+            communicationClient.SendToServer(command);
+
+            HandleServerResult(ServerResponse);
+        }
+
         public void CloseGame()
         {
             throw new NotImplementedException();
@@ -118,6 +150,44 @@ namespace GameClient.Model
         public void MovePlayer(Position position)
         {
             throw new NotImplementedException();
+        }
+
+        private void HandleServerResult(string command)
+        {
+            if (command.StartsWith("Error"))
+            {
+                //TODO decide if needed
+            }
+
+            switch (CommandPropertyChanged)
+            {
+                case "start":
+                    HandlStartCommand(command);
+                    break;
+
+                case "join":
+                    HandleJoinCommand(command);
+                    break;
+
+                case "list":
+                    HandleListCommand(command);
+                    break;
+            }
+        }
+
+        private void HandlStartCommand(string command)
+        {
+            Maze = Maze.FromJSON(command);
+        }
+
+        private void HandleJoinCommand(string command)
+        {
+            Maze = Maze.FromJSON(command);
+        }
+
+        private void HandleListCommand(string command)
+        {
+            this.GamesList = FromJsonConverter.GamesList(command);
         }
     }
 }
