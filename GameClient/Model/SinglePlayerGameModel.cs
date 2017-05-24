@@ -83,9 +83,17 @@ namespace GameClient.Model
             throw new NotImplementedException();
         }
 
-        public void SolveMaze()
+        public void SolveMaze(string name, string algorithmType)
         {
-            throw new NotImplementedException();
+            string command;
+
+            command = CommandParser.ParseTOSolveCommand(name, algorithmType);
+
+            CommandPropertyChanged = "solve";
+
+            communicationClient.SendToServer(command);
+
+            HandleServerResult(ServerResponse);
         }
 
         public void GenerateGame(String numOfRows, String numOfCols,
@@ -137,13 +145,12 @@ namespace GameClient.Model
 
         private void HandleGenerateCommand(string command)
         {
-            Maze maze = Maze.FromJSON(command);
-            Maze = maze;
+            Maze = Maze.FromJSON(command);
         }
 
         private void HandleSolveCommand(string command)
         {
-            
+            //TODO implement
         }
     }
 }
