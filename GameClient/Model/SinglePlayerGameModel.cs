@@ -10,16 +10,14 @@ using System.Net.Sockets;
 using System.IO;
 using GameClient.Model.Listeners;
 using GameClient.Model.Parsers;
+using SearchAlgorithmsLib;
 
 namespace GameClient.Model
 {
     public class SinglePlayerGameModel : ISinglePlayerGame
     {
         private Maze maze;
-        // private Position playerPosition;
-
         private CommunicationClient communicationClient;
-        //private ServerListener serverListener;
 
         public SinglePlayerGameModel()
         {
@@ -48,11 +46,10 @@ namespace GameClient.Model
             set
             {
                 this.maze = value;
-                this.NotifyPropertyChanged("Maze");
+                this.NotifyPropertyChanged("FullMaze");
             }
         }
 
-        public String NameOfMaze { get; set; }
 
         /* public Position PlayerPosition
          {
@@ -77,6 +74,11 @@ namespace GameClient.Model
          {
              throw new NotImplementedException();
          }*/
+
+        public Solution<string> SolveMaze()
+        {
+            throw new NotImplementedException();
+        }
 
         public void Restart()
         {

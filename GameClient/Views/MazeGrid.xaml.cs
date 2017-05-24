@@ -81,11 +81,11 @@ namespace GameClient.Views
             }
         }
 
-        public int Rows
+        public string Rows
         {
             get
             {
-                return (int)GetValue(RowsProperty);
+                return (string)GetValue(RowsProperty);
             }
             set
             {
@@ -93,11 +93,11 @@ namespace GameClient.Views
             }
         }
 
-        public int Cols
+        public string Cols
         {
             get
             {
-                return (int)GetValue(ColsProperty);
+                return (string)GetValue(ColsProperty);
             }
             set
             {

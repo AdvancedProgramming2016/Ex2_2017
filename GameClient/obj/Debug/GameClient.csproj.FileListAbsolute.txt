@@ -53,3 +53,5 @@ C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\Vi
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\GameClient.g.resources
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\GameClient.Properties.Resources.resources
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\GameClient.csproj.GenerateResource.Cache
+C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\Newtonsoft.Json.xml
