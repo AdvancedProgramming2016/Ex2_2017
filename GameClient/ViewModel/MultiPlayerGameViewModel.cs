@@ -12,10 +12,12 @@ namespace GameClient.ViewModel
     public class MultiPlayerGameViewModel : INotifyPropertyChanged
     {
         private IMultiPlayerGame mpModel;
-        private ISettingsModel settingsModel;
+        private ISettingsViewModel settingsViewModel;
 
-        public MultiPlayerGameViewModel(IMultiPlayerGame model)
+        public MultiPlayerGameViewModel(IMultiPlayerGame model,
+            ISettingsViewModel settingsViewModel)
         {
+            this.settingsViewModel = settingsViewModel;
             this.mpModel = model;
             model.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
