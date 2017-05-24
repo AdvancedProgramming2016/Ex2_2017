@@ -119,12 +119,16 @@ namespace GameClient.Views
 
         protected override void OnInitialized(EventArgs e)
         {
+
             this.dicRect = new Dictionary<string, Rectangle>();
             this.playerRect = new Rectangle();
             this.playerRect.Fill = new SolidColorBrush(Colors.Brown);
-            InitializeComponent();
             this.wallColor = new SolidColorBrush(Colors.White);
             this.freeSpaceColor = new SolidColorBrush(Colors.Black);
+
+            InitializeComponent();
+
+            base.OnInitialized(e);
         }
 
         public void Draw(string drawingString)
@@ -145,6 +149,9 @@ namespace GameClient.Views
                 for (int j = 0; j < splitRows[0].Length; j++)
                 {
                     Rectangle currRect = new Rectangle();
+                    currRect.Height = this.rectHeight;
+                    currRect.Width = this.rectWidth;
+                    
                     char currChar = splitRows[i].ElementAt(j);
 
                     switch (currChar)
@@ -167,9 +174,10 @@ namespace GameClient.Views
                     this.MazeCanvas.Children.Add(currRect);
                     Canvas.SetTop(currRect, i * this.rectHeight);
                     Canvas.SetLeft(currRect, j * this.rectWidth);
-
+                    
                     // Add to dictionary rectangle.
                     this.dicRect.Add(i.ToString() + "," + j.ToString(), currRect);
+
                 }
             }
         }
@@ -223,8 +231,8 @@ namespace GameClient.Views
             }
 
             // Update the location of the player.
-            Canvas.SetTop(this.playerRect, Convert.ToDouble(position.Split(',')[0]) * this.rectHeight);
-            Canvas.SetLeft(this.playerRect, Convert.ToDouble(position.Split(',')[1]) * this.rectWidth);
+            Canvas.SetTop(this.playerRect, Convert.ToDouble((position.Split(',')[0]).Split('(')[1]) * this.rectHeight);
+            Canvas.SetLeft(this.playerRect, Convert.ToDouble((position.Split(',')[1]).Split(')')[0]) * this.rectWidth);
         }
 
         /// <summary>
