@@ -58,5 +58,10 @@ namespace GameClient.Views
         {
             this.spViewModel.SolveMaze(gameName);
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MazeBoard.Focus();
+        }
     }
 }

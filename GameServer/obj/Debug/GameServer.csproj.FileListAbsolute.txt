@@ -29,3 +29,4 @@ C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\bin\Debug\Ne
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\obj\Debug\GameServer.csprojResolveAssemblyReference.cache
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\obj\Debug\GameServer.csproj.GameServer.exe.config
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\obj\Debug\GameServer.csprojResolveAssemblyReference.cache

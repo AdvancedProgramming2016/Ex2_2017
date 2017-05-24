@@ -43,5 +43,10 @@ namespace GameClient.Views
             mw.Show();
             this.Close();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Focus();
+        }
     }
 }
