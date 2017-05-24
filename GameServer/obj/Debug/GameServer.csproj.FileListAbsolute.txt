@@ -12,3 +12,11 @@ C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex1\GameServer\obj\Debug\Ga
 C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex1\GameServer\obj\Debug\GameServer.csproj.GameServer.exe.config
 C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex1\GameServer\obj\Debug\GameServer.exe
 C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex1\GameServer\obj\Debug\GameServer.pdb
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debug\GameServer.exe.config
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debug\GameServer.exe
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debug\GameServer.pdb
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\obj\Debug\GameServer.csproj.GameServer.exe.config
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\obj\Debug\GameServer.exe
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\obj\Debug\GameServer.pdb
