@@ -6,13 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using GameClient.Model;
 using System.ComponentModel;
+using GameClient.ViewModel;
 
 namespace GameClient
 {
-    public class SettingsViewModel : INotifyPropertyChanged 
+    public class SettingsViewModel : ISettingsViewModel 
     {
 
-        private SettingsModel settingModel;
+        private ISettingsModel settingsModel;
+
+
+        public SettingsViewModel(ISettingsModel settingsModel)
+        {
+            this.settingsModel = settingsModel;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -24,21 +31,13 @@ namespace GameClient
             }
         }
 
-        public SettingsViewModel()
+        public string VM_IpAdrress
         {
-            this.settingModel = new SettingsModel();
-        }
-
-        public int VM_SelectedAlgo
-        {
-            get
-            {
-                return this.settingModel.DefaultAlgo;
-            }
+            get { return this.settingsModel.IpAddress; }
             set
             {
-                this.settingModel.DefaultAlgo = value;
-                this.NotifyChanged("VM_SelectedAlgo");
+                this.settingsModel.IpAddress = value;
+                NotifyChanged("VM_IpAdrress");
             }
         }
 
@@ -46,12 +45,25 @@ namespace GameClient
         {
             get
             {
-                return this.settingModel.Port;
+                return this.settingsModel.Port;
             }
             set
             {
-                this.settingModel.Port = value;
+                this.settingsModel.Port = value;
                 this.NotifyChanged("VM_Port");
+            }
+        }
+
+        public int VM_SelectedAlgo
+        {
+            get
+            {
+                return this.settingsModel.DefaultAlgo;
+            }
+            set
+            {
+                this.settingsModel.DefaultAlgo = value;
+                this.NotifyChanged("VM_SelectedAlgo");
             }
         }
 
@@ -59,11 +71,11 @@ namespace GameClient
         {
             get
             {
-                return this.settingModel.DefaultCols;
+                return this.settingsModel.DefaultCols;
             }
             set
             {
-                this.settingModel.DefaultCols = value;
+                this.settingsModel.DefaultCols = value;
                 this.NotifyChanged("VM_DefaultCol");
             }
         }
@@ -72,11 +84,11 @@ namespace GameClient
         {
             get
             {
-                return this.settingModel.DefaultRows;
+                return this.settingsModel.DefaultRows;
             }
             set
             {
-                this.settingModel.DefaultRows = value;
+                this.settingsModel.DefaultRows = value;
                 this.NotifyChanged("VM_DefaultRow");
             }
         }

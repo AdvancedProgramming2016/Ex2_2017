@@ -23,12 +23,16 @@ namespace GameClient.Views
     {
 
         private SinglePlayerGameViewModel singlePlayerGameViewModel;
+        private ISettingsModel settingsModel;
+        private ISettingsViewModel settingsViewModel;
+       
 
         public SinglePlayerMenu()
         {
             InitializeComponent();
+            settingsModel = new SettingsModel();
             this.singlePlayerGameViewModel = new SinglePlayerGameViewModel
-                (new SinglePlayerGameModel(), new SettingsModel());
+                (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.singlePlayerGameViewModel;
         }
         

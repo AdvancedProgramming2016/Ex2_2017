@@ -15,7 +15,7 @@ namespace GameClient.ViewModel
     public class SinglePlayerGameViewModel : INotifyPropertyChanged
     {
         private ISinglePlayerGame singlePlayerModel;
-        private ISettingsModel settingsModel;
+        private ISettingsViewModel settingsViewModel;
         private Maze maze;
         private string vm_Maze;
         private string vm_PlayerPosition;
@@ -28,10 +28,10 @@ namespace GameClient.ViewModel
         private string vm_solution;
 
         public SinglePlayerGameViewModel(ISinglePlayerGame singlePlayerModel,
-            ISettingsModel settingsModel)
+            ISettingsViewModel settingsViewModel)
         {
             this.singlePlayerModel = singlePlayerModel;
-            this.settingsModel = settingsModel;
+            this.settingsViewModel = settingsViewModel;
 
             this.singlePlayerModel.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
@@ -96,7 +96,7 @@ namespace GameClient.ViewModel
 
         public string VM_DefaultAlgorithm
         {
-            get { return this.settingsModel.DefaultAlgo.ToString(); }
+            get { return this.settingsViewModel.VM_SelectedAlgo.ToString(); }
             set
             {
                 this.vm_algorithmType = value;

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GameClient.Model;
 
 namespace GameClient.Views
 {
@@ -30,7 +31,8 @@ namespace GameClient.Views
         public SettingsMenu()
         {
             InitializeComponent();
-            this.svm = new SettingsViewModel();
+            ISettingsModel settingsModel = new SettingsModel();
+            this.svm = new SettingsViewModel(settingsModel);
             this.DataContext = svm;
         }
     }

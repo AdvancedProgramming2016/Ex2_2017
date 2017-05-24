@@ -19,13 +19,15 @@ namespace GameClient.Model
         private Maze maze;
         private string solution;
         private CommunicationClient communicationClient;
+        private ISettingsModel settingsModel;
 
-        public SinglePlayerGameModel()
+        public SinglePlayerGameModel(ISettingsModel settingsModel)
         {
             string resultCommand;
-            communicationClient = new CommunicationClient();
+            this.communicationClient = new CommunicationClient();
+            this.settingsModel = settingsModel;
             //TODO get ip and port from Settings
-            communicationClient.Connect(8000, "127.0.0.1");
+            communicationClient.Connect(settingsModel.Port, settingsModel.IpAddress);
 
             communicationClient.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
