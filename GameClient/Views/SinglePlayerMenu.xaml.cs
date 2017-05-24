@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GameClient.ViewModel;
+using GameClient.Model;
 
 namespace GameClient.Views
 {
@@ -19,25 +21,22 @@ namespace GameClient.Views
     /// </summary>
     public partial class SinglePlayerMenu : Window
     {
+
+        private SinglePlayerGameViewModel singlePlayerGameViewModel;
+
         public SinglePlayerMenu()
         {
             InitializeComponent();
-            /*
             this.singlePlayerGameViewModel = new SinglePlayerGameViewModel
                 (new SinglePlayerGameModel(), new SettingsModel());
             this.DataContext = this.singlePlayerGameViewModel;
-            */
         }
-        
-        //private SinglePlayerGameViewModel singlePlayerGameViewModel;
         
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            /*
             // Open maze window.
             new SinglePlayerGameMaze(NumOfRows.Text, numOfCols.Text, MazeNameBox.Text).Show();
             this.Close();
-            */
         }
     }
 }

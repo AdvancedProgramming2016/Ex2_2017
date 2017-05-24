@@ -224,7 +224,8 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.ToString().Equals("Up"))
+            if (e.ToString().Equals("Up") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
+                    .Fill.Equals(this.wallColor))
             {
                 if (this.playerPosI - 1 >= this.numOfRows &&
                     !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]

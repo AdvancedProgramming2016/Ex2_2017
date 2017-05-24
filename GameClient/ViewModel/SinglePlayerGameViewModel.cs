@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using GameClient.Model;
 using MazeLib;
+using SearchAlgorithmsLib;
+using System.Threading;
 
 namespace GameClient.ViewModel
 {
@@ -14,6 +16,7 @@ namespace GameClient.ViewModel
         private ISinglePlayerGame singlePlayerModel;
         private ISettingsModel settingsModel;
         private string vm_Maze;
+        private string vm_PlayerPosition;
 
         public SinglePlayerGameViewModel(ISinglePlayerGame singlePlayerModel,
             ISettingsModel settingsModel)
@@ -41,7 +44,7 @@ namespace GameClient.ViewModel
 
             set
             {
-                vm_Maze = value;
+                this.vm_Maze = value;
                 NotifyPropertyChanged("VM_Maze");
             }
         }
@@ -61,10 +64,18 @@ namespace GameClient.ViewModel
             get { return this.singlePlayerModel.Maze.GoalPos.ToString(); }
         }
 
-       /* public String VM_PlayerPosition
+        public String VM_PlayerPosition
         {
-            get { return this.singlePlayerModel.PlayerPosition.ToString(); }
-        }*/
+            get
+            {
+                return this.singlePlayerModel.PlayerPosition.ToString();
+            }
+            set
+            {
+                this.vm_PlayerPosition = value;
+                NotifyPropertyChanged("VM_PlayerPosition");
+            }
+        }
 
         public int VM_Rows
         {
@@ -100,7 +111,39 @@ namespace GameClient.ViewModel
 
         public void SolveMaze()
         {
-            this.singlePlayerModel.SolveMaze();
+            Solution<String> algoSolution = this.singlePlayerModel.SolveMaze();
+            String solution = "00222030"; // Need to change.
+            foreach (char movement in solution) // Change so that solution holds the real solution.
+            {
+                int currPlayerXPosition, currPlayerYPosition;
+
+                currPlayerXPosition = Convert.ToInt32(VM_PlayerPosition.Split(',')[0]);
+                currPlayerYPosition = Convert.ToInt32(VM_PlayerPosition.Split(',')[1]);
+
+                // Move the player to the next location.
+                switch (movement)
+                {
+                    case '0':
+                        //Move left
+                        VM_PlayerPosition = (currPlayerXPosition - 1).ToString() + ',' + currPlayerYPosition.ToString();
+                        break;
+                    case '1':
+                        //Move right
+                        VM_PlayerPosition = (currPlayerXPosition + 1).ToString() + ',' + currPlayerYPosition.ToString();
+                        break;
+                    case '2':
+                        //Move up
+                        VM_PlayerPosition = currPlayerXPosition.ToString() + ',' + (currPlayerYPosition - 1).ToString();
+                        break;
+                    case '3':
+                        //Move down
+                        VM_PlayerPosition = currPlayerXPosition.ToString() + ',' + (currPlayerYPosition + 1).ToString();
+                        break;
+                }
+
+                // Sleep for 500 ms.
+                Thread.Sleep(500);
+            }
         }
 
         public void StartNewGame(String numOfCols, String numOfRows,

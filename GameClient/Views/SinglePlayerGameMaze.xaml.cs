@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GameClient.ViewModel;
 using GameClient.Model;
+using SearchAlgorithmsLib;
 
 namespace GameClient.Views
 {
@@ -48,6 +49,11 @@ namespace GameClient.Views
         private void MazeBoard_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void solveButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.spViewModel.SolveMaze();
         }
     }
 }
