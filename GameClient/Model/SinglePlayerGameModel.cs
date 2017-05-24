@@ -37,6 +37,7 @@ namespace GameClient.Model
 
         public string ServerResponse { get; set; }
 
+        public Position PlayerPosition { get; set; }
         public string CommandPropertyChanged { get; set; }
 
         public Maze Maze

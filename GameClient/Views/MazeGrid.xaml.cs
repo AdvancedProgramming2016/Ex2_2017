@@ -119,6 +119,9 @@ namespace GameClient.Views
 
         protected override void OnInitialized(EventArgs e)
         {
+            this.dicRect = new Dictionary<string, Rectangle>();
+            this.playerRect = new Rectangle();
+            this.playerRect.Fill = new SolidColorBrush(Colors.Brown);
             InitializeComponent();
             this.wallColor = new SolidColorBrush(Colors.White);
             this.freeSpaceColor = new SolidColorBrush(Colors.Black);

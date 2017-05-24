@@ -80,11 +80,15 @@ namespace GameClient.ViewModel
             int chunkSize = maze.Rows;
             string finalString = string.Empty;
             int stringLength = str.Length;
-            for (int i = 0; i < stringLength; i += chunkSize)
+
+            finalString = str.Replace("\r\n", ",");
+            finalString = finalString.Remove(finalString.Length - 1);
+
+           /* for (int i = 0; i < stringLength; i += chunkSize)
             {
                 if (i + chunkSize > stringLength) { chunkSize = stringLength - i;}
                 finalString += str.Substring(i, chunkSize) + ",";
-            }
+            }*/
 
             return finalString;
         }
