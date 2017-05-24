@@ -57,4 +57,5 @@ C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\Ga
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\GameClient.Properties.Resources.resources
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\GameClient.csproj.GenerateResource.Cache
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\GameClient.exe
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\bin\Debug\SearchAlgorithmsLib.dll
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debug\GameClient.csprojResolveAssemblyReference.cache

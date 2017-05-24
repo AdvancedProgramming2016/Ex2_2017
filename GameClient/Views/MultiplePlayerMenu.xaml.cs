@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GameClient.ViewModel;
+using GameClient.Model;
 
 namespace GameClient.Views
 {
@@ -19,9 +21,17 @@ namespace GameClient.Views
     /// </summary>
     public partial class MultiplePlayerMenu : Window
     {
+
+        private MultiPlayerGameViewModel multiPlayerGameViewModel;
+        private ISettingsModel settingsModel;
+        private ISettingsViewModel settingsViewModel;
+
         public MultiplePlayerMenu()
         {
             InitializeComponent();
+            settingsModel = new SettingsModel();
+            this.multiPlayerGameViewModel = new MultiPlayerGameViewModel(new MultiPlayerModel(settingsModel));
+            this.DataContext = this.multiPlayerGameViewModel;
         }
     }
 }
