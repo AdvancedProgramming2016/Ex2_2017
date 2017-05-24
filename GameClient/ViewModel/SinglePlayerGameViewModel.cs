@@ -80,32 +80,17 @@ namespace GameClient.ViewModel
             {
                 this.vm_solution = value;
                 //NotifyPropertyChanged("VM_Solution");
-                 RunAnimation(vm_solution);
+                RunAnimation(vm_solution);
             }
         }
 
-        private IEnumerable<string> Split(string str, int chunkSize)
-        {
-            return Enumerable.Range(0, str.Length / chunkSize)
-                .Select(i => str.Substring(i * chunkSize, chunkSize));
-        }
-
-
-        private string DivideMazeToCommas(Maze maze)
+       private string DivideMazeToCommas(Maze maze)
         {
             string str = maze.ToString();
-            int chunkSize = maze.Rows;
             string finalString = string.Empty;
-            int stringLength = str.Length;
 
             finalString = str.Replace("\r\n", ",");
             finalString = finalString.Remove(finalString.Length - 1);
-
-            /* for (int i = 0; i < stringLength; i += chunkSize)
-             {
-                 if (i + chunkSize > stringLength) { chunkSize = stringLength - i;}
-                 finalString += str.Substring(i, chunkSize) + ",";
-             }*/
 
             return finalString;
         }
@@ -164,7 +149,8 @@ namespace GameClient.ViewModel
         {
             get
             {
-                return GameClient.Properties.Settings.Default.DefaultCols.ToString();
+                return GameClient.Properties.Settings.Default.DefaultCols
+                    .ToString();
             }
         }
 
@@ -172,7 +158,8 @@ namespace GameClient.ViewModel
         {
             get
             {
-                return GameClient.Properties.Settings.Default.DefaultRows.ToString();
+                return GameClient.Properties.Settings.Default.DefaultRows
+                    .ToString();
             }
         }
 

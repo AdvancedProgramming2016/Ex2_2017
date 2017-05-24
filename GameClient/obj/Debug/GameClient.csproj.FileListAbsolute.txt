@@ -15,7 +15,6 @@ C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\Ga
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\GameClient.exe.config
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\GameClient.exe
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\GameClient.pdb
-C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\Views\MainWindow.baml
 C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameClient\obj\Debug\Views\MazeGrid.baml
