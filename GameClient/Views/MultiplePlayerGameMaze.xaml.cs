@@ -23,13 +23,14 @@ namespace GameClient.Views
     {
         private MultiPlayerGameViewModel mpgvm;
 
-        public MultiplePlayerGameMaze()
+        public MultiplePlayerGameMaze(String numOfRows, String numOfCols,
+            String nameOfMaze)
         {
             InitializeComponent();
             this.mpgvm = new MultiPlayerGameViewModel
                 (new MultiPlayerModel(new SettingsModel()));
             this.DataContext = this.mpgvm;
-            this.mpgvm.StartNewGame();
+            this.mpgvm.StartNewGame(numOfRows, numOfCols, nameOfMaze);
         }
 
         /// <summary>

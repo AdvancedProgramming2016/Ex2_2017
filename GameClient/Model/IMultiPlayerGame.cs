@@ -13,9 +13,12 @@ namespace GameClient.Model
         Maze Maze { get; set; }
         Position OpponentPosition { get; set; }
         Position PlayerPosition { get; set; }
-        
-        void JoinGame();
-        void StartNewGame();
+
+        void JoinGame(string gameName);
+
+        void StartNewGame(string numOfRows, string numOfCols,
+            string nameOfMaze);
+
         void MovePlayer(Position position);
         void CloseGame();
     }
