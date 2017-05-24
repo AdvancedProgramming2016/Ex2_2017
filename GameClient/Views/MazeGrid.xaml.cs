@@ -122,9 +122,8 @@ namespace GameClient.Views
 
             this.dicRect = new Dictionary<string, Rectangle>();
             this.playerRect = new Rectangle();
-            this.playerRect.Fill = new SolidColorBrush(Colors.Brown);
-            this.wallColor = new SolidColorBrush(Colors.White);
-            this.freeSpaceColor = new SolidColorBrush(Colors.Black);
+            this.wallColor = new SolidColorBrush(Colors.Black);
+            this.freeSpaceColor = new SolidColorBrush(Colors.White);
 
             InitializeComponent();
 
@@ -162,11 +161,14 @@ namespace GameClient.Views
                         case '0':
                             currRect.Fill = this.freeSpaceColor;
                             break;
-                        case '*':
-                            currRect.Fill = new SolidColorBrush(Colors.Aqua);
+                        case '*': // Start point.
+                            currRect.Fill = this.freeSpaceColor;
+                            this.playerPosI = i;
+                            this.playerPosJ = j;
                             break;
-                        case '#':
-                            currRect.Fill = new SolidColorBrush(Colors.Azure);
+                        case '#': // Destination point.
+                            DestPosition = i.ToString() + ',' + j.ToString();
+                            currRect.Fill = new SolidColorBrush(Colors.DarkCyan);
                             break;
                     }
 
@@ -180,6 +182,7 @@ namespace GameClient.Views
 
                 }
             }
+            this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' + this.playerPosJ.ToString());
         }
 
         public static readonly DependencyProperty MazeNameProperty =
@@ -189,7 +192,7 @@ namespace GameClient.Views
             DependencyProperty.Register("Maze", typeof(String), typeof(MazeGrid), new UIPropertyMetadata(MazeStringInit));
 
         public static readonly DependencyProperty PlayerPositionProperty =
-            DependencyProperty.Register("PlayerPosition", typeof(String), typeof(MazeGrid), new UIPropertyMetadata(PlayerPosInit));
+            DependencyProperty.Register("PlayerPosition", typeof(String), typeof(MazeGrid), null);
 
         public static readonly DependencyProperty ColsProperty =
             DependencyProperty.Register("Cols", typeof(String), typeof(MazeGrid), null);
@@ -221,18 +224,34 @@ namespace GameClient.Views
         /// <param name="newPosition"></param>
         public void HandlePlayerPosChanged(object newPosition)
         {
+
             string position = newPosition as string;
 
+            this.playerRect.Fill = new SolidColorBrush(Colors.Red);
+            this.playerRect.Width = this.rectWidth;
+            this.playerRect.Height = this.rectHeight;
+
             // If the player reached the Destination position.
-            if (position.Split(',')[0].Equals(DestPosition.Split(',')[0]) &&
+            if (DestPosition != null && position.Split(',')[0].Equals(DestPosition.Split(',')[0]) &&
                 position.Split(',')[1].Equals(DestPosition.Split(',')[1]))
             {
                 MessageBox.Show("Finished!");
             }
 
             // Update the location of the player.
-            Canvas.SetTop(this.playerRect, Convert.ToDouble((position.Split(',')[0]).Split('(')[1]) * this.rectHeight);
-            Canvas.SetLeft(this.playerRect, Convert.ToDouble((position.Split(',')[1]).Split(')')[0]) * this.rectWidth);
+            if(!this.MazeCanvas.Children.Contains(this.playerRect))
+            {
+                this.MazeCanvas.Children.Add(this.playerRect);
+            }
+            
+            Canvas.SetTop(this.playerRect, Convert.ToDouble(position.Split(',')[0]) * this.rectHeight);
+            Canvas.SetLeft(this.playerRect, Convert.ToDouble(position.Split(',')[1]) * this.rectWidth);
+        }
+
+
+        private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Focus();
         }
 
         /// <summary>
@@ -242,7 +261,7 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.ToString().Equals("Up") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
+            if (e.Key.ToString().Equals("Up") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
                     .Fill.Equals(this.wallColor))
             {
                 if (this.playerPosI - 1 >= this.numOfRows &&
@@ -252,7 +271,7 @@ namespace GameClient.Views
                     this.playerPosI -= 1;
                 }
             }
-            else if (e.ToString().Equals("Down") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
+            else if (e.Key.ToString().Equals("Down") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
                     .Fill.Equals(this.wallColor))
             {
                 if (this.playerPosI + 1 <= this.numOfRows)
@@ -260,7 +279,7 @@ namespace GameClient.Views
                     this.playerPosI += 1;
                 }
             }
-            else if (e.ToString().Equals("Right") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
+            else if (e.Key.ToString().Equals("Right") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
                     .Fill.Equals(this.wallColor))
             {
                 if (this.playerPosJ + 1 <= this.numOfCols)
@@ -268,7 +287,7 @@ namespace GameClient.Views
                     this.playerPosJ += 1;
                 }
             }
-            else if (e.ToString().Equals("Left") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
+            else if (e.Key.ToString().Equals("Left") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
                     .Fill.Equals(this.wallColor))
             {
                 if (this.playerPosJ - 1 >= this.numOfCols)
@@ -279,6 +298,7 @@ namespace GameClient.Views
 
             // Update the location of the player.
             this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' + this.playerPosJ.ToString());
+
         }
     }
 }
