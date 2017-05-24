@@ -242,7 +242,7 @@ namespace GameClient.ViewModel
             }
         }
 
-        public void StartNewGame(String numOfCols, String numOfRows,
+        public void StartNewGame(String numOfRows, String numOfCols,
             String nameOfMaze)
         {
             this.singlePlayerModel.GenerateGame(numOfRows, numOfCols,

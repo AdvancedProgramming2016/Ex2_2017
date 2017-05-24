@@ -35,7 +35,7 @@ namespace GameClient.Views
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
             // Open maze window.
-            new SinglePlayerGameMaze(NumOfRows.Text, numOfCols.Text, MazeNameBox.Text).Show();
+            new SinglePlayerGameMaze(numOfRowsBox.Text, numOfCols.Text, MazeNameBox.Text).Show();
             this.Close();
         }
     }
