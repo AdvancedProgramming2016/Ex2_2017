@@ -21,7 +21,7 @@ namespace GameClient.Model.Parsers
         public static string PlayName(string jsonMove)
         {
             JObject moveObj = JObject.Parse(jsonMove);
-            string name = (string) moveObj["Name"];
+            string name = (string) moveObj["name"];
 
             return name;
         }
@@ -34,7 +34,7 @@ namespace GameClient.Model.Parsers
         public static string PlayDirection(string jsonMove)
         {
             JObject moveObj = JObject.Parse(jsonMove);
-            string direction = (string) moveObj["Direction"];
+            string direction = (string) moveObj["direction"];
 
             return direction;
         }
@@ -60,7 +60,7 @@ namespace GameClient.Model.Parsers
         public static string MazeSolution(string jsonFormat)
         {
             JObject solutionObject = JObject.Parse(jsonFormat);
-            string solution = (string) solutionObject["Solution"];
+            string solution = (string) solutionObject["solution"];
 
             return solution;
         }
@@ -73,7 +73,7 @@ namespace GameClient.Model.Parsers
         public static int MazeSolutionNodesEvaluated(string jsonFormat)
         {
             JObject solutionObject = JObject.Parse(jsonFormat);
-            int nodesEvaluated = (int)solutionObject["NodesEvaluated"];
+            int nodesEvaluated = (int)solutionObject["nodesEvaluated"];
 
             return nodesEvaluated;
         }

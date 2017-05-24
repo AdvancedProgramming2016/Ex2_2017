@@ -24,10 +24,12 @@ namespace GameClient.Views
     {
 
         private SinglePlayerGameViewModel spViewModel;
+        private string gameName;
 
         public SinglePlayerGameMaze(String numOfRows, String numOfCols, String nameOfMaze)
         {
             InitializeComponent();
+            this.gameName = nameOfMaze;
             ISettingsModel settingsModel = new SettingsModel();
             this.spViewModel = new SinglePlayerGameViewModel
                 (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
@@ -54,7 +56,7 @@ namespace GameClient.Views
 
         private void solveButton_Click(object sender, RoutedEventArgs e)
         {
-            this.spViewModel.SolveMaze();
+            this.spViewModel.SolveMaze(gameName);
         }
     }
 }

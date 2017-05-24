@@ -88,19 +88,15 @@ namespace GameClient.Model
              throw new NotImplementedException();
          }*/
 
-        public Solution<string> SolveMaze()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Restart()
         {
             throw new NotImplementedException();
         }
 
-        public void SolveMaze(string name, string algorithmType)
+        public void SolveMaze(string name)
         {
             string command;
+            string algorithmType = settingsModel.DefaultAlgo.ToString();
 
             command = CommandParser.ParseTOSolveCommand(name, algorithmType);
 
@@ -165,7 +161,8 @@ namespace GameClient.Model
 
         private void HandleSolveCommand(string command)
         {
-            Solution = FromJsonConverter.MazeSolution(command);
+            string solution = FromJsonConverter.MazeSolution(command);
+            Solution = solution;
         }
     }
 }

@@ -37,6 +37,11 @@ namespace GameClient.ViewModel
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     NotifyPropertyChanged("VM_" + e.PropertyName);
+
+                    if (e.PropertyName == "Solution")
+                    {
+                        RunAnimation(this.singlePlayerModel.Solution);
+                    }
                 };
         }
 
@@ -68,6 +73,17 @@ namespace GameClient.ViewModel
             }
         }
 
+        public string VM_Solution
+        {
+            get { return this.singlePlayerModel.Solution; }
+            set
+            {
+                this.vm_solution = value;
+                //NotifyPropertyChanged("VM_Solution");
+                 RunAnimation(vm_solution);
+            }
+        }
+
         private IEnumerable<string> Split(string str, int chunkSize)
         {
             return Enumerable.Range(0, str.Length / chunkSize)
@@ -85,11 +101,11 @@ namespace GameClient.ViewModel
             finalString = str.Replace("\r\n", ",");
             finalString = finalString.Remove(finalString.Length - 1);
 
-           /* for (int i = 0; i < stringLength; i += chunkSize)
-            {
-                if (i + chunkSize > stringLength) { chunkSize = stringLength - i;}
-                finalString += str.Substring(i, chunkSize) + ",";
-            }*/
+            /* for (int i = 0; i < stringLength; i += chunkSize)
+             {
+                 if (i + chunkSize > stringLength) { chunkSize = stringLength - i;}
+                 finalString += str.Substring(i, chunkSize) + ",";
+             }*/
 
             return finalString;
         }
@@ -164,42 +180,9 @@ namespace GameClient.ViewModel
             }
         }
 
-        public string VM_Solution
+        private void RunAnimation(string solution)
         {
-            get
-            {
-                return this.vm_solution;
-            }
-            set
-            {
-                this.vm_solution = value;
-                NotifyPropertyChanged("VM_Solution");
-            }
-        }
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged?.Invoke(this,
-                    new PropertyChangedEventArgs(propName));
-        }
-
-        /* public void MovePlayer()
-         {
-             this.singlePlayerModel.MovePlayer();
-         }*/
-
-        public void Restart()
-        {
-            this.singlePlayerModel.Restart();
-        }
-
-        public void SolveMaze()
-        {
-            Solution<String> algoSolution = this.singlePlayerModel.SolveMaze();
-            String solution = "00222030"; // Need to change.
-            foreach (char movement in solution
-            ) // Change so that solution holds the real solution.
+            foreach (char movement in solution)
             {
                 int currPlayerXPosition, currPlayerYPosition;
 
@@ -240,6 +223,28 @@ namespace GameClient.ViewModel
                 // Sleep for 500 ms.
                 Thread.Sleep(500);
             }
+        }
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged?.Invoke(this,
+                    new PropertyChangedEventArgs(propName));
+        }
+
+        /* public void MovePlayer()
+         {
+             this.singlePlayerModel.MovePlayer();
+         }*/
+
+        public void Restart()
+        {
+            this.singlePlayerModel.Restart();
+        }
+
+        public void SolveMaze(string name)
+        {
+            this.singlePlayerModel.SolveMaze(name);
         }
 
         public void StartNewGame(String numOfRows, String numOfCols,

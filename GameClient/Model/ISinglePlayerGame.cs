@@ -15,10 +15,15 @@ namespace GameClient.Model
         Position PlayerPosition { get; set; }
 
         string CommandPropertyChanged { get; set; }
-        void GenerateGame(String numOfRows, String numOfCols, String nameOfMaze);
-       // void MovePlayer();
-        Solution<String> SolveMaze();
-        void Restart();
 
+        void GenerateGame(String numOfRows, String numOfCols,
+            String nameOfMaze);
+
+        // void MovePlayer();
+        string Solution { get; set; }
+
+        void SolveMaze(string name);
+
+        void Restart();
     }
 }
