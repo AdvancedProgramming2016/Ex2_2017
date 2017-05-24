@@ -51,5 +51,31 @@ namespace GameClient.Model.Parsers
 
             return gamesList;
         }
+
+        /// <summary>
+        /// Extracts the nodes directions from Solution.
+        /// </summary>
+        /// <param name="jsonFormat">Json.</param>
+        /// <returns>Nodes directions</returns>
+        public static string MazeSolution(string jsonFormat)
+        {
+            JObject solutionObject = JObject.Parse(jsonFormat);
+            string solution = (string) solutionObject["Solution"];
+
+            return solution;
+        }
+
+        /// <summary>
+        /// Extracts the number of nodes evaluated from Solution.
+        /// </summary>
+        /// <param name="jsonFormat">Json.</param>
+        /// <returns>Number of nodes evaluated.</returns>
+        public static int MazeSolutionNodesEvaluated(string jsonFormat)
+        {
+            JObject solutionObject = JObject.Parse(jsonFormat);
+            int nodesEvaluated = (int)solutionObject["NodesEvaluated"];
+
+            return nodesEvaluated;
+        }
     }
 }

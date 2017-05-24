@@ -23,19 +23,23 @@ namespace GameClient.Views
     {
 
         private SinglePlayerGameViewModel singlePlayerGameViewModel;
+        private ISettingsModel settingsModel;
+        private ISettingsViewModel settingsViewModel;
+       
 
         public SinglePlayerMenu()
         {
             InitializeComponent();
+            settingsModel = new SettingsModel();
             this.singlePlayerGameViewModel = new SinglePlayerGameViewModel
-                (new SinglePlayerGameModel(), new SettingsModel());
+                (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.singlePlayerGameViewModel;
         }
         
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
             // Open maze window.
-            new SinglePlayerGameMaze(NumOfRows.Text, numOfCols.Text, MazeNameBox.Text).Show();
+            new SinglePlayerGameMaze(numOfRowsBox.Text, numOfCols.Text, MazeNameBox.Text).Show();
             this.Close();
         }
     }

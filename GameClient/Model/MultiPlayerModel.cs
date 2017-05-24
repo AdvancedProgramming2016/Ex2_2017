@@ -19,6 +19,16 @@ namespace GameClient.Model
         private Position opponentPosition;
         private TcpClient tcpClient;
 
+        public MultiPlayerModel(ISettingsModel settingModel)
+        {
+
+            int port = settingModel.Port;
+            string ip = settingModel.IpAddress;
+            IPEndPoint endPoint =
+                new IPEndPoint(IPAddress.Parse(ip), port);
+            this.tcpClient = new TcpClient(); // Tcp Client with the server.
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Maze Maze
@@ -61,16 +71,6 @@ namespace GameClient.Model
                 this.playerPosition = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PlayerPosition"));
             }
-        }
-
-        public MultiPlayerModel(ISettingsModel settingModel)
-        {
-            
-            int port = settingModel.Port;
-            string ip = settingModel.IpAddress;
-            IPEndPoint endPoint =
-                new IPEndPoint(IPAddress.Parse(ip), port);
-            this.tcpClient = new TcpClient(); // Tcp Client with the server.
         }
 
         //public void JoinGame(Game game)

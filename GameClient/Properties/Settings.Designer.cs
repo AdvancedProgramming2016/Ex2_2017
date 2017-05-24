@@ -25,7 +25,7 @@ namespace GameClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1234")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8000")]
         public int Port {
             get {
                 return ((int)(this["Port"]));

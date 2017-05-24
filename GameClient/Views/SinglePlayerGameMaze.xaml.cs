@@ -28,8 +28,9 @@ namespace GameClient.Views
         public SinglePlayerGameMaze(String numOfRows, String numOfCols, String nameOfMaze)
         {
             InitializeComponent();
+            ISettingsModel settingsModel = new SettingsModel();
             this.spViewModel = new SinglePlayerGameViewModel
-                (new SinglePlayerGameModel(), new SettingsModel());
+                (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.spViewModel;
             this.spViewModel.StartNewGame(numOfRows, numOfCols, nameOfMaze);
         }

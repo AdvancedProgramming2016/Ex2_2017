@@ -32,6 +32,7 @@ namespace GameClient.Views
         private Dictionary<string, Rectangle> dicRect;
         private SolidColorBrush wallColor;
         private SolidColorBrush freeSpaceColor;
+        private SolidColorBrush destinationColor;
 
         public String Maze
         {
@@ -124,6 +125,7 @@ namespace GameClient.Views
             this.playerRect = new Rectangle();
             this.wallColor = new SolidColorBrush(Colors.Black);
             this.freeSpaceColor = new SolidColorBrush(Colors.White);
+            this.destinationColor = new SolidColorBrush(Colors.DarkCyan);
 
             InitializeComponent();
 
@@ -168,7 +170,7 @@ namespace GameClient.Views
                             break;
                         case '#': // Destination point.
                             DestPosition = i.ToString() + ',' + j.ToString();
-                            currRect.Fill = new SolidColorBrush(Colors.DarkCyan);
+                            currRect.Fill = this.destinationColor;
                             break;
                     }
 
@@ -231,13 +233,6 @@ namespace GameClient.Views
             this.playerRect.Width = this.rectWidth;
             this.playerRect.Height = this.rectHeight;
 
-            // If the player reached the Destination position.
-            if (DestPosition != null && position.Split(',')[0].Equals(DestPosition.Split(',')[0]) &&
-                position.Split(',')[1].Equals(DestPosition.Split(',')[1]))
-            {
-                MessageBox.Show("Finished!");
-            }
-
             // Update the location of the player.
             if(!this.MazeCanvas.Children.Contains(this.playerRect))
             {
@@ -246,6 +241,13 @@ namespace GameClient.Views
             
             Canvas.SetTop(this.playerRect, Convert.ToDouble(position.Split(',')[0]) * this.rectHeight);
             Canvas.SetLeft(this.playerRect, Convert.ToDouble(position.Split(',')[1]) * this.rectWidth);
+
+            // If the player reached the Destination position.
+            if (DestPosition != null && position.Split(',')[0].Equals(DestPosition.Split(',')[0]) &&
+                position.Split(',')[1].Equals(DestPosition.Split(',')[1]))
+            {
+                MessageBox.Show("Finished!");
+            }
         }
 
 
@@ -261,39 +263,44 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key.ToString().Equals("Up") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor))
+            switch(e.Key.ToString())
             {
-                if (this.playerPosI - 1 >= this.numOfRows &&
-                    !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor))
-                {
-                    this.playerPosI -= 1;
-                }
-            }
-            else if (e.Key.ToString().Equals("Down") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor))
-            {
-                if (this.playerPosI + 1 <= this.numOfRows)
-                {
-                    this.playerPosI += 1;
-                }
-            }
-            else if (e.Key.ToString().Equals("Right") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor))
-            {
-                if (this.playerPosJ + 1 <= this.numOfCols)
-                {
-                    this.playerPosJ += 1;
-                }
-            }
-            else if (e.Key.ToString().Equals("Left") && !this.dicRect[this.playerPosI.ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor))
-            {
-                if (this.playerPosJ - 1 >= this.numOfCols)
-                {
-                    this.playerPosJ -= 1;
-                }
+                case "Up":
+                    if (this.playerPosI - 1 >= 0 &&
+                    !(this.dicRect[(this.playerPosI - 1).ToString() + ',' + this.playerPosJ.ToString()]
+                    .Fill.Equals(this.wallColor)))
+                    {
+                        this.playerPosI -= 1;
+                    }
+                    break;
+
+                case "Down":
+                    if (this.playerPosI + 1 < this.numOfRows &&
+                        !(this.dicRect[(this.playerPosI + 1).ToString() + ',' + this.playerPosJ.ToString()]
+                    .Fill.Equals(this.wallColor)))
+                    {
+                        this.playerPosI += 1;
+                    }
+                    break;
+
+                case "Right":
+                    if (this.playerPosJ + 1 < this.numOfCols && 
+                        !(this.dicRect[this.playerPosI.ToString() + ',' + (this.playerPosJ + 1).ToString()]
+                    .Fill.Equals(this.wallColor)))
+                    {
+                        this.playerPosJ += 1;
+                    }
+                    break;
+
+                case "Left":
+                    if (this.playerPosJ - 1 >= 0 && 
+                        !(this.dicRect[this.playerPosI.ToString() + ',' + (this.playerPosJ - 1).ToString()]
+                    .Fill.Equals(this.wallColor)))
+                    {
+                        this.playerPosJ -= 1;
+                    }
+                    break;
+
             }
 
             // Update the location of the player.

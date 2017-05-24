@@ -24,8 +24,8 @@ namespace GameClient.Model.Parsers
             string finalCommand;
 
             //TODO change that
-            // finalCommand = $"generate {name} {rows} {columns}";
-            finalCommand = "generate ggg 5 5";
+             finalCommand = $"generate {name} {rows} {columns}";
+           // finalCommand = "generate ggg 5 5";
 
             return finalCommand;
         }
