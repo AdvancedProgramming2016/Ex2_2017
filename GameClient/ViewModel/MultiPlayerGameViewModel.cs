@@ -11,25 +11,25 @@ namespace GameClient.ViewModel
 {
     public class MultiPlayerGameViewModel : INotifyPropertyChanged
     {
-        
         private IMultiPlayerGame mpModel;
         private ISettingsModel settingsModel;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public MultiPlayerGameViewModel(IMultiPlayerGame model)
         {
             this.mpModel = model;
-            model.PropertyChanged += delegate(Object sender, PropertyChangedEventArgs e)
-            {
-                OnPropertyChanged("VM_" + e.PropertyName);
-            };
+            model.PropertyChanged +=
+                delegate(Object sender, PropertyChangedEventArgs e)
+                {
+                    NotifyPropertyChanged("VM_" + e.PropertyName);
+                };
         }
 
-        protected void OnPropertyChanged(string propertyName)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null) // if there is any subscribers 
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this,
+                new PropertyChangedEventArgs(propertyName));
         }
 
         public string VM_DefaultNumRows
@@ -52,64 +52,45 @@ namespace GameClient.ViewModel
         {
             get
             {
-                return this.mpModel.Maze.ToString().Replace("\r\n", "").Replace("*", "0");
+                return this.mpModel.Maze.ToString()
+                    .Replace("\r\n", "")
+                    .Replace("*", "0");
             }
         }
 
         public String VM_OpponentPosition
         {
-            get
-            {
-                return this.mpModel.OpponentPosition.ToString();
-            }
+            get { return this.mpModel.OpponentPosition.ToString(); }
         }
 
         public String VM_PlayerPosition
         {
-            get
-            {
-                return this.mpModel.PlayerPosition.ToString();
-            }
+            get { return this.mpModel.PlayerPosition.ToString(); }
         }
 
         public int VM_Rows
         {
-            get
-            {
-                return this.mpModel.Maze.Rows;
-            }
-         }
+            get { return this.mpModel.Maze.Rows; }
+        }
 
         public int VM_Cols
         {
-            get
-            {
-                return this.mpModel.Maze.Cols;
-            }
+            get { return this.mpModel.Maze.Cols; }
         }
 
         public String VM_MazeName
         {
-            get
-            {
-                return this.mpModel.Maze.Name;
-            }
+            get { return this.mpModel.Maze.Name; }
         }
 
         public String VM_InitialPosition
         {
-            get
-            {
-                return this.mpModel.Maze.InitialPos.ToString();
-            }
+            get { return this.mpModel.Maze.InitialPos.ToString(); }
         }
 
         public String VM_DestPosition
         {
-            get
-            {
-                return this.mpModel.Maze.GoalPos.ToString();
-            }
+            get { return this.mpModel.Maze.GoalPos.ToString(); }
         }
 
         public void MovePlayer(Position position)
@@ -117,16 +98,18 @@ namespace GameClient.ViewModel
             this.mpModel.MovePlayer(position);
         }
 
-        public void JoinGame()
+        public void JoinGame(string gameName)
         {
-            this.mpModel.JoinGame();
+            this.mpModel.JoinGame(gameName);
         }
 
-        public void StartNewGame()
+        public void StartNewGame(string numOfRows, string numOfCols,
+            string nameOfMaze)
         {
-            this.mpModel.StartNewGame();
+            this.mpModel.StartNewGame(numOfRows, numOfCols,
+                nameOfMaze);
         }
-        
+
         public void CloseGame()
         {
             this.mpModel.CloseGame();
