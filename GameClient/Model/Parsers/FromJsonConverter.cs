@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,10 +45,10 @@ namespace GameClient.Model.Parsers
         /// </summary>
         /// <param name="jsonList">Json.</param>
         /// <returns>List of games.</returns>
-        public static IList<string> GamesList(string jsonList)
+        public static ObservableCollection<string> GamesList(string jsonList)
         {
-            IList<string> gamesList = JsonConvert
-                .DeserializeObject<List<string>>(jsonList);
+            ObservableCollection<string> gamesList = JsonConvert
+                .DeserializeObject<ObservableCollection<string>>(jsonList);
 
             return gamesList;
         }

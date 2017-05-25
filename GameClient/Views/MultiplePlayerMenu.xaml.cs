@@ -38,5 +38,18 @@ namespace GameClient.Views
             //    (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.multiPlayerMenuViewModel;
         }
+
+        private void startGame_Click(object sender, RoutedEventArgs e)
+        {
+            // Open maze window.
+            this.multiPlayerMenuViewModel.AddGameToList(mazeNameBox.Text);
+            new MultiplePlayerGameMaze(mazeRowsBox.Text, mazeColsBox.Text, mazeNameBox.Text).Show();
+            this.Close();
+        }
+
+        private void listOfGameComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+
+        }
     }
 }

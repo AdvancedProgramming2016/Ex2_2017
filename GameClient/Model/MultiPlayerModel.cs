@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +19,14 @@ namespace GameClient.Model
         private Maze maze;
         private Position playerPosition;
         private Position opponentPosition;
-        private IList<string> gamesList;
+        private ObservableCollection<string> gamesList;
         private CommunicationClient communicationClient;
 
         public MultiPlayerModel(ISettingsModel settingModel)
         {
             int port = settingModel.Port;
             string ip = settingModel.IpAddress;
+            communicationClient = new CommunicationClient();
             communicationClient.Connect(port, ip);
             communicationClient.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
@@ -75,16 +77,6 @@ namespace GameClient.Model
             {
                 this.playerPosition = value;
                 this.NotifyPropertyChanged("PlayerPosition");
-            }
-        }
-
-        public IList<string> GamesList
-        {
-            get { return this.gamesList; }
-            set
-            {
-                this.gamesList = value;
-                this.NotifyPropertyChanged("GamesList");
             }
         }
 
