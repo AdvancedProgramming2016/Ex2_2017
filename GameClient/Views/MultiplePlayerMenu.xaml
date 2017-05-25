@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameClient.Views"
         mc:Ignorable="d"
-        Title="MultiplePlayerMenu" Height="300" Width="300">
+        Title="MultiplePlayerMenu" Height="350" Width="350">
     <Grid>
         <TextBlock x:Name="listOfGameBlock" HorizontalAlignment="Left" Margin="34,30,0,0" TextWrapping="Wrap" Text="List of games:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="listOfGameComboBox" HorizontalAlignment="Left" Margin="121,30,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox ItemsSource="{Binding Path=VM_ListOfGames, UpdateSourceTrigger=PropertyChanged}" DropDownOpened="listOfGameComboBox_DropDownOpened" x:Name="listOfGameComboBox" HorizontalAlignment="Left" Margin="121,30,0,0" VerticalAlignment="Top" Width="120"/>
 
         <Button x:Name="joinGameButton" Content="Join Game" HorizontalAlignment="Left" Margin="121,68,0,0" VerticalAlignment="Top" Width="75"/>
 

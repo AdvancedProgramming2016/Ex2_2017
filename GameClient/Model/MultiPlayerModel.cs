@@ -81,16 +81,6 @@ namespace GameClient.Model
             }
         }
 
-        public ObservableCollection<string> GamesList
-        {
-            get { return this.gamesList; }
-            set
-            {
-                this.gamesList = value;
-                this.NotifyPropertyChanged("GamesList");
-            }
-        }
-
         /*  private void WaitForServerInfo()
             {
                 Task task = Task.Run(() =>

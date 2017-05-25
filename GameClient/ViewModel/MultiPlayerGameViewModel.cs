@@ -11,6 +11,7 @@ namespace GameClient.ViewModel
 {
     public class MultiPlayerGameViewModel : INotifyPropertyChanged
     {
+
         private IMultiPlayerGame mpModel;
         private ISettingsViewModel settingsViewModel;
         private Maze maze;
@@ -75,7 +76,6 @@ namespace GameClient.ViewModel
                 return GameClient.Properties.Settings.Default.DefaultRows.ToString();
             }
         }
-
         public string VM_DefaultNumCols
         {
             get
