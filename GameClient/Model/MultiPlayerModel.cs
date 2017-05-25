@@ -32,6 +32,7 @@ namespace GameClient.Model
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     ServerResponse = communicationClient.CommandFromUser;
+                    HandleServerResult(ServerResponse);
                 };
         }
 
@@ -116,7 +117,9 @@ namespace GameClient.Model
             //Send command to the server.
             communicationClient.SendToServer(command);
 
-            HandleServerResult(ServerResponse);
+            while(ServerResponse == null) { }
+
+           // HandleServerResult(ServerResponse);
         }
 
         public void JoinGame(string gameName)
@@ -180,16 +183,6 @@ namespace GameClient.Model
         private void HandleListCommand(string command)
         {
             this.GamesList = FromJsonConverter.GamesList(command);
-        }
-
-        public void JoinGame()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void StartNewGame()
-        {
-            throw new NotImplementedException();
         }
     }
 }
