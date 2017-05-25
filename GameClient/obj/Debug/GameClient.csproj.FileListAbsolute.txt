@@ -57,3 +57,4 @@ C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debu
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debug\GameClient.csproj.GenerateResource.Cache
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debug\GameClient.exe
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debug\GameClient.pdb
+C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameClient\obj\Debug\GameClient.csprojResolveAssemblyReference.cache

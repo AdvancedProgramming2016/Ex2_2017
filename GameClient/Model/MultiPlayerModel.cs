@@ -182,7 +182,7 @@ namespace GameClient.Model
 
         private void HandleListCommand(string command)
         {
-            this.GamesList = FromJsonConverter.GamesList(command);
+            this.gamesList = FromJsonConverter.GamesList(command);
         }
     }
 }
