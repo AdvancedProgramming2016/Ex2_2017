@@ -127,7 +127,7 @@ namespace GameClient.ViewModel
 
         public String VM_PlayerPosition
         {
-            get { return this.singlePlayerModel.PlayerPosition.ToString(); }
+            get { return this.vm_PlayerPosition; }
             set
             {
                 this.vm_PlayerPosition = value;
@@ -186,8 +186,10 @@ namespace GameClient.ViewModel
         private void RunAnimation(string solution)
         {
             int currPlayerXPosition, currPlayerYPosition;
+            char[] reverseSolution = solution.ToCharArray();
+            Array.Reverse(reverseSolution);
 
-            string position = VM_PlayerPosition;
+            string position = VM_InitialPostion;
             position = position.Trim(new Char[] {'(', ')'});
 
             currPlayerXPosition =
@@ -195,7 +197,7 @@ namespace GameClient.ViewModel
             currPlayerYPosition =
                 Convert.ToInt32(position.Split(',')[1]);
 
-            foreach (char movement in solution)
+            foreach (char movement in reverseSolution)
             {
                 string temp;
                 string newPosition;

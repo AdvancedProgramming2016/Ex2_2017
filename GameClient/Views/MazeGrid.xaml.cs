@@ -248,6 +248,8 @@ namespace GameClient.Views
             {
                 MessageBox.Show("Finished!");
             }
+
+            PlayerPosition = '(' + position + ')';
         }
 
 

@@ -11,7 +11,7 @@
         <Button x:Name="solveButton" Content="Solve Maze" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="263,15,0,0" Click="solveButton_Click"/>
         <Button x:Name="menuButton" Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="392,15,0,0" Click="menuButton_Click"/>
         <local:MazeGrid x:Name="MazeBoard" Maze="{Binding VM_Maze}" InitialPosition="{Binding VM_InitialPosition}"
-                        DestPosition="{Binding VM_DestPosition}" PlayerPosition="{Binding VM_PlayerPosition}" Focusable="True"
+                        DestPosition="{Binding VM_DestPosition}" PlayerPosition="{Binding Path=VM_PlayerPosition, Mode=TwoWay}" Focusable="True"
                         Rows="VM_Rows" Cols="VM_Cols" HorizontalAlignment="Left" Height="400" 
                         Margin="96,122,0,0" VerticalAlignment="Top" Width="400"/>
 
