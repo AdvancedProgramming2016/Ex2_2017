@@ -8,7 +8,7 @@
         Title="MultiplePlayerMenu" Height="300" Width="300">
     <Grid>
         <TextBlock x:Name="listOfGameBlock" HorizontalAlignment="Left" Margin="34,30,0,0" TextWrapping="Wrap" Text="List of games:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="listOfGameComboBox" HorizontalAlignment="Left" Margin="121,30,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox ItemsSource="{Binding Path=VM_ListOfGames, UpdateSourceTrigger=PropertyChanged}" x:Name="listOfGameComboBox" HorizontalAlignment="Left" Margin="121,30,0,0" VerticalAlignment="Top" Width="120"/>
 
         <Button x:Name="joinGameButton" Content="Join Game" HorizontalAlignment="Left" Margin="121,68,0,0" VerticalAlignment="Top" Width="75"/>
 

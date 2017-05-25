@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GameClient.Model;
 using GameClient.ViewModel;
+using System.Collections.ObjectModel;
 
 namespace GameClient.Views
 {
@@ -22,16 +23,20 @@ namespace GameClient.Views
     public partial class MultiplePlayerMenu : Window
     {
 
-        private MultiPlayerGameViewModel multiPlayerGameViewModel;
+        private MultiPlayerMenuViewModel multiPlayerMenuViewModel;
         private ISettingsModel settingsModel;
         private ISettingsViewModel settingsViewModel;
+        private ObservableCollection<string> listOfGames;
+
         public MultiplePlayerMenu()
         {
             InitializeComponent();
-            settingsModel = new SettingsModel();
-            this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
-                (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
-            this.DataContext = this.multiPlayerGameViewModel;
+            //this.listOfGames = ObservableCollection<string>(); Might need to initialize the collection
+            this.multiPlayerMenuViewModel = new MultiPlayerMenuViewModel();
+            //this.settingsModel = new SettingsModel();
+            //this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
+            //    (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
+            this.DataContext = this.multiPlayerMenuViewModel;
         }
     }
 }
