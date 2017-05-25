@@ -33,5 +33,12 @@ namespace GameClient.Views
                 (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.multiPlayerGameViewModel;
         }
+
+        private void startGame_Click(object sender, RoutedEventArgs e)
+        {
+              // Open maze window.
+            new MultiplePlayerGameMaze(mazeRowsBox.Text, mazeColsBox.Text, mazeNameBox.Text).Show();
+            this.Close();
+        }
     }
 }
