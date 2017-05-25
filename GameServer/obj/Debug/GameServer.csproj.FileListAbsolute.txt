@@ -15,3 +15,6 @@ C:\Users\Danny\documents\visual studio 2015\Projects\Ex1\GameServer\bin\Debug\Ac
 C:\Users\Danny\Desktop\second semester\Advanced programming 2\Ex1\src\GameServer\bin\Debug\GameServer.exe.config
 C:\Users\Danny\Desktop\second semester\Advanced programming 2\Ex1\src\GameServer\obj\Debug\GameServer.exe
 C:\Users\Danny\Desktop\second semester\Advanced programming 2\Ex1\src\GameServer\obj\Debug\GameServer.pdb
+C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex2\GameServer\bin\Debug\GameServer.exe.config
+C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex2\GameServer\obj\Debug\GameServer.exe
+C:\Users\Danny\Documents\Visual Studio 2015\Projects\Ex2\GameServer\obj\Debug\GameServer.pdb
