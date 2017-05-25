@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClient", "GameClient\GameClient.csproj", "{CFC0F724-AB4E-42BB-AD59-F654D972B347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "GameServer\GameServer.csproj", "{40EBA104-01B9-4AF6-8443-25EB2B445011}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "..\..\..\..\Desktop\second semester\Advanced programming 2\Ex1\src\GameServer\GameServer.csproj", "{40EBA104-01B9-4AF6-8443-25EB2B445011}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

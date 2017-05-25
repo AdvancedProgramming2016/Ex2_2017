@@ -84,7 +84,7 @@ namespace GameClient.ViewModel
             }
         }
 
-       private string DivideMazeToCommas(Maze maze)
+        private string DivideMazeToCommas(Maze maze)
         {
             string str = maze.ToString();
             string finalString = string.Empty;
@@ -185,41 +185,54 @@ namespace GameClient.ViewModel
 
         private void RunAnimation(string solution)
         {
+            int currPlayerXPosition, currPlayerYPosition;
+
+            string position = VM_PlayerPosition;
+            position = position.Trim(new Char[] {'(', ')'});
+
+            currPlayerXPosition =
+                Convert.ToInt32(position.Split(',')[0]);
+            currPlayerYPosition =
+                Convert.ToInt32(position.Split(',')[1]);
+
             foreach (char movement in solution)
             {
-                int currPlayerXPosition, currPlayerYPosition;
-
-                currPlayerXPosition =
-                    Convert.ToInt32(VM_PlayerPosition.Split(',')[0]);
-                currPlayerYPosition =
-                    Convert.ToInt32(VM_PlayerPosition.Split(',')[1]);
-
+                string temp;
+                string newPosition;
                 // Move the player to the next location.
                 switch (movement)
                 {
                     case '0':
                         //Move left
-                        VM_PlayerPosition =
-                            (currPlayerXPosition - 1).ToString() + ',' +
-                            currPlayerYPosition.ToString();
+                         temp = (currPlayerXPosition - 1).ToString() + ',' +
+                                             currPlayerYPosition.ToString();
+                         newPosition = "(" + temp + ")";
+                        VM_PlayerPosition = newPosition;
+                            
                         break;
                     case '1':
                         //Move right
-                        VM_PlayerPosition =
+                         temp =
                             (currPlayerXPosition + 1).ToString() + ',' +
                             currPlayerYPosition.ToString();
+                        newPosition = "(" + temp + ")";
+                        VM_PlayerPosition = newPosition;
                         break;
                     case '2':
                         //Move up
-                        VM_PlayerPosition =
+                        temp =
                             currPlayerXPosition.ToString() + ',' +
                             (currPlayerYPosition - 1).ToString();
+                        newPosition = "(" + temp + ")";
+                        VM_PlayerPosition = newPosition;
                         break;
                     case '3':
                         //Move down
-                        VM_PlayerPosition =
+                        temp =
                             currPlayerXPosition.ToString() + ',' +
                             (currPlayerYPosition + 1).ToString();
+                        newPosition = "(" + temp + ")";
+                        VM_PlayerPosition = newPosition;
                         break;
                 }
 

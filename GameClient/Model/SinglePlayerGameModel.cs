@@ -33,6 +33,7 @@ namespace GameClient.Model
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     ServerResponse = communicationClient.CommandFromUser;
+                    HandleServerResult(ServerResponse);
                 };
             //  TcpClient tcpClient = new TcpClient();
             //  this.serverListener = new ServerListener(tcpClient, new StreamReader(tcpClient.GetStream()));
@@ -104,7 +105,8 @@ namespace GameClient.Model
 
             communicationClient.SendToServer(command);
 
-            HandleServerResult(ServerResponse);
+            // HandleServerResult(ServerResponse);
+            while (ServerResponse == null) { }
         }
 
         public void GenerateGame(String numOfRows, String numOfCols,
@@ -122,7 +124,8 @@ namespace GameClient.Model
             //Send command to the server.
             communicationClient.SendToServer(command);
 
-            HandleServerResult(ServerResponse);
+            // HandleServerResult(ServerResponse);
+            while (ServerResponse == null) { }
             //string generateResult;
 
             /* communicationClient.ServerListener.PropertyChanged +=
@@ -152,6 +155,8 @@ namespace GameClient.Model
                     HandleSolveCommand(command);
                     break;
             }
+
+            ServerResponse = null;
         }
 
         private void HandleGenerateCommand(string command)
