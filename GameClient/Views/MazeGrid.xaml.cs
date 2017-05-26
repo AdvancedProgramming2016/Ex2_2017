@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,6 +44,19 @@ namespace GameClient.Views
             set
             {
                 SetValue(MazeProperty, value);
+            }
+        }
+
+        public String Solution
+        {
+            get
+            {
+                return (string)GetValue(SolutionProperty);
+            }
+            set
+            {
+                SetValue(SolutionProperty, value);
+                this.RunAnimation(value);
             }
         }
 
@@ -118,6 +132,71 @@ namespace GameClient.Views
             }
         }
 
+        private void RunAnimation(string solution)
+        {
+
+            int currPlayerXPosition, currPlayerYPosition;
+            Task t = Task.Run(() =>
+            {
+                // Reverse the solution.
+                char[] reverseSolution = solution.ToCharArray();
+                Array.Reverse(reverseSolution);
+
+                // Get player initial position.
+                string position = InitialPosition;
+                position = position.Trim(new Char[] { '(', ')' });
+
+                currPlayerXPosition =
+                    Convert.ToInt32(position.Split(',')[0]);
+                currPlayerYPosition =
+                    Convert.ToInt32(position.Split(',')[1]);
+
+                foreach (char movement in reverseSolution)
+                {
+                    string temp;
+                    string newPosition;
+
+                    // Move the player to the next location.
+                    switch (movement)
+                    {
+                        case '0': //Move right
+                            temp = (currPlayerXPosition + 1).ToString() + ',' +
+                                                currPlayerYPosition.ToString();
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
+
+                            break;
+                        case '1': //Move left
+                            temp =
+                               (currPlayerXPosition - 1).ToString() + ',' +
+                               currPlayerYPosition.ToString();
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
+                            break;
+                        case '2': //Move up
+                            temp =
+                                currPlayerXPosition.ToString() + ',' +
+                                (currPlayerYPosition - 1).ToString();
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
+                            break;
+                        case '3': //Move down
+                            temp =
+                                currPlayerXPosition.ToString() + ',' +
+                                (currPlayerYPosition + 1).ToString();
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
+                            break;
+                    }
+
+                    // Sleep for 500 ms.
+                    Thread.Sleep(500);
+                }
+            });
+            t.Wait();
+
+        }
+
         protected override void OnInitialized(EventArgs e)
         {
 
@@ -186,6 +265,9 @@ namespace GameClient.Views
             }
             this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' + this.playerPosJ.ToString());
         }
+        
+        public static readonly DependencyProperty SolutionProperty =
+            DependencyProperty.Register("Solution", typeof(String), typeof(MazeGrid), null);
 
         public static readonly DependencyProperty MazeNameProperty =
             DependencyProperty.Register("MazeName", typeof(String), typeof(MazeGrid), null);

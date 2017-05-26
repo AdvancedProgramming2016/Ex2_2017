@@ -40,7 +40,7 @@ namespace GameClient.ViewModel
 
                     if (e.PropertyName == "Solution")
                     {
-                        RunAnimation(this.singlePlayerModel.Solution);
+                        //RunAnimation(this.singlePlayerModel.Solution);
                     }
                 };
         }
@@ -79,8 +79,8 @@ namespace GameClient.ViewModel
             set
             {
                 this.vm_solution = value;
-                //NotifyPropertyChanged("VM_Solution");
-                RunAnimation(vm_solution);
+                NotifyPropertyChanged("VM_Solution");
+                //RunAnimation(vm_solution);
             }
         }
 
@@ -183,14 +183,18 @@ namespace GameClient.ViewModel
             }
         }
 
+        /*
         private void RunAnimation(string solution)
         {
+
             int currPlayerXPosition, currPlayerYPosition;
-            Task t = Task.Run(() =>
+            Task t = Task.Run( () =>
             {
+                // Reverse the solution.
                 char[] reverseSolution = solution.ToCharArray();
                 Array.Reverse(reverseSolution);
 
+                // Get player initial position.
                 string position = VM_InitialPostion;
                 position = position.Trim(new Char[] { '(', ')' });
 
@@ -203,35 +207,32 @@ namespace GameClient.ViewModel
                 {
                     string temp;
                     string newPosition;
+
                     // Move the player to the next location.
                     switch (movement)
                     {
-                        case '0':
-                            //Move left
-                            temp = (currPlayerXPosition - 1).ToString() + ',' +
+                        case '0': //Move right
+                            temp = (currPlayerXPosition + 1).ToString() + ',' +
                                                 currPlayerYPosition.ToString();
                             newPosition = "(" + temp + ")";
                             VM_PlayerPosition = newPosition;
 
                             break;
-                        case '1':
-                            //Move right
+                        case '1': //Move left
                             temp =
-                               (currPlayerXPosition + 1).ToString() + ',' +
+                               (currPlayerXPosition - 1).ToString() + ',' +
                                currPlayerYPosition.ToString();
                             newPosition = "(" + temp + ")";
                             VM_PlayerPosition = newPosition;
                             break;
-                        case '2':
-                            //Move up
+                        case '2': //Move up
                             temp =
                                 currPlayerXPosition.ToString() + ',' +
                                 (currPlayerYPosition - 1).ToString();
                             newPosition = "(" + temp + ")";
                             VM_PlayerPosition = newPosition;
                             break;
-                        case '3':
-                            //Move down
+                        case '3': //Move down
                             temp =
                                 currPlayerXPosition.ToString() + ',' +
                                 (currPlayerYPosition + 1).ToString();
@@ -247,6 +248,7 @@ namespace GameClient.ViewModel
             t.Wait();
             
         }
+        */
 
         public void NotifyPropertyChanged(string propName)
         {
