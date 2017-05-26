@@ -28,3 +28,6 @@ C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debu
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\bin\Debug\Academy.Collections.xml
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\obj\Debug\GameServer.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\Visual Studio 2015\Projects\Ex2_2017\GameServer\obj\Debug\GameServer.csproj.GameServer.exe.config
+C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\bin\Debug\GameServer.exe.config
+C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\obj\Debug\GameServer.exe
+C:\Users\Danny\documents\visual studio 2015\Projects\Ex2\GameServer\obj\Debug\GameServer.pdb
