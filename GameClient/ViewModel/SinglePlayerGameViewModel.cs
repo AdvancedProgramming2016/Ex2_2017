@@ -185,61 +185,66 @@ namespace GameClient.ViewModel
         private void RunAnimation(string solution)
         {
             int currPlayerXPosition, currPlayerYPosition;
-            char[] reverseSolution = solution.ToCharArray();
-            Array.Reverse(reverseSolution);
-
-            string position = VM_InitialPostion;
-            position = position.Trim(new Char[] {'(', ')'});
-
-            currPlayerXPosition =
-                Convert.ToInt32(position.Split(',')[0]);
-            currPlayerYPosition =
-                Convert.ToInt32(position.Split(',')[1]);
-
-            foreach (char movement in reverseSolution)
+            Task t = Task.Run(() =>
             {
-                string temp;
-                string newPosition;
-                // Move the player to the next location.
-                switch (movement)
-                {
-                    case '0':
-                        //Move left
-                         temp = (currPlayerXPosition - 1).ToString() + ',' +
-                                             currPlayerYPosition.ToString();
-                         newPosition = "(" + temp + ")";
-                        VM_PlayerPosition = newPosition;
-                            
-                        break;
-                    case '1':
-                        //Move right
-                         temp =
-                            (currPlayerXPosition + 1).ToString() + ',' +
-                            currPlayerYPosition.ToString();
-                        newPosition = "(" + temp + ")";
-                        VM_PlayerPosition = newPosition;
-                        break;
-                    case '2':
-                        //Move up
-                        temp =
-                            currPlayerXPosition.ToString() + ',' +
-                            (currPlayerYPosition - 1).ToString();
-                        newPosition = "(" + temp + ")";
-                        VM_PlayerPosition = newPosition;
-                        break;
-                    case '3':
-                        //Move down
-                        temp =
-                            currPlayerXPosition.ToString() + ',' +
-                            (currPlayerYPosition + 1).ToString();
-                        newPosition = "(" + temp + ")";
-                        VM_PlayerPosition = newPosition;
-                        break;
-                }
+                char[] reverseSolution = solution.ToCharArray();
+                Array.Reverse(reverseSolution);
 
-                // Sleep for 500 ms.
-                Thread.Sleep(500);
-            }
+                string position = VM_InitialPostion;
+                position = position.Trim(new Char[] { '(', ')' });
+
+                currPlayerXPosition =
+                    Convert.ToInt32(position.Split(',')[0]);
+                currPlayerYPosition =
+                    Convert.ToInt32(position.Split(',')[1]);
+
+                foreach (char movement in reverseSolution)
+                {
+                    string temp;
+                    string newPosition;
+                    // Move the player to the next location.
+                    switch (movement)
+                    {
+                        case '0':
+                            //Move left
+                            temp = (currPlayerXPosition - 1).ToString() + ',' +
+                                                currPlayerYPosition.ToString();
+                            newPosition = "(" + temp + ")";
+                            VM_PlayerPosition = newPosition;
+
+                            break;
+                        case '1':
+                            //Move right
+                            temp =
+                               (currPlayerXPosition + 1).ToString() + ',' +
+                               currPlayerYPosition.ToString();
+                            newPosition = "(" + temp + ")";
+                            VM_PlayerPosition = newPosition;
+                            break;
+                        case '2':
+                            //Move up
+                            temp =
+                                currPlayerXPosition.ToString() + ',' +
+                                (currPlayerYPosition - 1).ToString();
+                            newPosition = "(" + temp + ")";
+                            VM_PlayerPosition = newPosition;
+                            break;
+                        case '3':
+                            //Move down
+                            temp =
+                                currPlayerXPosition.ToString() + ',' +
+                                (currPlayerYPosition + 1).ToString();
+                            newPosition = "(" + temp + ")";
+                            VM_PlayerPosition = newPosition;
+                            break;
+                    }
+
+                    // Sleep for 500 ms.
+                    Thread.Sleep(500);
+                }
+            });
+            t.Wait();
+            
         }
 
         public void NotifyPropertyChanged(string propName)
