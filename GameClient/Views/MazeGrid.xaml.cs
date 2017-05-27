@@ -153,47 +153,50 @@ namespace GameClient.Views
 
                 foreach (char movement in reverseSolution)
                 {
-                    string temp;
-                    string newPosition;
+                    string temp = "";
+                    //string newPosition;
 
                     // Move the player to the next location.
                     switch (movement)
                     {
                         case '0': //Move right
-                            temp = (currPlayerXPosition + 1).ToString() + ',' +
+                            temp = (++currPlayerXPosition).ToString() + ',' +
                                                 currPlayerYPosition.ToString();
-                            newPosition = "(" + temp + ")";
-                            PlayerPosition = newPosition;
+                            //newPosition = "(" + temp + ")";
+                            //PlayerPosition = newPosition;
 
                             break;
                         case '1': //Move left
                             temp =
-                               (currPlayerXPosition - 1).ToString() + ',' +
+                               (--currPlayerXPosition).ToString() + ',' +
                                currPlayerYPosition.ToString();
-                            newPosition = "(" + temp + ")";
-                            PlayerPosition = newPosition;
+                            //newPosition = "(" + temp + ")";
+                            //PlayerPosition = newPosition;
                             break;
                         case '2': //Move up
                             temp =
                                 currPlayerXPosition.ToString() + ',' +
-                                (currPlayerYPosition - 1).ToString();
-                            newPosition = "(" + temp + ")";
-                            PlayerPosition = newPosition;
+                                (--currPlayerYPosition).ToString();
+                            //newPosition = "(" + temp + ")";
+                            //PlayerPosition = newPosition;
                             break;
                         case '3': //Move down
                             temp =
                                 currPlayerXPosition.ToString() + ',' +
-                                (currPlayerYPosition + 1).ToString();
-                            newPosition = "(" + temp + ")";
-                            PlayerPosition = newPosition;
+                                (++currPlayerYPosition).ToString();
+                            //newPosition = "(" + temp + ")";
+                            //PlayerPosition = newPosition;
                             break;
                     }
+
+                    this.HandlePlayerPosChanged(temp);
 
                     // Sleep for 500 ms.
                     Thread.Sleep(500);
                 }
             });
-
+            // Update new location of player.
+            //PlayerPosition = DestPosition;
         }
 
         protected override void OnInitialized(EventArgs e)
