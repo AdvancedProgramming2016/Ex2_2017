@@ -131,11 +131,11 @@ namespace GameClient.Model.Listeners
 
 
                         Command = readyCommand;
-
+                      
                         //Check if close command was received.
                         if (Command == "{}\n")
                         {
-                            Command = "Game closed";
+                           // Command = "Game closed";
                             IsMultiplayer = false;
                             isConnected = false;
                             client.GetStream().Close();

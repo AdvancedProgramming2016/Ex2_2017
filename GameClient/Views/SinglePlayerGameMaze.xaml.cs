@@ -67,7 +67,7 @@ namespace GameClient.Views
 
         private void AnimationCaller(object sender, EventArgs e)
         {
-            MazeBoard.RunAnimation(this.spViewModel.VM_Solution);
+            MazeBoard.RunAnimation(this.spViewModel.VM_Solution, this.spViewModel.VM_InitialPostion);
         }
     }
 }

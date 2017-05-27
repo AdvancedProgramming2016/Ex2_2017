@@ -129,8 +129,7 @@ namespace GameClient.ViewModel
         }
 
         public String VM_PlayerPosition
-        {
-            get { return this.vm_PlayerPosition; }
+        {get { return this.vm_PlayerPosition; }
             set
             {
                 this.vm_PlayerPosition = value;

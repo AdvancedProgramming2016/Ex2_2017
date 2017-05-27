@@ -27,13 +27,14 @@ namespace GameClient.Model
             this.communicationClient = new CommunicationClient();
             this.settingsModel = settingsModel;
             //TODO get ip and port from Settings
-            communicationClient.Connect(settingsModel.Port, settingsModel.IpAddress);
+            communicationClient.Connect(settingsModel.Port,
+                settingsModel.IpAddress);
 
             communicationClient.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     ServerResponse = communicationClient.CommandFromUser;
-                   // HandleServerResult(ServerResponse);
+                    // HandleServerResult(ServerResponse);
                 };
             //  TcpClient tcpClient = new TcpClient();
             //  this.serverListener = new ServerListener(tcpClient, new StreamReader(tcpClient.GetStream()));
@@ -84,10 +85,10 @@ namespace GameClient.Model
                }
            }*/
 
-       /* public void MovePlayer()
-         {
-             throw new NotImplementedException();
-         }*/
+        /* public void MovePlayer()
+          {
+              throw new NotImplementedException();
+          }*/
 
         public void Restart()
         {
@@ -105,8 +106,8 @@ namespace GameClient.Model
 
             communicationClient.SendToServer(command);
 
-             HandleServerResult(ServerResponse);
-           // while (ServerResponse == null) { }
+            HandleServerResult(ServerResponse);
+            // while (ServerResponse == null) { }
         }
 
         public void GenerateGame(String numOfRows, String numOfCols,
@@ -124,8 +125,8 @@ namespace GameClient.Model
             //Send command to the server.
             communicationClient.SendToServer(command);
 
-             HandleServerResult(ServerResponse);
-           // while (ServerResponse == null) { }
+            HandleServerResult(ServerResponse);
+            // while (ServerResponse == null) { }
             //string generateResult;
 
             /* communicationClient.ServerListener.PropertyChanged +=
@@ -156,7 +157,7 @@ namespace GameClient.Model
                     break;
             }
 
-           // ServerResponse = null;
+            // ServerResponse = null;
         }
 
         private void HandleGenerateCommand(string command)
@@ -166,8 +167,7 @@ namespace GameClient.Model
 
         private void HandleSolveCommand(string command)
         {
-            string solution = FromJsonConverter.MazeSolution(command);
-            Solution = solution;
+            Solution = FromJsonConverter.MazeSolution(command);
         }
     }
 }

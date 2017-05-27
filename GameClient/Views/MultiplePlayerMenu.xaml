@@ -10,7 +10,7 @@
         <TextBlock x:Name="listOfGameBlock" HorizontalAlignment="Left" Margin="34,30,0,0" TextWrapping="Wrap" Text="List of games:" VerticalAlignment="Top"/>
         <ComboBox ItemsSource="{Binding Path=VM_ListOfGames, UpdateSourceTrigger=PropertyChanged}" DropDownOpened="listOfGameComboBox_DropDownOpened" x:Name="listOfGameComboBox" HorizontalAlignment="Left" Margin="121,30,0,0" VerticalAlignment="Top" Width="120"/>
 
-        <Button x:Name="joinGameButton" Content="Join Game" HorizontalAlignment="Left" Margin="121,68,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="joinGameButton" Content="Join Game" HorizontalAlignment="Left" Margin="121,68,0,0" VerticalAlignment="Top" Width="75" Click="joinGameButton_Click"/>
 
         <TextBlock x:Name="mazeNameBlock" HorizontalAlignment="Left" Margin="34,109,0,0" TextWrapping="Wrap" Text="Maze name:" VerticalAlignment="Top"/>
         <TextBox x:Name="mazeNameBox" Text="" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="121,108,0,0"/>

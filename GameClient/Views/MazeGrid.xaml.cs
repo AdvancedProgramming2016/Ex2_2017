@@ -51,7 +51,7 @@ namespace GameClient.Views
         {
             get
             {
-                this.RunAnimation(value);
+                //this.RunAnimation(value);
                 return (string)GetValue(SolutionProperty);
             }
             set
@@ -132,18 +132,18 @@ namespace GameClient.Views
             }
         }
 
-        private void RunAnimation(string solution)
+        public void RunAnimation(string solution, string initPosition)
         {
 
             int currPlayerXPosition, currPlayerYPosition;
-            Task t = Task.Run( () =>
+            Dispatcher.Invoke( () =>
             {
                 // Reverse the solution.
                 char[] reverseSolution = solution.ToCharArray();
                 Array.Reverse(reverseSolution);
 
                 // Get player initial position.
-                string position = InitialPosition;
+                string position = initPosition;
                 position = position.Trim(new Char[] { '(', ')' });
 
                 currPlayerXPosition =
@@ -193,7 +193,6 @@ namespace GameClient.Views
                     Thread.Sleep(500);
                 }
             });
-            t.Wait();
 
         }
 

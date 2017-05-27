@@ -5,22 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameClient.Views"
         mc:Ignorable="d"
-        Title="MultiplePlayerGameMaze" Loaded="Window_Loaded" Focusable="False" Height="600" Width="600">
+        Title="MultiplePlayerGameMaze" Loaded="Window_Loaded" Height="700" Width="900">
     <Grid>
+
+      <!--  <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>-->
+
+        <Button x:Name="BackMainMenuButton"  Content="Back to main menu" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Click="BackMainMenuButton_Click"/>
+
+
+<!--
+        <Label Content="My Board" Margin="15,0,0,0"></Label>
+-->
+       
+          <local:MazeGrid x:Name="LeftMaze" Maze="{Binding VM_Maze}"  InitialPosition="{Binding VM_InitialPosition}"
+                            DestPosition="{Binding VM_DestPosition}" PlayerPosition="{Binding Path=VM_PlayerPosition, Mode=OneWay}" Focusable="True"
+                            Rows="{Binding VM_Rows}" Cols="{Binding VM_Cols}" HorizontalAlignment="Left" Height="400" 
+                              Width="400" Margin="5"/>
+            <local:MazeGrid x:Name="RightMaze" Maze="{Binding VM_Maze}" InitialPosition="{Binding VM_InitialPosition}"
+                            DestPosition="{Binding VM_DestPosition}" PlayerPosition="{Binding Path=VM_OpponentPosition, Mode=OneWay}" Focusable="False"
+                            Rows="{Binding VM_Rows}" Cols="{Binding VM_Cols}" HorizontalAlignment="Right" Height="400" 
+                            Width="400" Margin="5"/>
+         
         
-        <Button x:Name="BackMainMenuButton" Content="Back to main menu" HorizontalAlignment="Left" Margin="246,52,0,0" VerticalAlignment="Top" Width="151" Click="BackMainMenuButton_Click"/>
-        
-        <local:MazeGrid x:Name="LeftMaze" PlayerPosition="{Binding VM_PlayerPosition}" Maze="{Binding VM_Maze}"
+      
+
+       <!-- <local:MazeGrid x:Name="a" PlayerPosition="{Binding VM_PlayerPosition}" Maze="{Binding VM_Maze}"
                                       InitialPosition="{Binding VM_InitialPosition}" DestPosition="{Binding VM_DestPosition}"
                                       Rows="{Binding VM_Rows}" Cols="{Binding VM_Cols}" HorizontalAlignment="Left" Height="268" Margin="19,224,0,0" VerticalAlignment="Top" Width="258"
                         Focusable="True"/>
         <local:MazeGrid x:Name="RightMaze" PlayerPosition="{Binding VM_OpponentPosition}" Maze="{Binding VM_Maze}"
                                       InitialPosition="{Binding VM_InitialPosition}" DestPosition="{Binding VM_DestPosition}"
                                       Rows="{Binding VM_Rows}" Cols="{Binding VM_Cols}" HorizontalAlignment="Left" Height="268" Margin="324,224,0,0" VerticalAlignment="Top" Width="258"
-                        Focusable="False"/>
-        
-        <TextBox x:Name="MyBoard" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Margin="18,142,0,0"/>
-        <TextBox x:Name="OtherPlayer" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Margin="306,142,0,0"/>
-
-    </Grid>
+                        Focusable="False"/>-->
+        </Grid>
 </Window>
