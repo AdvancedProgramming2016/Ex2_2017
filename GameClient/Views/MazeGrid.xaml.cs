@@ -22,7 +22,6 @@ namespace GameClient.Views
     /// </summary>
     public partial class MazeGrid : UserControl
     {
-
         private double rectHeight;
         private double rectWidth;
         private int numOfRows;
@@ -36,30 +35,34 @@ namespace GameClient.Views
         private SolidColorBrush freeSpaceColor;
         private SolidColorBrush destinationColor;
         private MultiPlayerGameViewModel multiPlayerGameVM;
+        private string directionMoved;
 
-        public MultiPlayerGameViewModel MultiPlayerGameVM
+        public event EventHandler PlayerMoved;
+
+        public string DirectionMoved
         {
-            get
-            {
-                return this.multiPlayerGameVM;
-            }
+            get { return this.directionMoved; }
             set
             {
-                // It initialized here.
-                this.multiPlayerGameVM = value;
+                this.directionMoved = value;
+                this.PlayerMoved?.Invoke(this, null);
             }
         }
 
+        /* public MultiPlayerGameViewModel MultiPlayerGameVM
+         {
+             get { return this.multiPlayerGameVM; }
+             set
+             {
+                 // It initialized here.
+                 this.multiPlayerGameVM = value;
+             }
+         }*/
+
         public String Maze
         {
-            get
-            {
-                return (string)GetValue(MazeProperty);
-            }
-            set
-            {
-                SetValue(MazeProperty, value);
-            }
+            get { return (string) GetValue(MazeProperty); }
+            set { SetValue(MazeProperty, value); }
         }
 
         public String Solution
@@ -67,91 +70,51 @@ namespace GameClient.Views
             get
             {
                 //this.RunAnimation(value);
-                return (string)GetValue(SolutionProperty);
+                return (string) GetValue(SolutionProperty);
             }
-            set
-            {
-                SetValue(SolutionProperty, value);
-            }
+            set { SetValue(SolutionProperty, value); }
         }
 
         public String InitialPosition
         {
-            get
-            {
-                return (string)GetValue(InitialPositionProperty);
-            }
-            set
-            {
-                SetValue(InitialPositionProperty, value);
-            }
+            get { return (string) GetValue(InitialPositionProperty); }
+            set { SetValue(InitialPositionProperty, value); }
         }
 
         public String DestPosition
         {
-            get
-            {
-                return (string)GetValue(DestPositionProperty);
-            }
-            set
-            {
-                SetValue(DestPositionProperty, value);
-            }
+            get { return (string) GetValue(DestPositionProperty); }
+            set { SetValue(DestPositionProperty, value); }
         }
 
         public String PlayerPosition
         {
-            get
-            {
-                return (string)GetValue(PlayerPositionProperty);
-            }
-            set
-            {
-                SetValue(PlayerPositionProperty, value);
-            }
+            get { return (string) GetValue(PlayerPositionProperty); }
+            set { SetValue(PlayerPositionProperty, value); }
         }
 
         public String Rows
         {
-            get
-            {
-                return (String)GetValue(RowsProperty);
-            }
-            set
-            {
-                SetValue(RowsProperty, value);
-            }
+            get { return (String) GetValue(RowsProperty); }
+            set { SetValue(RowsProperty, value); }
         }
 
         public String Cols
         {
-            get
-            {
-                return (String)GetValue(ColsProperty);
-            }
-            set
-            {
-                SetValue(ColsProperty, value);
-            }
+            get { return (String) GetValue(ColsProperty); }
+            set { SetValue(ColsProperty, value); }
         }
 
         public String MazeName
         {
-            get
-            {
-                return (string)GetValue(MazeNameProperty);
-            }
-            set
-            {
-                SetValue(MazeNameProperty, value);
-            }
+            get { return (string) GetValue(MazeNameProperty); }
+            set { SetValue(MazeNameProperty, value); }
         }
 
         public void RunAnimation(string solution, string initPosition)
         {
-
             int currPlayerXPosition, currPlayerYPosition;
-            Dispatcher.Invoke( () =>
+            Dispatcher.Invoke(() =>
             {
                 // Reverse the solution.
                 char[] reverseSolution = solution.ToCharArray();
@@ -159,7 +122,7 @@ namespace GameClient.Views
 
                 // Get player initial position.
                 string position = initPosition;
-                position = position.Trim(new Char[] { '(', ')' });
+                position = position.Trim(new Char[] {'(', ')'});
 
                 currPlayerXPosition =
                     Convert.ToInt32(position.Split(',')[0]);
@@ -169,38 +132,38 @@ namespace GameClient.Views
                 foreach (char movement in reverseSolution)
                 {
                     string temp = "";
-                    //string newPosition;
+                    string newPosition;
 
                     // Move the player to the next location.
                     switch (movement)
                     {
                         case '0': //Move right
                             temp = (++currPlayerXPosition).ToString() + ',' +
-                                                currPlayerYPosition.ToString();
-                            //newPosition = "(" + temp + ")";
-                            //PlayerPosition = newPosition;
+                                   currPlayerYPosition.ToString();
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
 
                             break;
                         case '1': //Move left
                             temp =
-                               (--currPlayerXPosition).ToString() + ',' +
-                               currPlayerYPosition.ToString();
-                            //newPosition = "(" + temp + ")";
-                            //PlayerPosition = newPosition;
+                                (--currPlayerXPosition).ToString() + ',' +
+                                currPlayerYPosition.ToString();
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
                             break;
                         case '2': //Move up
                             temp =
                                 currPlayerXPosition.ToString() + ',' +
                                 (--currPlayerYPosition).ToString();
-                            //newPosition = "(" + temp + ")";
-                            //PlayerPosition = newPosition;
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
                             break;
                         case '3': //Move down
                             temp =
                                 currPlayerXPosition.ToString() + ',' +
                                 (++currPlayerYPosition).ToString();
-                            //newPosition = "(" + temp + ")";
-                            //PlayerPosition = newPosition;
+                            newPosition = "(" + temp + ")";
+                            PlayerPosition = newPosition;
                             break;
                     }
 
@@ -216,7 +179,6 @@ namespace GameClient.Views
 
         protected override void OnInitialized(EventArgs e)
         {
-
             this.dicRect = new Dictionary<string, Rectangle>();
             this.playerRect = new Rectangle();
             this.wallColor = new SolidColorBrush(Colors.Black);
@@ -230,7 +192,6 @@ namespace GameClient.Views
 
         public void Draw(string drawingString)
         {
-
             // Calculate number of rows and coloms in maze.
             string[] splitRows = drawingString.Split(',');
             this.numOfRows = splitRows.Length;
@@ -248,7 +209,7 @@ namespace GameClient.Views
                     Rectangle currRect = new Rectangle();
                     currRect.Height = this.rectHeight;
                     currRect.Width = this.rectWidth;
-                    
+
                     char currChar = splitRows[i].ElementAt(j);
 
                     switch (currChar)
@@ -274,49 +235,61 @@ namespace GameClient.Views
                     this.MazeCanvas.Children.Add(currRect);
                     Canvas.SetTop(currRect, i * this.rectHeight);
                     Canvas.SetLeft(currRect, j * this.rectWidth);
-                    
-                    // Add to dictionary rectangle.
-                    this.dicRect.Add(i.ToString() + "," + j.ToString(), currRect);
 
+                    // Add to dictionary rectangle.
+                    this.dicRect.Add(i.ToString() + "," + j.ToString(),
+                        currRect);
                 }
             }
-            this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' + this.playerPosJ.ToString());
+            this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' +
+                                        this.playerPosJ.ToString());
         }
 
         public static readonly DependencyProperty MovedPlayerProperty =
-            DependencyProperty.Register("MovedPlayer", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("MovedPlayer", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty SolutionProperty =
-            DependencyProperty.Register("Solution", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("Solution", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty MazeNameProperty =
-            DependencyProperty.Register("MazeName", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("MazeName", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty MazeProperty =
-            DependencyProperty.Register("Maze", typeof(String), typeof(MazeGrid), new UIPropertyMetadata(MazeStringInit));
+            DependencyProperty.Register("Maze", typeof(String),
+                typeof(MazeGrid), new UIPropertyMetadata(MazeStringInit));
 
         public static readonly DependencyProperty PlayerPositionProperty =
-            DependencyProperty.Register("PlayerPosition", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("PlayerPosition", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty ColsProperty =
-            DependencyProperty.Register("Cols", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("Cols", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty RowsProperty =
-            DependencyProperty.Register("Rows", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("Rows", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty DestPositionProperty =
-            DependencyProperty.Register("DestPosition", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("DestPosition", typeof(String),
+                typeof(MazeGrid), null);
 
         public static readonly DependencyProperty InitialPositionProperty =
-            DependencyProperty.Register("InitialPosition", typeof(String), typeof(MazeGrid), null);
+            DependencyProperty.Register("InitialPosition", typeof(String),
+                typeof(MazeGrid), null);
 
-        public static void MazeStringInit(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static void MazeStringInit(DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
         {
             MazeGrid board = d as MazeGrid;
             board.Draw(e.NewValue.ToString());
         }
 
-        public static void PlayerPosInit(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static void PlayerPosInit(DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
         {
             MazeGrid board = d as MazeGrid;
             board.HandlePlayerPosChanged(e.NewValue);
@@ -328,7 +301,6 @@ namespace GameClient.Views
         /// <param name="newPosition"></param>
         public void HandlePlayerPosChanged(object newPosition)
         {
-
             string position = newPosition as string;
 
             this.playerRect.Fill = new SolidColorBrush(Colors.Red);
@@ -336,16 +308,19 @@ namespace GameClient.Views
             this.playerRect.Height = this.rectHeight;
 
             // Update the location of the player.
-            if(!this.MazeCanvas.Children.Contains(this.playerRect))
+            if (!this.MazeCanvas.Children.Contains(this.playerRect))
             {
                 this.MazeCanvas.Children.Add(this.playerRect);
             }
-            
-            Canvas.SetTop(this.playerRect, Convert.ToDouble(position.Split(',')[0]) * this.rectHeight);
-            Canvas.SetLeft(this.playerRect, Convert.ToDouble(position.Split(',')[1]) * this.rectWidth);
+
+            Canvas.SetTop(this.playerRect,
+                Convert.ToDouble(position.Split(',')[0]) * this.rectHeight);
+            Canvas.SetLeft(this.playerRect,
+                Convert.ToDouble(position.Split(',')[1]) * this.rectWidth);
 
             // If the player reached the Destination position.
-            if (DestPosition != null && position.Split(',')[0].Equals(DestPosition.Split(',')[0]) &&
+            if (DestPosition != null && position.Split(',')[0]
+                    .Equals(DestPosition.Split(',')[0]) &&
                 position.Split(',')[1].Equals(DestPosition.Split(',')[1]))
             {
                 MessageBox.Show("Finished!");
@@ -355,7 +330,8 @@ namespace GameClient.Views
         }
 
 
-        private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void UserControl_LostKeyboardFocus(object sender,
+            KeyboardFocusChangedEventArgs e)
         {
             Focus();
         }
@@ -367,57 +343,79 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            while(MultiPlayerGameVM == null)
+            /*while (MultiPlayerGameVM == null)
             {
                 continue;
-            }
-            switch(e.Key.ToString())
+            }*/
+
+            //TODO Notice that direction must be lower case: up, down...
+
+            switch (e.Key.ToString())
             {
                 case "Up":
                     if (this.playerPosI - 1 >= 0 &&
-                    !(this.dicRect[(this.playerPosI - 1).ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor)))
+                        !(this
+                            .dicRect[
+                                (this.playerPosI - 1).ToString() + ',' +
+                                this.playerPosJ.ToString()]
+                            .Fill.Equals(this.wallColor)))
                     {
                         this.playerPosI -= 1;
                     }
-                    MultiPlayerGameVM.MovePlayer("Up");
+                    // MultiPlayerGameVM.MovePlayer("Up");
+                  
+                    this.DirectionMoved = "up";
                     break;
 
                 case "Down":
                     if (this.playerPosI + 1 < this.numOfRows &&
-                        !(this.dicRect[(this.playerPosI + 1).ToString() + ',' + this.playerPosJ.ToString()]
-                    .Fill.Equals(this.wallColor)))
+                        !(this
+                            .dicRect[
+                                (this.playerPosI + 1).ToString() + ',' +
+                                this.playerPosJ.ToString()]
+                            .Fill.Equals(this.wallColor)))
                     {
                         this.playerPosI += 1;
                     }
-                    MultiPlayerGameVM.MovePlayer("Down");
+                    // MultiPlayerGameVM.MovePlayer("Down");
+                   
+                    this.DirectionMoved = "down";
                     break;
 
                 case "Right":
-                    if (this.playerPosJ + 1 < this.numOfCols && 
-                        !(this.dicRect[this.playerPosI.ToString() + ',' + (this.playerPosJ + 1).ToString()]
-                    .Fill.Equals(this.wallColor)))
+                    if (this.playerPosJ + 1 < this.numOfCols &&
+                        !(this
+                            .dicRect[
+                                this.playerPosI.ToString() + ',' +
+                                (this.playerPosJ + 1).ToString()]
+                            .Fill.Equals(this.wallColor)))
                     {
                         this.playerPosJ += 1;
                     }
-                    MultiPlayerGameVM.MovePlayer("Right");
+                    //MultiPlayerGameVM.MovePlayer("Right");
+                   
+                    this.DirectionMoved = "right";
                     break;
 
                 case "Left":
-                    if (this.playerPosJ - 1 >= 0 && 
-                        !(this.dicRect[this.playerPosI.ToString() + ',' + (this.playerPosJ - 1).ToString()]
-                    .Fill.Equals(this.wallColor)))
+                    if (this.playerPosJ - 1 >= 0 &&
+                        !(this
+                            .dicRect[
+                                this.playerPosI.ToString() + ',' +
+                                (this.playerPosJ - 1).ToString()]
+                            .Fill.Equals(this.wallColor)))
                     {
                         this.playerPosJ -= 1;
                     }
-                    MultiPlayerGameVM.MovePlayer("Left");
+                    //MultiPlayerGameVM.MovePlayer("Left");
+                   
+                    this.DirectionMoved = "left";
                     break;
-
             }
 
             // Update the location of the player.
-            this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' + this.playerPosJ.ToString());
-
-        }
+            this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' +
+                                        this.playerPosJ.ToString());
+           }
     }
 }

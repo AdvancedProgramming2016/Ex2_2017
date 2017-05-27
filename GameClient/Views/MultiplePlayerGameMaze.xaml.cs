@@ -29,6 +29,7 @@ namespace GameClient.Views
         public MultiplePlayerGameMaze(Maze maze, CommunicationClient communicationClient)
         {
             InitializeComponent();
+            LeftMaze.PlayerMoved += PlayerMovedHandler;
             this.gameName = maze.Name;
             ISettingsModel settingsModel = new SettingsModel();
             this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
@@ -42,7 +43,7 @@ namespace GameClient.Views
             this.multiPlayerGameViewModel.VM_DestPosition =
                 maze.GoalPos.ToString();
             this.multiPlayerGameViewModel.VM_MazeName = maze.Name;
-
+            this.DataContext = this.multiPlayerGameViewModel;
             this.multiPlayerGameViewModel.OpponentExitCalled +=
                 HandleExitCalled;
             /*
@@ -51,9 +52,15 @@ namespace GameClient.Views
                 continue;
             }
             */
-            RightMaze.MultiPlayerGameVM = this.multiPlayerGameViewModel;
-            this.DataContext = this.multiPlayerGameViewModel;
+           // RightMaze.MultiPlayerGameVM = this.multiPlayerGameViewModel;
+          
+           
             //this.StartNewGame(numOfRows, numOfCols, nameOfMaze);
+        }
+
+        private void PlayerMovedHandler(object sender, EventArgs e)
+        {
+            this.multiPlayerGameViewModel.MovePlayer(LeftMaze.DirectionMoved);
         }
 
         /// <summary>
