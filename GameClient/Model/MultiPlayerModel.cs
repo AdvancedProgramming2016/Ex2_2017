@@ -118,12 +118,12 @@ namespace GameClient.Model
             this.CommunicationClient.SendToServer(command);
         }
 
-        public void MovePlayer(Position position)
+        public void MovePlayer(string direction)
         {
             string command;
 
             //Parse into the right format.
-            command = CommandParser.ParseToPlayCommand(position.ToString());
+            command = CommandParser.ParseToPlayCommand(direction);
 
             this.CommandPropertyChanged = "play";
 

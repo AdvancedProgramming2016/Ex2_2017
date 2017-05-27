@@ -19,7 +19,7 @@ namespace GameClient.Model
         //  void StartNewGame(string numOfRows, string numOfCols,
         //     string nameOfMaze);
 
-        void MovePlayer(Position position);
+        void MovePlayer(string direction);
         void CloseGame(string gameName);
         event EventHandler ExitCalled;
     }
