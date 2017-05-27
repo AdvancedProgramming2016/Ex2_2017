@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GameClient.ViewModel;
 using GameClient.Model;
+using GameClient.Model.Listeners;
+using MazeLib;
 
 namespace GameClient.Views
 {
@@ -21,19 +23,30 @@ namespace GameClient.Views
     /// </summary>
     public partial class MultiplePlayerGameMaze : Window
     {
-        private MultiPlayerGameViewModel mpgvm;
+        private MultiPlayerGameViewModel multiPlayerGameViewModel;
         private string gameName;
 
-        public MultiplePlayerGameMaze(String numOfRows, String numOfCols,
-            String nameOfMaze)
+        public MultiplePlayerGameMaze(Maze maze, CommunicationClient communicationClient)
         {
             InitializeComponent();
-            this.gameName = nameOfMaze;
+            this.gameName = maze.Name;
             ISettingsModel settingsModel = new SettingsModel();
-            this.mpgvm = new MultiPlayerGameViewModel
-                (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
-            this.DataContext = this.mpgvm;
-            this.mpgvm.StartNewGame(numOfRows, numOfCols, nameOfMaze);
+            this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
+                (new MultiPlayerModel(settingsModel, communicationClient), new SettingsViewModel(settingsModel));
+
+            this.multiPlayerGameViewModel.VM_Maze = maze.ToString();
+            this.multiPlayerGameViewModel.VM_Cols = maze.Cols.ToString();
+            this.multiPlayerGameViewModel.VM_Rows = maze.Rows.ToString();
+            this.multiPlayerGameViewModel.VM_InitialPosition =
+                maze.InitialPos.ToString();
+            this.multiPlayerGameViewModel.VM_DestPosition =
+                maze.GoalPos.ToString();
+            this.multiPlayerGameViewModel.VM_MazeName = maze.Name;
+
+            this.DataContext = this.multiPlayerGameViewModel;
+            this.multiPlayerGameViewModel.OpponentExitCalled +=
+                HandleExitCalled;
+            //this.StartNewGame(numOfRows, numOfCols, nameOfMaze);
         }
 
         /// <summary>
@@ -43,6 +56,7 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void BackMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            this.multiPlayerGameViewModel.CloseGame(gameName);
             MainWindow mw = new MainWindow();
             mw.Show();
             this.Close();
@@ -50,7 +64,15 @@ namespace GameClient.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Focus();
+            LeftMaze.Focus();
+        }
+
+        private void HandleExitCalled(object sender, EventArgs e)
+        {
+            MessageBox.Show("Opponent exited the game.", "Game ended");
+           /* MainWindow mw = new MainWindow();
+            mw.Show();
+            this.Close();*/
         }
     }
 }

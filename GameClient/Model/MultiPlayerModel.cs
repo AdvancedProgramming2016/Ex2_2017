@@ -17,26 +17,34 @@ namespace GameClient.Model
     public class MultiPlayerModel : IMultiPlayerGame
     {
         private Maze maze;
-        private Position playerPosition;
-        private Position opponentPosition;
-        private ObservableCollection<string> gamesList;
-        private CommunicationClient communicationClient;
+        private string playerPosition;
+        private string opponentPosition;
+        private bool opponentExitStatus;
 
-        public MultiPlayerModel(ISettingsModel settingModel)
+//        private ObservableCollection<string> gamesList;
+
+        public MultiPlayerModel(ISettingsModel settingModel,
+            CommunicationClient communicationClient)
         {
             int port = settingModel.Port;
             string ip = settingModel.IpAddress;
-            communicationClient = new CommunicationClient();
-            communicationClient.Connect(port, ip);
-            communicationClient.PropertyChanged +=
+            string serverMessage;
+            this.CommunicationClient = communicationClient;
+            //  this.communicationClient.Connect(port, ip);
+
+            this.CommunicationClient.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
-                    ServerResponse = communicationClient.CommandFromUser;
-                    HandleServerResult(ServerResponse);
+                    serverMessage = communicationClient.CommandFromUser;
+                    if (!string.IsNullOrEmpty(serverMessage))
+                    {
+                        HandleServerResult(serverMessage);
+                    }
+                   
                 };
         }
 
-        public string ServerResponse { get; set; }
+        //public string ServerResponse { get; set; }
 
         public string CommandPropertyChanged { get; set; }
 
@@ -47,6 +55,8 @@ namespace GameClient.Model
             PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propName));
         }
+
+        public CommunicationClient CommunicationClient { get; set; }
 
         public Maze Maze
         {
@@ -59,7 +69,7 @@ namespace GameClient.Model
             }
         }
 
-        public Position OpponentPosition
+        public string OpponentPosition
         {
             get { return this.opponentPosition; }
 
@@ -70,7 +80,7 @@ namespace GameClient.Model
             }
         }
 
-        public Position PlayerPosition
+        public string PlayerPosition
         {
             get { return this.playerPosition; }
 
@@ -81,108 +91,56 @@ namespace GameClient.Model
             }
         }
 
-        /*  private void WaitForServerInfo()
+        public event EventHandler ExitCalled;
+
+
+        public bool OpponentExitStatus
+        {
+            get { return this.opponentExitStatus; }
+            set
             {
-                Task task = Task.Run(() =>
-                {
-                    NetworkStream stream;
-                    //var reader = new StreamReader(stream);
-                    //serverListener = new ServerListener(tcpClient, reader);
-    
-                    //start listener
-                    //serverListener.StartListening();
-                    while (true)
-                    {
-                        // Wait for json from server.
-                        stream = this.tcpClient.GetStream();
-                        //Do something.
-                    }
-                });
-    
-                task.Wait();
-            }*/
+                this.opponentExitStatus = value;
+                ExitCalled?.Invoke(this, null);
+            }
+        }
 
-        public void StartNewGame(string numOfRows, string numOfCols,
-            string nameOfMaze)
+
+        public void CloseGame(string gameName)
         {
             string command;
 
             //Parse into the right format.
-            command = CommandParser.ParseToStartCommand(nameOfMaze,
-                numOfRows,
-                numOfCols);
+            command = CommandParser.ParseToCloseCommand(gameName);
 
-            CommandPropertyChanged = "start";
+            this.CommandPropertyChanged = "close";
 
             //Send command to the server.
-            communicationClient.SendToServer(command);
-
-            while(ServerResponse == null) { }
-
-           // HandleServerResult(ServerResponse);
-        }
-
-        public void JoinGame(string gameName)
-        {
-            string command;
-
-            //Parse into the right format.
-            command = CommandParser.ParseToJoinCommand(gameName);
-
-            CommandPropertyChanged = "join";
-
-            //Send command to the server.
-            communicationClient.SendToServer(command);
-
-            HandleServerResult(ServerResponse);
-        }
-
-        public void CloseGame()
-        {
-            throw new NotImplementedException();
+            this.CommunicationClient.SendToServer(command);
         }
 
         public void MovePlayer(Position position)
         {
-            throw new NotImplementedException();
+            string command;
+
+            //Parse into the right format.
+            command = CommandParser.ParseToPlayCommand(position.ToString());
+
+            this.CommandPropertyChanged = "play";
+
+            //Send command to the server.
+            this.CommunicationClient.SendToServer(command);
         }
 
-        private void HandleServerResult(string command)
+        public void HandleServerResult(string response)
         {
-            if (command.StartsWith("Error"))
+            if (response == "{}\n")
             {
-                //TODO decide if needed
+                this.OpponentExitStatus = true;
             }
-
-            switch (CommandPropertyChanged)
+            else
             {
-                case "start":
-                    HandlStartCommand(command);
-                    break;
-
-                case "join":
-                    HandleJoinCommand(command);
-                    break;
-
-                case "list":
-                    HandleListCommand(command);
-                    break;
+                this.OpponentPosition = FromJsonConverter.PlayDirection(response);
             }
-        }
-
-        private void HandlStartCommand(string command)
-        {
-            Maze = Maze.FromJSON(command);
-        }
-
-        private void HandleJoinCommand(string command)
-        {
-            Maze = Maze.FromJSON(command);
-        }
-
-        private void HandleListCommand(string command)
-        {
-            //this.GamesList = FromJsonConverter.GamesList(command);
         }
     }
 }

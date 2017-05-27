@@ -11,9 +11,26 @@ namespace GameClient.ViewModel
 {
     class MultiPlayerMenuViewModel : INotifyPropertyChanged
     {
+        //private MultiPlayerMenuModel mpmModel;
+        private ObservableCollection<string> vm_listOfGames;
+        private ISettingsModel settingsModel;
+
+        public MultiPlayerMenuViewModel()
+        {
+            this.settingsModel = new SettingsModel();
+            this.MultiPlayerMenuModel = new MultiPlayerMenuModel(settingsModel);
+
+            this.MultiPlayerMenuModel.PropertyChanged +=
+                delegate(Object sender, PropertyChangedEventArgs e)
+                {
+                    NotifyPropertyChanged("VM_" + e.PropertyName);
+                };
+
+            //Request list from server.
+           // this.mpmModel.RequestList();
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private MultiPlayerMenuModel mpmModel;
 
         public void NotifyPropertyChanged(string propertyName)
         {
@@ -21,26 +38,35 @@ namespace GameClient.ViewModel
                 new PropertyChangedEventArgs(propertyName));
         }
 
+        public MultiPlayerMenuModel MultiPlayerMenuModel { get; set; }
+
         public void AddGameToList(String gameName)
         {
-            this.mpmModel.AddGameToList(gameName);
+            this.MultiPlayerMenuModel.AddGameToList(gameName);
         }
 
-        public MultiPlayerMenuViewModel()
+        public void StartNewGame(string nameOfGame, string rows, string columns)
         {
-            this.mpmModel = new MultiPlayerMenuModel();
-            this.mpmModel.PropertyChanged +=
-                delegate (Object sender, PropertyChangedEventArgs e)
-                {
-                    NotifyPropertyChanged("VM_" + e.PropertyName);
-                };
+            this.MultiPlayerMenuModel.StartNewGame(rows, columns, nameOfGame);
+        }
+
+        public void JoinGame(string nameOfGame)
+        {
+            this.MultiPlayerMenuModel.JoinGame(nameOfGame);
+        }
+
+        public void GetGameList()
+        {
+            this.MultiPlayerMenuModel.RequestList();
         }
 
         public ObservableCollection<String> VM_ListOfGames
         {
-            get
+            get { return this.MultiPlayerMenuModel.ListOfGames; }
+            set
             {
-                return VM_ListOfGames;
+                this.vm_listOfGames = value;
+                NotifyPropertyChanged("VM_ListOfGames");
             }
         }
 
@@ -48,7 +74,7 @@ namespace GameClient.ViewModel
         {
             get
             {
-                return this.mpmModel.Maze.ToString()
+                return this.MultiPlayerMenuModel.Maze.ToString()
                     .Replace("\r\n", "")
                     .Replace("*", "0");
             }
@@ -58,7 +84,8 @@ namespace GameClient.ViewModel
         {
             get
             {
-                return GameClient.Properties.Settings.Default.DefaultRows.ToString();
+                return GameClient.Properties.Settings.Default.DefaultRows
+                    .ToString();
             }
         }
 
@@ -66,7 +93,8 @@ namespace GameClient.ViewModel
         {
             get
             {
-                return GameClient.Properties.Settings.Default.DefaultCols.ToString();
+                return GameClient.Properties.Settings.Default.DefaultCols
+                    .ToString();
             }
         }
     }

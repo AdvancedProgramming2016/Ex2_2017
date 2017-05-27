@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using GameClient.Model;
 using GameClient.ViewModel;
 using System.Collections.ObjectModel;
+using MazeLib;
 
 namespace GameClient.Views
 {
@@ -27,6 +28,7 @@ namespace GameClient.Views
         private ISettingsModel settingsModel;
         private ISettingsViewModel settingsViewModel;
         private ObservableCollection<string> listOfGames;
+        private Maze maze;
 
         public MultiplePlayerMenu()
         {
@@ -42,14 +44,30 @@ namespace GameClient.Views
         private void startGame_Click(object sender, RoutedEventArgs e)
         {
             // Open maze window.
-            this.multiPlayerMenuViewModel.AddGameToList(mazeNameBox.Text);
-            new MultiplePlayerGameMaze(mazeRowsBox.Text, mazeColsBox.Text, mazeNameBox.Text).Show();
+            // this.multiPlayerMenuViewModel.AddGameToList(mazeNameBox.Text);
+            this.multiPlayerMenuViewModel.StartNewGame(mazeNameBox.Text,
+                mazeRowsBox.Text, mazeColsBox.Text);
+
+            Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
+             new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
+          
+            this.Close();
+        }
+        
+        private void joinGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            string nameOfGame = listOfGameComboBox.SelectionBoxItem.ToString();
+            this.multiPlayerMenuViewModel.JoinGame(nameOfGame);
+
+            Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
+            new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
+
             this.Close();
         }
 
         private void listOfGameComboBox_DropDownOpened(object sender, EventArgs e)
         {
-
+            this.multiPlayerMenuViewModel.GetGameList();
         }
     }
 }
