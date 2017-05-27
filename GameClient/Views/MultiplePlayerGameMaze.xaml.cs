@@ -43,9 +43,16 @@ namespace GameClient.Views
                 maze.GoalPos.ToString();
             this.multiPlayerGameViewModel.VM_MazeName = maze.Name;
 
-            this.DataContext = this.multiPlayerGameViewModel;
             this.multiPlayerGameViewModel.OpponentExitCalled +=
                 HandleExitCalled;
+            /*
+            while(!RightMaze.IsLoaded)
+            {
+                continue;
+            }
+            */
+            RightMaze.MultiPlayerGameVM = this.multiPlayerGameViewModel;
+            this.DataContext = this.multiPlayerGameViewModel;
             //this.StartNewGame(numOfRows, numOfCols, nameOfMaze);
         }
 

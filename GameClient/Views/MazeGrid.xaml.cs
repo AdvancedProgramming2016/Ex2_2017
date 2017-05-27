@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GameClient.ViewModel;
 
 namespace GameClient.Views
 {
@@ -34,6 +35,20 @@ namespace GameClient.Views
         private SolidColorBrush wallColor;
         private SolidColorBrush freeSpaceColor;
         private SolidColorBrush destinationColor;
+        private MultiPlayerGameViewModel multiPlayerGameVM;
+
+        public MultiPlayerGameViewModel MultiPlayerGameVM
+        {
+            get
+            {
+                return this.multiPlayerGameVM;
+            }
+            set
+            {
+                // It initialized here.
+                this.multiPlayerGameVM = value;
+            }
+        }
 
         public String Maze
         {
@@ -267,7 +282,10 @@ namespace GameClient.Views
             }
             this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' + this.playerPosJ.ToString());
         }
-        
+
+        public static readonly DependencyProperty MovedPlayerProperty =
+            DependencyProperty.Register("MovedPlayer", typeof(String), typeof(MazeGrid), null);
+
         public static readonly DependencyProperty SolutionProperty =
             DependencyProperty.Register("Solution", typeof(String), typeof(MazeGrid), null);
 
@@ -349,6 +367,10 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
+            while(MultiPlayerGameVM == null)
+            {
+                continue;
+            }
             switch(e.Key.ToString())
             {
                 case "Up":
@@ -358,6 +380,7 @@ namespace GameClient.Views
                     {
                         this.playerPosI -= 1;
                     }
+                    MultiPlayerGameVM.MovePlayer("Up");
                     break;
 
                 case "Down":
@@ -367,6 +390,7 @@ namespace GameClient.Views
                     {
                         this.playerPosI += 1;
                     }
+                    MultiPlayerGameVM.MovePlayer("Down");
                     break;
 
                 case "Right":
@@ -376,6 +400,7 @@ namespace GameClient.Views
                     {
                         this.playerPosJ += 1;
                     }
+                    MultiPlayerGameVM.MovePlayer("Right");
                     break;
 
                 case "Left":
@@ -385,6 +410,7 @@ namespace GameClient.Views
                     {
                         this.playerPosJ -= 1;
                     }
+                    MultiPlayerGameVM.MovePlayer("Left");
                     break;
 
             }

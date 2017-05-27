@@ -51,7 +51,7 @@ namespace GameClient.Views
             Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
              new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
           
-            this.Close();
+            //this.Close();
         }
         
         private void joinGameButton_Click(object sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ namespace GameClient.Views
             this.multiPlayerMenuViewModel.JoinGame(nameOfGame);
 
             Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
-            new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
+            //new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
 
             this.Close();
         }
