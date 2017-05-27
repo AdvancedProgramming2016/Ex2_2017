@@ -40,12 +40,15 @@ namespace GameClient.ViewModel
 
                     if (e.PropertyName == "Solution")
                     {
+                        SolutionCall?.Invoke(this, null);
                         //RunAnimation(this.singlePlayerModel.Solution);
                     }
                 };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public event EventHandler SolutionCall;
 
         public Maze VM_FullMaze
         {

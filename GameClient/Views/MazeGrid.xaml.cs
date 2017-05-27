@@ -51,12 +51,12 @@ namespace GameClient.Views
         {
             get
             {
+                this.RunAnimation(value);
                 return (string)GetValue(SolutionProperty);
             }
             set
             {
                 SetValue(SolutionProperty, value);
-                this.RunAnimation(value);
             }
         }
 
@@ -136,7 +136,7 @@ namespace GameClient.Views
         {
 
             int currPlayerXPosition, currPlayerYPosition;
-            Task t = Task.Run(() =>
+            Task t = Task.Run( () =>
             {
                 // Reverse the solution.
                 char[] reverseSolution = solution.ToCharArray();

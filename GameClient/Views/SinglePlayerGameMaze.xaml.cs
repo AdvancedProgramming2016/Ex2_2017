@@ -35,6 +35,7 @@ namespace GameClient.Views
                 (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.spViewModel;
             this.spViewModel.StartNewGame(numOfRows, numOfCols, nameOfMaze);
+            this.spViewModel.SolutionCall += AnimationCaller;
         }
 
         /// <summary>
@@ -62,6 +63,11 @@ namespace GameClient.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             MazeBoard.Focus();
+        }
+
+        private void AnimationCaller(object sender, EventArgs e)
+        {
+            MazeBoard.RunAnimation(this.spViewModel.VM_Solution);
         }
     }
 }
