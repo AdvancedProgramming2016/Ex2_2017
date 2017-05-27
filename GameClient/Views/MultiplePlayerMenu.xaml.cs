@@ -45,13 +45,32 @@ namespace GameClient.Views
         {
             // Open maze window.
             // this.multiPlayerMenuViewModel.AddGameToList(mazeNameBox.Text);
-            this.multiPlayerMenuViewModel.StartNewGame(mazeNameBox.Text,
-                mazeRowsBox.Text, mazeColsBox.Text);
 
+            LoadingWindow loadingWindow = new LoadingWindow();
+            Application.Current.Dispatcher.Invoke((Action) delegate
+            {
+
+               loadingWindow.Show();
+
+            });
+
+        /*  Task loaderTask = new Task(() =>
+          {
+              
+          });*/
+            //loaderTask.Start();
+            this.Hide();
+                this.multiPlayerMenuViewModel.StartNewGame(mazeNameBox.Text,
+                    mazeRowsBox.Text, mazeColsBox.Text);
+          // loaderTask.Dispose();
+          loadingWindow.Close();
+               
+               
+          
             Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
              new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
-          
-            //this.Close();
+          this.Close();
+           
         }
         
         private void joinGameButton_Click(object sender, RoutedEventArgs e)
@@ -60,7 +79,7 @@ namespace GameClient.Views
             this.multiPlayerMenuViewModel.JoinGame(nameOfGame);
 
             Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
-            //new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
+            new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
 
             this.Close();
         }
