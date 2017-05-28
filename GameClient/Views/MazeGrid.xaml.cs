@@ -89,7 +89,18 @@ namespace GameClient.Views
 
         public String PlayerPosition
         {
-            get { return (string) GetValue(PlayerPositionProperty); }
+            get
+            {
+               /* if ((string) GetValue(PlayerPositionProperty) != null)
+                {
+                    return (string) GetValue(PlayerPositionProperty);
+                }
+                else*/
+                {
+                    return this.playerPosI.ToString() + "," +
+                           this.playerPosJ.ToString();
+                }
+            }
             set { SetValue(PlayerPositionProperty, value); }
         }
 
@@ -179,15 +190,17 @@ namespace GameClient.Views
 
         protected override void OnInitialized(EventArgs e)
         {
+
+            InitializeComponent();
+
+            base.OnInitialized(e);
             this.dicRect = new Dictionary<string, Rectangle>();
             this.playerRect = new Rectangle();
             this.wallColor = new SolidColorBrush(Colors.Black);
             this.freeSpaceColor = new SolidColorBrush(Colors.White);
             this.destinationColor = new SolidColorBrush(Colors.DarkCyan);
-
-            InitializeComponent();
-
-            base.OnInitialized(e);
+   
+          
         }
 
         public void Draw(string drawingString)
@@ -303,7 +316,16 @@ namespace GameClient.Views
         {
             string position = newPosition as string;
 
-            this.playerRect.Fill = new SolidColorBrush(Colors.Red);
+            try
+            {
+                this.playerRect.Fill = new SolidColorBrush(Colors.Red);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+                throw;
+            }
+           
             this.playerRect.Width = this.rectWidth;
             this.playerRect.Height = this.rectHeight;
 
@@ -336,6 +358,35 @@ namespace GameClient.Views
             Focus();
         }
 
+        public void CalculateNewPosition(String direction,
+            String currentPosition)
+        {
+            int currPlayerXPosition =
+                Convert.ToInt32(currentPosition.Split(',')[0]);
+            int currPlayerYPosition =
+                Convert.ToInt32(currentPosition.Split(',')[1]);
+            switch (direction)
+            {
+                case "right":
+                    currPlayerYPosition += 1;
+                    break;
+
+                case "left":
+                    currPlayerYPosition -= 1;
+                    break;
+
+                case "up":
+                    currPlayerXPosition -= 1;
+                    break;
+
+                case "down":
+                    currPlayerXPosition += 1;
+                    break;
+            }
+            this.HandlePlayerPosChanged(currPlayerXPosition.ToString() + ',' +
+                                        currPlayerYPosition.ToString());
+        }
+
         /// <summary>
         /// Calculate the location of the player on the maze.
         /// </summary>
@@ -363,7 +414,7 @@ namespace GameClient.Views
                         this.playerPosI -= 1;
                     }
                     // MultiPlayerGameVM.MovePlayer("Up");
-                  
+
                     this.DirectionMoved = "up";
                     break;
 
@@ -378,7 +429,7 @@ namespace GameClient.Views
                         this.playerPosI += 1;
                     }
                     // MultiPlayerGameVM.MovePlayer("Down");
-                   
+
                     this.DirectionMoved = "down";
                     break;
 
@@ -393,7 +444,7 @@ namespace GameClient.Views
                         this.playerPosJ += 1;
                     }
                     //MultiPlayerGameVM.MovePlayer("Right");
-                   
+
                     this.DirectionMoved = "right";
                     break;
 
@@ -408,7 +459,7 @@ namespace GameClient.Views
                         this.playerPosJ -= 1;
                     }
                     //MultiPlayerGameVM.MovePlayer("Left");
-                   
+
                     this.DirectionMoved = "left";
                     break;
             }
@@ -416,6 +467,6 @@ namespace GameClient.Views
             // Update the location of the player.
             this.HandlePlayerPosChanged(this.playerPosI.ToString() + ',' +
                                         this.playerPosJ.ToString());
-           }
+        }
     }
 }

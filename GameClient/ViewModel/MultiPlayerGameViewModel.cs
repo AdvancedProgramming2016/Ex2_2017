@@ -35,7 +35,9 @@ namespace GameClient.ViewModel
                 {
                     NotifyPropertyChanged("VM_" + e.PropertyName);
                 };
-            model.ExitCalled += HandleServerAnswer;
+
+            model.ExitCalled += HandlExitCalled;
+            model.DirectionCalled += HandleDirectionChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -91,7 +93,8 @@ namespace GameClient.ViewModel
             set
             {
                 this.vm_opponentPosition = value;
-                NotifyPropertyChanged("VM_OpponentPosition");
+                // NotifyPropertyChanged("VM_OpponentPosition");
+                OpponentDirectionCalled?.Invoke(this, null);
             }
         }
 
@@ -157,10 +160,17 @@ namespace GameClient.ViewModel
 
         public event EventHandler OpponentExitCalled;
 
-        private void HandleServerAnswer(object sender, EventArgs e)
+        private void HandlExitCalled(object sender, EventArgs e)
         {
             OpponentExitCalled?.Invoke(this, null);
         }
+
+        public event EventHandler OpponentDirectionCalled;
+
+        private void HandleDirectionChanged(object sender, EventArgs e)
+        {
+            VM_OpponentPosition = this.mpModel.OpponentPosition;
+           }
 
         public void MovePlayer(String position)
         {

@@ -20,6 +20,7 @@ namespace GameClient.Model
         private string playerPosition;
         private string opponentPosition;
         private bool opponentExitStatus;
+        private string direction;
 
 //        private ObservableCollection<string> gamesList;
 
@@ -40,7 +41,6 @@ namespace GameClient.Model
                     {
                         HandleServerResult(serverMessage);
                     }
-                   
                 };
         }
 
@@ -69,16 +69,16 @@ namespace GameClient.Model
             }
         }
 
-        public string OpponentPosition
-        {
-            get { return this.opponentPosition; }
-
-            set
-            {
-                this.opponentPosition = value;
-                this.NotifyPropertyChanged("OpponentPosition");
-            }
-        }
+        /*  public string OpponentPosition
+          {
+              get { return this.opponentPosition; }
+  
+              set
+              {
+                  this.opponentPosition = value;
+                  this.NotifyPropertyChanged("OpponentPosition");
+              }
+          }*/
 
         public string PlayerPosition
         {
@@ -93,7 +93,6 @@ namespace GameClient.Model
 
         public event EventHandler ExitCalled;
 
-
         public bool OpponentExitStatus
         {
             get { return this.opponentExitStatus; }
@@ -101,6 +100,19 @@ namespace GameClient.Model
             {
                 this.opponentExitStatus = value;
                 ExitCalled?.Invoke(this, null);
+            }
+        }
+
+        public event EventHandler DirectionCalled;
+
+        public string OpponentPosition
+        {
+            get { return this.opponentPosition; }
+
+            set
+            {
+                this.opponentPosition = value;
+                DirectionCalled?.Invoke(this, null);
             }
         }
 
@@ -139,7 +151,8 @@ namespace GameClient.Model
             }
             else
             {
-                this.OpponentPosition = FromJsonConverter.PlayDirection(response);
+                this.OpponentPosition =
+                    FromJsonConverter.PlayDirection(response);
             }
         }
     }

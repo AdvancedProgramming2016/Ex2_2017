@@ -22,5 +22,6 @@ namespace GameClient.Model
         void MovePlayer(string direction);
         void CloseGame(string gameName);
         event EventHandler ExitCalled;
+        event EventHandler DirectionCalled;
     }
 }

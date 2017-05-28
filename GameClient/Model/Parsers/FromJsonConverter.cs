@@ -35,7 +35,7 @@ namespace GameClient.Model.Parsers
         public static string PlayDirection(string jsonMove)
         {
             JObject moveObj = JObject.Parse(jsonMove);
-            string direction = (string) moveObj["direction"];
+            string direction = (string) moveObj["Direction"];
 
             return direction;
         }

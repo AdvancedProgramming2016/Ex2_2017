@@ -24,16 +24,20 @@ namespace GameClient.Views
     public partial class MultiplePlayerGameMaze : Window
     {
         private MultiPlayerGameViewModel multiPlayerGameViewModel;
+        private MazeGrid rightMazeGrid;
         private string gameName;
 
-        public MultiplePlayerGameMaze(Maze maze, CommunicationClient communicationClient)
+        public MultiplePlayerGameMaze(Maze maze,
+            CommunicationClient communicationClient)
         {
-            InitializeComponent();
-            LeftMaze.PlayerMoved += PlayerMovedHandler;
+            
+           
+           
             this.gameName = maze.Name;
             ISettingsModel settingsModel = new SettingsModel();
             this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
-                (new MultiPlayerModel(settingsModel, communicationClient), new SettingsViewModel(settingsModel));
+            (new MultiPlayerModel(settingsModel, communicationClient),
+                new SettingsViewModel(settingsModel));
 
             this.multiPlayerGameViewModel.VM_Maze = maze.ToString();
             this.multiPlayerGameViewModel.VM_Cols = maze.Cols.ToString();
@@ -43,18 +47,26 @@ namespace GameClient.Views
             this.multiPlayerGameViewModel.VM_DestPosition =
                 maze.GoalPos.ToString();
             this.multiPlayerGameViewModel.VM_MazeName = maze.Name;
-            this.DataContext = this.multiPlayerGameViewModel;
+
+            InitializeComponent();
+
             this.multiPlayerGameViewModel.OpponentExitCalled +=
                 HandleExitCalled;
+            this.multiPlayerGameViewModel.OpponentDirectionCalled +=
+                HandleDirectionCalled;
+            LeftMaze.PlayerMoved += PlayerMovedHandler;
+            rightMazeGrid = RightMaze;
+
+            this.DataContext = this.multiPlayerGameViewModel;
             /*
             while(!RightMaze.IsLoaded)
             {
                 continue;
             }
             */
-           // RightMaze.MultiPlayerGameVM = this.multiPlayerGameViewModel;
-          
-           
+            // RightMaze.MultiPlayerGameVM = this.multiPlayerGameViewModel;
+
+
             //this.StartNewGame(numOfRows, numOfCols, nameOfMaze);
         }
 
@@ -84,9 +96,18 @@ namespace GameClient.Views
         private void HandleExitCalled(object sender, EventArgs e)
         {
             MessageBox.Show("Opponent exited the game.", "Game ended");
-           /* MainWindow mw = new MainWindow();
-            mw.Show();
-            this.Close();*/
+            /* MainWindow mw = new MainWindow();
+             mw.Show();
+             this.Close();*/
+        }
+
+        private void HandleDirectionCalled(object sender, EventArgs e)
+        {
+            string direction = this.multiPlayerGameViewModel
+                .VM_OpponentPosition;
+
+            RightMaze.CalculateNewPosition(direction,
+                this.RightMaze.PlayerPosition);
         }
     }
 }
