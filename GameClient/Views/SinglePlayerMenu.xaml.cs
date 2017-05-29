@@ -21,27 +21,36 @@ namespace GameClient.Views
     /// </summary>
     public partial class SinglePlayerMenu : Window
     {
-
         private SinglePlayerGameViewModel singlePlayerGameViewModel;
         private ISettingsModel settingsModel;
         private ISettingsViewModel settingsViewModel;
-       
+
 
         public SinglePlayerMenu()
         {
             InitializeComponent();
             settingsModel = new SettingsModel();
             this.singlePlayerGameViewModel = new SinglePlayerGameViewModel
-                (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
+            (new SinglePlayerGameModel(settingsModel),
+                new SettingsViewModel(settingsModel));
+
             this.DataContext = this.singlePlayerGameViewModel;
         }
-        
+
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
             // Open maze window.
-            new SinglePlayerGameMaze(numOfRowsBox.Text, numOfCols.Text, MazeNameBox.Text).Show();
+            try
+            {
+                new SinglePlayerGameMaze(numOfRowsBox.Text, numOfCols.Text,
+                    MazeNameBox.Text).Show();
+            }
+            catch (Exception exception)
+            {
+                new MainWindow().Show();
+            }
             this.Close();
+
         }
     }
 }
-

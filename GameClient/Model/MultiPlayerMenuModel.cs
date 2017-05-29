@@ -60,7 +60,7 @@ namespace GameClient.Model
             }
         }
 
-        public Maze Maze
+        /*public Maze Maze
         {
             get { return this.maze; }
 
@@ -69,7 +69,7 @@ namespace GameClient.Model
                 this.maze = value;
                 this.NotifyPropertyChanged("Maze");
             }
-        }
+        }*/
 
         public void AddGameToList(String gameName)
         {
@@ -77,7 +77,7 @@ namespace GameClient.Model
             ListOfGames.Add(gameName);
         }
 
-        public void StartNewGame(string numOfRows, string numOfCols,
+       /* public void StartNewGame(string numOfRows, string numOfCols,
             string nameOfMaze)
         {
             string command;
@@ -87,7 +87,7 @@ namespace GameClient.Model
                 numOfRows,
                 numOfCols);
 
-            CommandPropertyChanged = "start";
+            IsSingleCommand = "start";
 
             //Send command to the server.
             CommunicationClient.SendToServer(command);
@@ -98,16 +98,16 @@ namespace GameClient.Model
             }
 
             HandleServerResult(ServerResponse);
-        }
+        }*/
 
-        public void JoinGame(string gameName)
+        /*public void JoinGame(string gameName)
         {
             string command;
 
             //Parse into the right format.
             command = CommandParser.ParseToJoinCommand(gameName);
 
-            CommandPropertyChanged = "join";
+            IsSingleCommand = "join";
 
             //Send command to the server.
             CommunicationClient.SendToServer(command);
@@ -118,7 +118,7 @@ namespace GameClient.Model
             }
 
             HandleServerResult(ServerResponse);
-        }
+        }*/
 
         public void RequestList()
         {
@@ -151,11 +151,11 @@ namespace GameClient.Model
             switch (CommandPropertyChanged)
             {
                 case "start":
-                    HandlStartCommand(command);
+                //    HandlStartCommand(command);
                     break;
 
                 case "join":
-                    HandleJoinCommand(command);
+                  //  HandleJoinCommand(command);
                     break;
 
                 case "list":
@@ -164,7 +164,7 @@ namespace GameClient.Model
             }
         }
 
-        private void HandlStartCommand(string command)
+       /* private void HandlStartCommand(string command)
         {
             Maze maze = Maze.FromJSON(command);
             this.Maze = maze;
@@ -176,7 +176,7 @@ namespace GameClient.Model
             Maze maze = Maze.FromJSON(command);
             this.Maze = maze;
             //ServerResponse = null;
-        }
+        }*/
 
         private void HandleListCommand(string command)
         {

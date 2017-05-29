@@ -19,11 +19,17 @@ namespace GameClient.Model
         void GenerateGame(String numOfRows, String numOfCols,
             String nameOfMaze);
 
+        void MovePlayer(int x, int y);
+
         // void MovePlayer();
         string Solution { get; set; }
 
         void SolveMaze(string name);
 
         void Restart();
+
+        event EventHandler EnableControls;
+
+        event EventHandler ConnectionLost;
     }
 }

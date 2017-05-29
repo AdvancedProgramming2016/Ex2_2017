@@ -23,7 +23,6 @@ namespace GameClient.Views
     /// </summary>
     public partial class MultiplePlayerMenu : Window
     {
-
         private MultiPlayerMenuViewModel multiPlayerMenuViewModel;
         private ISettingsModel settingsModel;
         private ISettingsViewModel settingsViewModel;
@@ -35,7 +34,7 @@ namespace GameClient.Views
             InitializeComponent();
             //this.listOfGames = ObservableCollection<string>(); Might need to initialize the collection
             this.multiPlayerMenuViewModel = new MultiPlayerMenuViewModel();
-            //this.settingsModel = new SettingsModel();
+           //this.settingsModel = new SettingsModel();
             //this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
             //    (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.multiPlayerMenuViewModel;
@@ -49,42 +48,40 @@ namespace GameClient.Views
             LoadingWindow loadingWindow = new LoadingWindow();
             Application.Current.Dispatcher.Invoke((Action) delegate
             {
-
-               loadingWindow.Show();
-
+                loadingWindow.Show();
             });
 
-        /*  Task loaderTask = new Task(() =>
-          {
-              
-          });*/
-            //loaderTask.Start();
             this.Hide();
-                this.multiPlayerMenuViewModel.StartNewGame(mazeNameBox.Text,
-                    mazeRowsBox.Text, mazeColsBox.Text);
-          // loaderTask.Dispose();
-          loadingWindow.Close();
-               
-               
-          
-            Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
-             new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
-          this.Close();
-           
-        }
-        
-        private void joinGameButton_Click(object sender, RoutedEventArgs e)
-        {
-            string nameOfGame = listOfGameComboBox.SelectionBoxItem.ToString();
-            this.multiPlayerMenuViewModel.JoinGame(nameOfGame);
 
-            Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
-            new MultiplePlayerGameMaze(maze, this.multiPlayerMenuViewModel.MultiPlayerMenuModel.CommunicationClient).Show();
+            try
+            {
+                new MultiplePlayerGameMaze(mazeNameBox.Text, mazeRowsBox.Text,
+                    mazeColsBox.Text).Show();
+            }
+            catch (Exception exception)
+            {
+              
+            }
+         
+
+            loadingWindow.Close();
 
             this.Close();
         }
 
-        private void listOfGameComboBox_DropDownOpened(object sender, EventArgs e)
+        private void joinGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            string gameName = listOfGameComboBox.SelectionBoxItem.ToString();
+            //  this.multiPlayerMenuViewModel.JoinGame(gameName);
+
+            // Maze maze = this.multiPlayerMenuViewModel.MultiPlayerMenuModel.Maze;
+            new MultiplePlayerGameMaze(gameName).Show();
+
+            this.Close();
+        }
+
+        private void listOfGameComboBox_DropDownOpened(object sender,
+            EventArgs e)
         {
             this.multiPlayerMenuViewModel.GetGameList();
         }

@@ -51,13 +51,24 @@ namespace GameClient.Model.Listeners
             endPoint = new IPEndPoint(IPAddress.Parse(this.ip), this.port);
         }
 
+        public event EventHandler ConnectionFailed;
+
         public void SendToServer(string command)
         {
             //If not connected, Initialize connection.
             if (!isConnected || ServerListener.IsMultiplayer == false)
             {
                 tcpClient = new TcpClient();
-                tcpClient.Connect(endPoint);
+                try
+                {
+                    tcpClient.Connect(endPoint);
+                }
+                catch (Exception e)
+                {
+                    this.ConnectionFailed?.Invoke(this, null);
+                    return;
+                }
+              
                 stream = tcpClient.GetStream();
                 writer = new StreamWriter(stream);
                 reader = new StreamReader(stream);

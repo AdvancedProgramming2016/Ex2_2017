@@ -45,15 +45,15 @@ namespace GameClient.ViewModel
             this.MultiPlayerMenuModel.AddGameToList(gameName);
         }
 
-        public void StartNewGame(string nameOfGame, string rows, string columns)
+       /* public void StartNewGame(string nameOfGame, string rows, string columns)
         {
             this.MultiPlayerMenuModel.StartNewGame(rows, columns, nameOfGame);
-        }
+        }*/
 
-        public void JoinGame(string nameOfGame)
+       /* public void JoinGame(string nameOfGame)
         {
             this.MultiPlayerMenuModel.JoinGame(nameOfGame);
-        }
+        }*/
 
         public void GetGameList()
         {
@@ -70,7 +70,7 @@ namespace GameClient.ViewModel
             }
         }
 
-        public String VM_Maze
+      /*  public String VM_Maze
         {
             get
             {
@@ -78,7 +78,7 @@ namespace GameClient.ViewModel
                     .Replace("\r\n", "")
                     .Replace("*", "0");
             }
-        }
+        }*/
 
         public String VM_DefaultNumRows
         {

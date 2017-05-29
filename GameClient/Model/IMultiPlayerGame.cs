@@ -11,17 +11,19 @@ namespace GameClient.Model
     public interface IMultiPlayerGame : INotifyPropertyChanged
     {
         Maze Maze { get; set; }
-        string OpponentPosition { get; set; }
-        string PlayerPosition { get; set; }
+        Position OpponentPosition { get; set; }
+        Position PlayerPosition { get; set; }
 
         //void JoinGame(string gameName);
 
         //  void StartNewGame(string numOfRows, string numOfCols,
         //     string nameOfMaze);
 
-        void MovePlayer(string direction);
+        void MovePlayer(int x, int y);
         void CloseGame(string gameName);
+        void StartGame(string gameName, string rows, string columns);
+        void JoinGame(string gameName);
         event EventHandler ExitCalled;
-        event EventHandler DirectionCalled;
+        event EventHandler ConnectionLost;
     }
 }

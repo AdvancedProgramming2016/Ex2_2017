@@ -8,6 +8,8 @@ using MazeLib;
 using GameClient.Model;
 using System.Net.Sockets;
 using System.IO;
+using System.Threading;
+using System.Windows;
 using GameClient.Model.Listeners;
 using GameClient.Model.Parsers;
 using SearchAlgorithmsLib;
@@ -18,15 +20,17 @@ namespace GameClient.Model
     {
         private Maze maze;
         private string solution;
+        private Position playerPosition;
         private CommunicationClient communicationClient;
         private ISettingsModel settingsModel;
+        private bool enable;
 
         public SinglePlayerGameModel(ISettingsModel settingsModel)
         {
             string resultCommand;
             this.communicationClient = new CommunicationClient();
             this.settingsModel = settingsModel;
-            //TODO get ip and port from Settings
+
             communicationClient.Connect(settingsModel.Port,
                 settingsModel.IpAddress);
 
@@ -34,10 +38,7 @@ namespace GameClient.Model
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     ServerResponse = communicationClient.CommandFromUser;
-                    // HandleServerResult(ServerResponse);
                 };
-            //  TcpClient tcpClient = new TcpClient();
-            //  this.serverListener = new ServerListener(tcpClient, new StreamReader(tcpClient.GetStream()));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -50,7 +51,16 @@ namespace GameClient.Model
 
         public string ServerResponse { get; set; }
 
-        public Position PlayerPosition { get; set; }
+        public Position PlayerPosition
+        {
+            get { return this.playerPosition; }
+            set
+            {
+                this.playerPosition = value;
+                NotifyPropertyChanged("PlayerPosition");
+            }
+        }
+
         public string CommandPropertyChanged { get; set; }
 
         public Maze Maze
@@ -60,8 +70,14 @@ namespace GameClient.Model
             set
             {
                 this.maze = value;
-                this.NotifyPropertyChanged("FullMaze");
+                this.NotifyPropertyChanged("Maze");
             }
+        }
+
+        public void MovePlayer(int x, int y)
+        {
+            //TODO there was an if before, check if needed?
+            PlayerPosition = new Position(x, y);
         }
 
         public string Solution
@@ -74,41 +90,89 @@ namespace GameClient.Model
             }
         }
 
-        /* public Position PlayerPosition
-           {
-               get { return this.playerPosition; }
-   
-               set
-               {
-                   this.playerPosition = value;
-                   this.NotifyPropertyChanged("PlayerPosition");
-               }
-           }*/
+        public event EventHandler EnableControls;
 
-        /* public void MovePlayer()
-          {
-              throw new NotImplementedException();
-          }*/
+        public bool EnableControlsStatus
+        {
+            get { return this.enable; }
+            set
+            {
+                this.enable = value;
+                EnableControls?.Invoke(this, null);
+            }
+        }
 
         public void Restart()
         {
-            throw new NotImplementedException();
+            PlayerPosition = maze.InitialPos;
         }
 
         public void SolveMaze(string name)
         {
-            string command;
-            string algorithmType = settingsModel.DefaultAlgo.ToString();
+            new Task(() =>
+            {
+                EnableControlsStatus = false;
 
-            command = CommandParser.ParseTOSolveCommand(name, algorithmType);
+                try
+                {
+                    string command;
+                    string algorithmType = settingsModel.DefaultAlgo.ToString();
 
-            CommandPropertyChanged = "solve";
+                    command =
+                        CommandParser.ParseTOSolveCommand(name, algorithmType);
 
-            communicationClient.SendToServer(command);
+                    communicationClient.SendToServer(command);
 
-            HandleServerResult(ServerResponse);
-            // while (ServerResponse == null) { }
+                    solution = Reverse(
+                        FromJsonConverter.MazeSolution(ServerResponse));
+
+                    PlayerPosition = maze.InitialPos;
+
+                    foreach (char direction in solution)
+                    {
+                        switch (direction)
+                        {
+                            case '0':
+                                PlayerPosition =
+                                    ApplyMovement(
+                                        PlayerPosition, "right");
+                                break;
+                            case '1':
+                                PlayerPosition =
+                                    ApplyMovement(
+                                        PlayerPosition, "left");
+                                break;
+                            case '2':
+                                PlayerPosition =
+                                    ApplyMovement(
+                                        PlayerPosition, "up");
+                                break;
+                            case '3':
+                                PlayerPosition =
+                                    ApplyMovement(
+                                        PlayerPosition, "down");
+                                break;
+                        }
+                        Thread.Sleep(500);
+                    }
+                }
+                catch (ArgumentNullException)
+                {
+                    this.ConnectionLost?.Invoke(this, null);
+                }
+
+                EnableControlsStatus = true;
+            }).Start();
         }
+
+        private string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        public event EventHandler ConnectionLost;
 
         public void GenerateGame(String numOfRows, String numOfCols,
             String nameOfMaze)
@@ -123,20 +187,20 @@ namespace GameClient.Model
             CommandPropertyChanged = "generate";
 
             //Send command to the server.
-            communicationClient.SendToServer(command);
+            try
+            {
+                communicationClient.SendToServer(command);
+                while (string.IsNullOrEmpty(ServerResponse))
+                {
+                    continue;
+                }
 
-            HandleServerResult(ServerResponse);
-            // while (ServerResponse == null) { }
-            //string generateResult;
-
-            /* communicationClient.ServerListener.PropertyChanged +=
-                 delegate(Object sender, PropertyChangedEventArgs e)
-                 {
-                     //TODO the xaml gives only rows and name, columns missing
-                     generateResult = communicationClient.ServerListener.Command;
- 
-                     maze = Maze.FromJSON(generateResult);
-                 };*/
+                HandleServerResult(ServerResponse);
+            }
+            catch (ArgumentNullException)
+            {
+               this.ConnectionLost?.Invoke(this, null);
+            }
         }
 
         private void HandleServerResult(string command)
@@ -153,7 +217,7 @@ namespace GameClient.Model
                     break;
 
                 case "solve":
-                    HandleSolveCommand(command);
+                    //    HandleSolveCommand(command);
                     break;
             }
 
@@ -162,12 +226,36 @@ namespace GameClient.Model
 
         private void HandleGenerateCommand(string command)
         {
-            Maze = Maze.FromJSON(command);
+            try
+            {
+                Maze = Maze.FromJSON(command);
+                PlayerPosition =
+                    new Position(Maze.InitialPos.Row, Maze.InitialPos.Col);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("A maze with the same name already exists.");
+            }
         }
 
-        private void HandleSolveCommand(string command)
+        public Position ApplyMovement(Position position, string direction)
         {
-            Solution = FromJsonConverter.MazeSolution(command);
+            switch (direction)
+            {
+                case "up":
+                    --position.Row;
+                    break;
+                case "down":
+                    ++position.Row;
+                    break;
+                case "right":
+                    ++position.Col;
+                    break;
+                case "left":
+                    --position.Col;
+                    break;
+            }
+            return position;
         }
     }
 }

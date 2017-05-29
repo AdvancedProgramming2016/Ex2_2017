@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GameClient.ViewModel;
 using GameClient.Model;
+using GameClient.Model.Listeners;
 using SearchAlgorithmsLib;
 
 namespace GameClient.Views
@@ -22,20 +23,35 @@ namespace GameClient.Views
     /// </summary>
     public partial class SinglePlayerGameMaze : Window
     {
-
         private SinglePlayerGameViewModel spViewModel;
         private string gameName;
+        private CommunicationClient communicationClient;
 
-        public SinglePlayerGameMaze(String numOfRows, String numOfCols, String nameOfMaze)
+        public SinglePlayerGameMaze(String numOfRows, String numOfCols,
+            String nameOfMaze)
+        {
+            //InitializeComponent();
+            this.gameName = nameOfMaze;
+            this.communicationClient = new CommunicationClient();
+            ISettingsModel settingsModel = new SettingsModel();
+            this.communicationClient.Connect(settingsModel.Port,
+                settingsModel.IpAddress);
+            this.spViewModel = new SinglePlayerGameViewModel
+            (new SinglePlayerGameModel(settingsModel),
+                new SettingsViewModel(settingsModel));
+            this.spViewModel.ConnectionLost +=
+                HandleConnectionLost;
+
+            this.spViewModel.StartNewGame(numOfRows, numOfCols, nameOfMaze);
+            this.DataContext = this.spViewModel;
+            this.spViewModel.EnableCalled += HandleEnable;
+            // this.spViewModel.SolutionCall += AnimationCaller;
+        }
+
+        protected override void OnInitialized(EventArgs e)
         {
             InitializeComponent();
-            this.gameName = nameOfMaze;
-            ISettingsModel settingsModel = new SettingsModel();
-            this.spViewModel = new SinglePlayerGameViewModel
-                (new SinglePlayerGameModel(settingsModel), new SettingsViewModel(settingsModel));
-            this.DataContext = this.spViewModel;
-            this.spViewModel.StartNewGame(numOfRows, numOfCols, nameOfMaze);
-            this.spViewModel.SolutionCall += AnimationCaller;
+            base.OnInitialized(e);
         }
 
         /// <summary>
@@ -50,11 +66,6 @@ namespace GameClient.Views
             this.Close();
         }
 
-        private void MazeBoard_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void solveButton_Click(object sender, RoutedEventArgs e)
         {
             this.spViewModel.SolveMaze(gameName);
@@ -65,9 +76,33 @@ namespace GameClient.Views
             MazeBoard.Focus();
         }
 
-        private void AnimationCaller(object sender, EventArgs e)
+        private void restartButton_Click(object sender, RoutedEventArgs e)
         {
-            MazeBoard.RunAnimation(this.spViewModel.VM_Solution, this.spViewModel.VM_InitialPostion);
+            this.spViewModel.Restart();
+        }
+
+        public void HandleEnable(object sender, EventArgs e)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.restartButton.IsEnabled = !this.restartButton.IsEnabled;
+
+                this.solveButton.IsEnabled = !this.solveButton.IsEnabled;
+
+                this.menuButton.IsEnabled = !this.menuButton.IsEnabled;
+            });
+        }
+
+        public void HandleConnectionLost(object sender, EventArgs e)
+        {
+            MessageBox.Show("Connection failed.");
+            try
+            {
+                this.Close();
+            }
+            catch (Exception exception)
+            {
+            }
         }
     }
 }
