@@ -19,6 +19,9 @@ namespace GameClient.Views
     /// </summary>
     public partial class LoadingWindow : Window
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public LoadingWindow()
         {
             InitializeComponent();

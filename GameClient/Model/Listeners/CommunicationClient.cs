@@ -16,15 +16,54 @@ namespace GameClient.Model.Listeners
     /// </summary>
     public class CommunicationClient : IClientConnection, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Port number.
+        /// </summary>
         private int port;
+
+        /// <summary>
+        /// Ip address.
+        /// </summary>
         private string ip;
+
+        /// <summary>
+        /// Ip end point.
+        /// </summary>
         private IPEndPoint endPoint;
+
+        /// <summary>
+        /// Tcp client.
+        /// </summary>
         private TcpClient tcpClient;
+
+        /// <summary>
+        /// Network stream.
+        /// </summary>
         private NetworkStream stream;
+
+        /// <summary>
+        /// Stream reader.
+        /// </summary>
         private StreamReader reader;
+
+        /// <summary>
+        /// Stream writer.
+        /// </summary>
         private StreamWriter writer;
+
+        /// <summary>
+        /// Checks if multiplayer game.
+        /// </summary>
         private bool isMultiplayer;
+
+        /// <summary>
+        /// Checks if connected.
+        /// </summary>
         private bool isConnected;
+
+        /// <summary>
+        /// Command received from user.
+        /// </summary>
         private string commandFromUser;
 
         /// <summary>
@@ -42,8 +81,16 @@ namespace GameClient.Model.Listeners
             isConnected = false;
         }
 
+        /// <summary>
+        /// Server listerner property.
+        /// </summary>
         public IListener ServerListener { get; set; }
 
+        /// <summary>
+        /// Connects to server.
+        /// </summary>
+        /// <param name="port">Port.</param>
+        /// <param name="ip">Ip.</param>
         public void Connect(int port, string ip)
         {
             this.port = port;
@@ -51,14 +98,23 @@ namespace GameClient.Model.Listeners
             endPoint = new IPEndPoint(IPAddress.Parse(this.ip), this.port);
         }
 
+        /// <summary>
+        /// Connection failed event.
+        /// </summary>
         public event EventHandler ConnectionFailed;
 
+        /// <summary>
+        /// Sends command to server.
+        /// </summary>
+        /// <param name="command">Command.</param>
         public void SendToServer(string command)
         {
             //If not connected, Initialize connection.
             if (!isConnected || ServerListener.IsMultiplayer == false)
             {
                 tcpClient = new TcpClient();
+
+                //Connect to server.
                 try
                 {
                     tcpClient.Connect(endPoint);
@@ -67,7 +123,8 @@ namespace GameClient.Model.Listeners
                 {
                     throw new ArgumentNullException();
                 }
-              
+
+                //Initialize streams.
                 stream = tcpClient.GetStream();
                 writer = new StreamWriter(stream);
                 reader = new StreamReader(stream);
@@ -116,14 +173,24 @@ namespace GameClient.Model.Listeners
             }
         }
 
+        /// <summary>
+        /// Property changed event handler.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Notifies property has changed.
+        /// </summary>
+        /// <param name="propName">Property name.</param>
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propName));
         }
 
+        /// <summary>
+        /// Command from user property.
+        /// </summary>
         public string CommandFromUser
         {
             get { return commandFromUser; }
@@ -134,7 +201,11 @@ namespace GameClient.Model.Listeners
             }
         }
 
-        //TODO maybe pass command as EventArgs
+        /// <summary>
+        /// Handles server response.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandleServerAnswer(object sender, EventArgs e)
         {
             CommandFromUser = ServerListener.Command;

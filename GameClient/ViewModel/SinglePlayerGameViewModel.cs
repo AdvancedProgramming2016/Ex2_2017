@@ -12,13 +12,31 @@ using System.Threading;
 
 namespace GameClient.ViewModel
 {
+    /// <summary>
+    /// Single player viewModel.
+    /// </summary>
     public class SinglePlayerGameViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Single player model reference.
+        /// </summary>
         private ISinglePlayerGame singlePlayerModel;
+
+        /// <summary>
+        /// Settings model reference.
+        /// </summary>
         private ISettingsViewModel settingsViewModel;
+
+        /// <summary>
+        /// Maze
+        /// </summary>
         private Maze maze;
 
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="singlePlayerModel">Model.</param>
+        /// <param name="settingsViewModel">Settings viewModel.</param>
         public SinglePlayerGameViewModel(ISinglePlayerGame singlePlayerModel,
             ISettingsViewModel settingsViewModel)
         {
@@ -26,40 +44,30 @@ namespace GameClient.ViewModel
             this.settingsViewModel = settingsViewModel;
 
             this.singlePlayerModel.ConnectionLost += HandleConnectionLost;
+
+            //Set property changed delegate.
             this.singlePlayerModel.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     NotifyPropertyChanged("VM_" + e.PropertyName);
-
-                   /* if (e.PropertyName == "Solution")
-                    {
-                        SolutionCall?.Invoke(this, null);
-                        //RunAnimation(this.singlePlayerModel.Solution);
-                    }*/
                 };
 
             this.singlePlayerModel.EnableControls += HandleEnable;
         }
 
+        /// <summary>
+        /// Property changed event.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Solution call event.
+        /// </summary>
         public event EventHandler SolutionCall;
 
-        /* public Maze VM_FullMaze
-         {
-             get { return maze; }
-             set
-             {
-                 maze = value;
-                 VM_MazeName = maze.Name;
-                 VM_Maze = maze.ToString();
-                 VM_InitialPostion = maze.InitialPos.ToString();
-                 VM_DestPosition = maze.GoalPos.ToString();
-                 VM_Rows = maze.Rows.ToString();
-                 VM_Cols = maze.Cols.ToString();
-             }
-         }*/
-
+        /// <summary>
+        /// Maze property.
+        /// </summary>
         public String VM_Maze
         {
             get
@@ -71,43 +79,41 @@ namespace GameClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// Solution property.
+        /// </summary>
         public string VM_Solution
         {
             get { return this.singlePlayerModel.Solution; }
-           /* set
-            {
-                this.vm_solution = value;
-                NotifyPropertyChanged("VM_Solution");
-                //RunAnimation(vm_solution);
-            }*/
         }
 
-        /* private string DivideMazeToCommas(Maze maze)
-         {
-             string str = maze.ToString();
-             string finalString = string.Empty;
- 
-             finalString = str.Replace("\r\n", ",");
-             finalString = finalString.Remove(finalString.Length - 1);
- 
-             return finalString;
-         }*/
-
+        /// <summary>
+        /// Default algorithm property.
+        /// </summary>
         public string VM_DefaultAlgorithm
         {
             get { return this.settingsViewModel.VM_SelectedAlgo.ToString(); }
         }
 
+        /// <summary>
+        /// Initial position property.
+        /// </summary>
         public String VM_InitialPostion
         {
             get { return this.singlePlayerModel.Maze.InitialPos.ToString(); }
         }
 
+        /// <summary>
+        /// Destination position property.
+        /// </summary>
         public String VM_DestPosition
         {
             get { return this.singlePlayerModel.Maze.GoalPos.ToString(); }
         }
 
+        /// <summary>
+        /// Player position property.
+        /// </summary>
         public String VM_PlayerPosition
         {
             get { return this.singlePlayerModel.PlayerPosition.ToString(); }
@@ -119,16 +125,25 @@ namespace GameClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// Rows property.
+        /// </summary>
         public string VM_Rows
         {
             get { return this.singlePlayerModel.Maze.Rows.ToString(); }
         }
 
+        /// <summary>
+        /// Columns property.
+        /// </summary>
         public string VM_Cols
         {
             get { return this.singlePlayerModel.Maze.Cols.ToString(); }
         }
 
+        /// <summary>
+        /// Default columns property.
+        /// </summary>
         public string VM_DefaultNumberCols
         {
             get
@@ -138,6 +153,9 @@ namespace GameClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// Default rows property.
+        /// </summary>
         public string VM_DefaultNumberRows
         {
             get
@@ -147,11 +165,18 @@ namespace GameClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// Maze name property.
+        /// </summary>
         public String VM_MazeName
         {
             get { return this.singlePlayerModel.Maze.Name; }
         }
 
+        /// <summary>
+        /// Notifies property changed.
+        /// </summary>
+        /// <param name="propName"></param>
         public void NotifyPropertyChanged(string propName)
         {
             if (this.PropertyChanged != null)
@@ -159,28 +184,44 @@ namespace GameClient.ViewModel
                     new PropertyChangedEventArgs(propName));
         }
 
+        /// <summary>
+        /// Enable called event.
+        /// </summary>
         public event EventHandler EnableCalled;
 
+        /// <summary>
+        /// Handels enable called.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleEnable(object sender, EventArgs e)
         {
             EnableCalled?.Invoke(this, null);
         }
 
-        /* public void MovePlayer()
-         {
-             this.singlePlayerModel.MovePlayer();
-         }*/
-
+        /// <summary>
+        /// Restarts the game.
+        /// </summary>
         public void Restart()
         {
             this.singlePlayerModel.Restart();
         }
 
+        /// <summary>
+        /// Solves the maze.
+        /// </summary>
+        /// <param name="name"></param>
         public void SolveMaze(string name)
         {
             this.singlePlayerModel.SolveMaze(name);
         }
 
+        /// <summary>
+        /// Creates a new maze.
+        /// </summary>
+        /// <param name="numOfRows">Rows.</param>
+        /// <param name="numOfCols">Columns.</param>
+        /// <param name="nameOfMaze">Maze name.</param>
         public void StartNewGame(String numOfRows, String numOfCols,
             String nameOfMaze)
         {
@@ -188,8 +229,16 @@ namespace GameClient.ViewModel
                 nameOfMaze);
         }
 
+        /// <summary>
+        /// Connection lost event.
+        /// </summary>
         public event EventHandler ConnectionLost;
 
+        /// <summary>
+        /// Handles lost connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleConnectionLost(object sender, EventArgs e)
         {
             this.ConnectionLost?.Invoke(this, null);

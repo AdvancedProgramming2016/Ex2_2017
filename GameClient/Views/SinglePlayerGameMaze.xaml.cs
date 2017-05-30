@@ -23,14 +23,31 @@ namespace GameClient.Views
     /// </summary>
     public partial class SinglePlayerGameMaze : Window
     {
+        /// <summary>
+        /// Single player viewModel.
+        /// </summary>
         private SinglePlayerGameViewModel spViewModel;
+
+        /// <summary>
+        /// Game name.
+        /// </summary>
         private string gameName;
+
+        /// <summary>
+        /// Communication client.
+        /// </summary>
         private CommunicationClient communicationClient;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="numOfRows">Rows.</param>
+        /// <param name="numOfCols">Columns.</param>
+        /// <param name="nameOfMaze">Maze name.</param>
         public SinglePlayerGameMaze(String numOfRows, String numOfCols,
             String nameOfMaze)
         {
-            //InitializeComponent();
+            //Set members.
             this.gameName = nameOfMaze;
             this.communicationClient = new CommunicationClient();
             ISettingsModel settingsModel = new SettingsModel();
@@ -45,9 +62,12 @@ namespace GameClient.Views
             this.spViewModel.StartNewGame(numOfRows, numOfCols, nameOfMaze);
             this.DataContext = this.spViewModel;
             this.spViewModel.EnableCalled += HandleEnable;
-            // this.spViewModel.SolutionCall += AnimationCaller;
         }
 
+        /// <summary>
+        /// On initialize event.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnInitialized(EventArgs e)
         {
             InitializeComponent();
@@ -61,26 +81,58 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void menuButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow();
-            mw.Show();
-            this.Close();
+            if (MessageBox.Show("Are you sure you want to go back to the main window?",
+                    "Confirm",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                MainWindow mw = new MainWindow();
+                mw.Show();
+                this.Close();
+            }
         }
 
+        /// <summary>
+        /// Solve click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void solveButton_Click(object sender, RoutedEventArgs e)
         {
             this.spViewModel.SolveMaze(gameName);
         }
 
+        /// <summary>
+        /// Window loaded event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             MazeBoard.Focus();
         }
 
+        /// <summary>
+        /// Restart click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void restartButton_Click(object sender, RoutedEventArgs e)
         {
-            this.spViewModel.Restart();
+            if (MessageBox.Show("Are you sure you want to restart the game?",
+                    "Confirm",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                this.spViewModel.Restart();
+            }
         }
 
+        /// <summary>
+        /// Handle enable.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleEnable(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(() =>
@@ -93,6 +145,11 @@ namespace GameClient.Views
             });
         }
 
+        /// <summary>
+        /// Handle lost connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleConnectionLost(object sender, EventArgs e)
         {
             MessageBox.Show("Connection lost.", "Error", MessageBoxButton.OK,

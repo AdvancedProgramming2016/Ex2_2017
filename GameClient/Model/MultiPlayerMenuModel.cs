@@ -11,12 +11,30 @@ using GameClient.Model.Parsers;
 
 namespace GameClient.Model
 {
+    /// <summary>
+    /// Multiplayer menu model.
+    /// </summary>
     class MultiPlayerMenuModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Maze.
+        /// </summary>
         private Maze maze;
+
+        /// <summary>
+        /// Games list.
+        /// </summary>
         private ObservableCollection<String> listOfGames;
+
+        /// <summary>
+        /// Settings model reference.
+        /// </summary>
         private ISettingsModel settingsModel;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="settingsModel">Settings model.</param>
         public MultiPlayerMenuModel(ISettingsModel settingsModel)
         {
             //Set settings.
@@ -32,24 +50,42 @@ namespace GameClient.Model
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     ServerResponse = CommunicationClient.CommandFromUser;
-                    //HandleServerResult(ServerResponse);
                 };
         }
 
+        /// <summary>
+        /// Server response property.
+        /// </summary>
         public string ServerResponse { get; set; }
 
+        /// <summary>
+        /// Command changed property.
+        /// </summary>
         public string CommandPropertyChanged { get; set; }
 
+        /// <summary>
+        /// Property changed event.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Notifies property has changed.
+        /// </summary>
+        /// <param name="propName"></param>
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propName));
         }
 
+        /// <summary>
+        /// Communication client propertry.
+        /// </summary>
         public CommunicationClient CommunicationClient { get; set; }
 
+        /// <summary>
+        /// Games list property.
+        /// </summary>
         public ObservableCollection<String> ListOfGames
         {
             get { return this.listOfGames; }
@@ -60,68 +96,24 @@ namespace GameClient.Model
             }
         }
 
-        /*public Maze Maze
-        {
-            get { return this.maze; }
-
-            set
-            {
-                this.maze = value;
-                this.NotifyPropertyChanged("Maze");
-            }
-        }*/
-
+        /// <summary>
+        /// Adds game to list.
+        /// </summary>
+        /// <param name="gameName"></param>
         public void AddGameToList(String gameName)
         {
             // Open session with the server and add the new game.
             ListOfGames.Add(gameName);
         }
 
-        /* public void StartNewGame(string numOfRows, string numOfCols,
-             string nameOfMaze)
-         {
-             string command;
- 
-             //Parse into the right format.
-             command = CommandParser.ParseToStartCommand(nameOfMaze,
-                 numOfRows,
-                 numOfCols);
- 
-             IsSingleCommand = "start";
- 
-             //Send command to the server.
-             CommunicationClient.SendToServer(command);
- 
-             while (string.IsNullOrEmpty(ServerResponse))
-             {
-                 continue;
-             }
- 
-             HandleServerResult(ServerResponse);
-         }*/
-
-        /*public void JoinGame(string gameName)
-        {
-            string command;
-
-            //Parse into the right format.
-            command = CommandParser.ParseToJoinCommand(gameName);
-
-            IsSingleCommand = "join";
-
-            //Send command to the server.
-            CommunicationClient.SendToServer(command);
-
-            while (string.IsNullOrEmpty(ServerResponse))
-            {
-                continue;
-            }
-
-            HandleServerResult(ServerResponse);
-        }*/
-
+        /// <summary>
+        /// Connection lost event.
+        /// </summary>
         public event EventHandler ConnectionLost;
 
+        /// <summary>
+        /// Requests the game list.
+        /// </summary>
         public void RequestList()
         {
             string command;
@@ -149,7 +141,10 @@ namespace GameClient.Model
             }
         }
 
-
+        /// <summary>
+        /// Handles server response.
+        /// </summary>
+        /// <param name="command">Command.</param>
         private void HandleServerResult(string command)
         {
             if (command.StartsWith("Error"))
@@ -173,22 +168,13 @@ namespace GameClient.Model
             }
         }
 
-        /* private void HandlStartCommand(string command)
-         {
-             Maze maze = Maze.FromJSON(command);
-             this.Maze = maze;
-             // ServerResponse = null;
-         }
- 
-         private void HandleJoinCommand(string command)
-         {
-             Maze maze = Maze.FromJSON(command);
-             this.Maze = maze;
-             //ServerResponse = null;
-         }*/
-
+        /// <summary>
+        /// Handles list command.
+        /// </summary>
+        /// <param name="command">Command.</param>
         private void HandleListCommand(string command)
         {
+            //Convert from Json.
             this.ListOfGames = FromJsonConverter.GamesList(command);
             ServerResponse = null;
         }

@@ -24,8 +24,8 @@ namespace GameClient.Model.Parsers
             string finalCommand;
 
             //TODO change that
-             finalCommand = $"generate {name} {rows} {columns}";
-           // finalCommand = "generate ggg 5 5";
+            finalCommand = $"generate {name} {rows} {columns}";
+            // finalCommand = "generate ggg 5 5";
 
             return finalCommand;
         }
@@ -64,6 +64,10 @@ namespace GameClient.Model.Parsers
             return finalCommand;
         }
 
+        /// <summary>
+        /// Parses the list command into the right format.
+        /// </summary>
+        /// <returns>Command in right format.</returns>
         public static string ParseToListCommand()
         {
             string finalCommand;

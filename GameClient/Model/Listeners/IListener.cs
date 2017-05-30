@@ -37,6 +37,9 @@ namespace GameClient.Model.Listeners
         /// </summary>
         bool IsMultiplayer { get; set; }
 
+        /// <summary>
+        /// Something happened event.
+        /// </summary>
         event EventHandler SomethingHappened;
     }
 }

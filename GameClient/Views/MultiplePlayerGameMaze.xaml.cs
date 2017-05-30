@@ -24,16 +24,36 @@ namespace GameClient.Views
     /// </summary>
     public partial class MultiplePlayerGameMaze : Window
     {
+        /// <summary>
+        /// Multiplayer viewModel reference.
+        /// </summary>
         private MultiPlayerGameViewModel multiPlayerGameViewModel;
+
+        /// <summary>
+        /// Communication client.
+        /// </summary>
         private CommunicationClient communicationClient;
-        private MazeGrid rightMazeGrid;
+
+        /// <summary>
+        /// Game name.
+        /// </summary>
         private string gameName;
+
+        /// <summary>
+        /// Checks if game is on.
+        /// </summary>
         private bool isGameOn;
 
+        /// <summary>
+        /// Constructor,
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="columns">Columns.</param>
         public MultiplePlayerGameMaze(string gameName, string rows,
             string columns)
         {
-            //this.gameName = maze.Name;
+            //Initialize members.
             this.communicationClient = new CommunicationClient();
             ISettingsModel settingsModel = new SettingsModel();
             this.communicationClient.Connect(settingsModel.Port,
@@ -59,34 +79,22 @@ namespace GameClient.Views
                 throw new Exception();
             }
 
-
-            /*  this.multiPlayerGameViewModel.VM_Maze = maze.ToString();
-              this.multiPlayerGameViewModel.VM_Cols = maze.Cols.ToString();
-              this.multiPlayerGameViewModel.VM_Rows = maze.Rows.ToString();
-              this.multiPlayerGameViewModel.VM_InitialPosition =
-                  maze.InitialPos.ToString();
-              this.multiPlayerGameViewModel.VM_DestPosition =
-                  maze.GoalPos.ToString();
-              this.multiPlayerGameViewModel.VM_MazeName = maze.Name;*/
-
-            //InitializeComponent();
-
             this.multiPlayerGameViewModel.OpponentExitCalled +=
                 HandleExitCalled;
             this.multiPlayerGameViewModel.OpponentDirectionCalled +=
                 HandleDirectionCalled;
-            // LeftMaze.PlayerMoved += PlayerMovedHandler;
-            rightMazeGrid = RightMaze;
 
+            //Set data context.
             this.DataContext = this.multiPlayerGameViewModel;
-
-            // RightMaze.MultiPlayerGameVM = this.multiPlayerGameViewModel;
-
-            //this.StartNewGame(numOfRows, numOfCols, nameOfMaze);
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
         public MultiplePlayerGameMaze(string gameName)
         {
+            //Initialize members.
             this.communicationClient = new CommunicationClient();
             ISettingsModel settingsModel = new SettingsModel();
             this.communicationClient.Connect(settingsModel.Port,
@@ -97,8 +105,6 @@ namespace GameClient.Views
 
             this.multiPlayerGameViewModel.JoinGame(gameName);
 
-            //InitializeComponent();
-
             this.multiPlayerGameViewModel.OpponentExitCalled +=
                 HandleExitCalled;
 
@@ -106,27 +112,19 @@ namespace GameClient.Views
 
             this.multiPlayerGameViewModel.OpponentWon += HandleOpponentWon;
 
-            //   this.multiPlayerGameViewModel.ReachedGoal += HandleReachedGoal;
-            /*  this.multiPlayerGameViewModel.OpponentDirectionCalled +=
-                  HandleDirectionCalled;*/
-            //LeftMaze.PlayerMoved += PlayerMovedHandler;
-            //rightMazeGrid = RightMaze;
-
             this.DataContext = this.multiPlayerGameViewModel;
         }
 
+        /// <summary>
+        /// On initialize event.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnInitialized(EventArgs e)
         {
             this.isGameOn = true;
             InitializeComponent();
             base.OnInitialized(e);
         }
-
-
-        /*  private void PlayerMovedHandler(object sender, EventArgs e)
-          {
-              this.multiPlayerGameViewModel.MovePlayer(LeftMaze.DirectionMoved);
-          }*/
 
         /// <summary>
         /// Go back to main menu.
@@ -135,17 +133,24 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void BackMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.multiPlayerGameViewModel.CloseGame(gameName);
-            //MainWindow mw = new MainWindow();
-            //mw.Show();
             this.Close();
         }
 
+        /// <summary>
+        /// Window loaded event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LeftMaze.Focus();
         }
 
+        /// <summary>
+        /// Handles exit called.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandleExitCalled(object sender, EventArgs e)
         {
             isGameOn = false;
@@ -155,33 +160,40 @@ namespace GameClient.Views
                 MessageBoxImage.Information);
             try
             {
-                //new MainWindow().Show();
-
                 this.Close();
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.InnerException);
             }
-            /* MainWindow mw = new MainWindow();
-             mw.Show();
-             this.Close();*/
         }
 
+        /// <summary>
+        /// Handles direction called.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandleDirectionCalled(object sender, EventArgs e)
         {
             string direction = this.multiPlayerGameViewModel
                 .VM_OpponentPosition;
-
-            /*  RightMaze.CalculateNewPosition(direction,
-                  this.RightMaze.PlayerPosition);*/
         }
 
+        /// <summary>
+        /// Handles opponent won.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleOpponentWon(object sender, EventArgs e)
         {
             //  MessageBox.Show("You lost.");
         }
 
+        /// <summary>
+        /// Handles connection lost.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleConnectionLost(object sender, EventArgs e)
         {
             MessageBox.Show("Connection lost.", "Error", MessageBoxButton.OK,
@@ -196,11 +208,21 @@ namespace GameClient.Views
             }
         }
 
+        /// <summary>
+        /// Handles goal reached.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleReachedGoal(object sender, EventArgs e)
         {
             //  MessageBox.Show("You won.");
         }
 
+        /// <summary>
+        /// On closing event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MultiplePlayerGameMaze_OnClosing(object sender,
             CancelEventArgs e)
         {

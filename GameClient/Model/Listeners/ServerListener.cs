@@ -12,7 +12,7 @@ namespace GameClient.Model.Listeners
     /// <summary>
     /// Listens for server input.
     /// </summary>
-    public class ServerListener : IListener//, INotifyPropertyChanged
+    public class ServerListener : IListener //, INotifyPropertyChanged
 
     {
         /// <summary>
@@ -86,8 +86,8 @@ namespace GameClient.Model.Listeners
         /// Property changed event handler.
         /// </summary>
         // public event PropertyChangedEventHandler PropertyChanged;
-
         public event EventHandler SomethingHappened;
+
         /// <summary>
         /// Notifies that the property was changed.
         /// </summary>
@@ -98,7 +98,6 @@ namespace GameClient.Model.Listeners
                 new PropertyChangedEventArgs(propName));
         }
         */
-
         /// <summary>
         /// Listens for server input.
         /// </summary>
@@ -131,11 +130,11 @@ namespace GameClient.Model.Listeners
 
 
                         Command = readyCommand;
-                      
+
                         //Check if close command was received.
                         if (Command == "{}\n")
                         {
-                           // Command = "Game closed";
+                            // Command = "Game closed";
                             IsMultiplayer = false;
                             isConnected = false;
                             client.GetStream().Close();
@@ -155,7 +154,6 @@ namespace GameClient.Model.Listeners
                         if (Command != string.Empty)
                         {
                             Console.WriteLine("Result:\n{0}", Command);
-                            //TODO might cause INotify to fail
                             //Command = string.Empty;
                         }
 

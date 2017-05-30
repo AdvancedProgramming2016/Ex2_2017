@@ -9,19 +9,30 @@ using MazeLib;
 
 namespace GameClient.ViewModel
 {
+    /// <summary>
+    /// Multiplayer viewModel.
+    /// </summary>
     public class MultiPlayerGameViewModel : INotifyPropertyChanged
     {
-        private IMultiPlayerGame mpModel;
-        private ISettingsViewModel settingsViewModel;      
+        /// <summary>
+        /// Multiplayer model reference.
+        /// </summary>
+        private readonly IMultiPlayerGame mpModel;
 
+        /// <summary>
+        /// Constructor 
+        /// </summary>
+        /// <param name="model">Model.</param>
+        /// <param name="settingsViewModel">Settings viewModel.</param>
         public MultiPlayerGameViewModel(IMultiPlayerGame model,
             ISettingsViewModel settingsViewModel)
         {
-            this.settingsViewModel = settingsViewModel;
+            //Set members.
             this.mpModel = model;
             this.mpModel.ConnectionLost += HandleConnecionLost;
             this.mpModel.ReachedDestination += HandleReachedGoal;
-          //  this.mpModel.OpponentWon += HandleOpponentWon;
+
+            //Set property changed delefate.
             model.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
@@ -29,11 +40,17 @@ namespace GameClient.ViewModel
                 };
 
             model.ExitCalled += HandlExitCalled;
-            // model.DirectionCalled += HandleDirectionChanged;
         }
 
+        /// <summary>
+        /// Property changed event.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Notifies property changed.
+        /// </summary>
+        /// <param name="propertyName"></param>
         public void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this,
@@ -49,44 +66,16 @@ namespace GameClient.ViewModel
                     .Replace("#", "0")
                     .Replace("\r\n", "");
             }
-            /* set
-             {
-                 this.vm_Maze = value;
-                 NotifyPropertyChanged("VM_Maze");
-             }*/
         }
 
-        /* private string DivideMazeToCommas(string maze)
-         {
-             string str = maze;
-             string finalString = string.Empty;
- 
-             finalString = str.Replace("\r\n", ",");
-             finalString = finalString.Remove(finalString.Length - 1);
- 
-             return finalString;
-         }*/
-
-        /*   public string VM_DefaultNumRows
-           {
-               get
-               {
-                   return GameClient.Properties.Settings.Default.DefaultRows
-                       .ToString();
-               }
-           }*/
-
-        /* public string VM_DefaultNumCols
-         {
-             get
-             {
-                 return GameClient.Properties.Settings.Default.DefaultCols
-                     .ToString();
-             }
-         }*/
-
+        /// <summary>
+        /// Opponent won event.
+        /// </summary>
         public event EventHandler OpponentWon;
 
+        /// <summary>
+        /// Opponent position property.
+        /// </summary>
         public String VM_OpponentPosition
         {
             get
@@ -98,14 +87,11 @@ namespace GameClient.ViewModel
                 }
                 return this.mpModel.OpponentPosition.ToString();
             }
-            /* set
-             {
-                 this.vm_opponentPosition = value;
-                 // NotifyPropertyChanged("VM_OpponentPosition");
-                 OpponentDirectionCalled?.Invoke(this, null);
-             }*/
         }
 
+        /// <summary>
+        /// Player position property.
+        /// </summary>
         public String VM_PlayerPosition
         {
             get { return this.mpModel.PlayerPosition.ToString(); }
@@ -120,11 +106,6 @@ namespace GameClient.ViewModel
         public int VM_Rows
         {
             get { return this.mpModel.Maze.Rows; }
-            /*  set
-              {
-                  this.vm_rows = value;
-                  NotifyPropertyChanged("VM_Rows");
-              }*/
         }
 
         public int VM_Cols
@@ -137,84 +118,107 @@ namespace GameClient.ViewModel
               }*/
         }
 
+        /// <summary>
+        /// Maze name property.
+        /// </summary>
         public String VM_MazeName
         {
             get { return this.mpModel.Maze.Name; }
-            /*   set
-               {
-                   this.vm_mazeName = value;
-                   NotifyPropertyChanged("VM_MazeName");
-               }*/
         }
 
+        /// <summary>
+        /// Initial position property.
+        /// </summary>
         public String VM_InitialPosition
         {
             get { return this.mpModel.Maze.InitialPos.ToString(); }
-            /*  set
-              {
-                  this.vm_initialPosition = value;
-                  NotifyPropertyChanged("VM_InitialPostion");
-              }*/
         }
 
+        /// <summary>
+        /// Destination property.
+        /// </summary>
         public String VM_DestPosition
         {
             get { return this.mpModel.Maze.GoalPos.ToString(); }
-            /*  set
-              {
-                  this.vm_destPosition = value;
-                  NotifyPropertyChanged("VM_DestPosition");
-              }*/
         }
 
+        /// <summary>
+        /// Opponent exit called event.
+        /// </summary>
         public event EventHandler OpponentExitCalled;
 
+        /// <summary>
+        /// Handles exit called.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandlExitCalled(object sender, EventArgs e)
         {
             OpponentExitCalled?.Invoke(this, null);
         }
 
+        /// <summary>
+        /// Opponent direction called event.
+        /// </summary>
         public event EventHandler OpponentDirectionCalled;
 
-        /* private void HandleDirectionChanged(object sender, EventArgs e)
-         {
-             VM_OpponentPosition = this.mpModel.OpponentPosition;
-            }*/
-
-       /* public void MovePlayer(String position)
-        {
-            this.mpModel.MovePlayer(position);
-        }*/
-
+        /// <summary>
+        /// Closes the game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
         public void CloseGame(string gameName)
         {
             this.mpModel.CloseGame(gameName);
         }
 
+        /// <summary>
+        /// Starts the game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="columns">Columns.</param>
         public void StartGame(string gameName, string rows, string columns)
         {
             this.mpModel.StartGame(gameName, rows, columns);
         }
 
+        /// <summary>
+        /// Joins the game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
         public void JoinGame(string gameName)
         {
             this.mpModel.JoinGame(gameName);
         }
 
+        /// <summary>
+        /// Connection lost event.
+        /// </summary>
         public event EventHandler ConnectionLost;
 
+        /// <summary>
+        /// Handles lost connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleConnecionLost(object sender, EventArgs e)
         {
             this.ConnectionLost?.Invoke(this, null);
         }
 
+        /// <summary>
+        /// Reached goal event.
+        /// </summary>
         public event EventHandler ReachedGoal;
 
+        /// <summary>
+        /// Handles reached goal.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleReachedGoal(object sender, EventArgs e)
         {
             this.ReachedGoal?.Invoke(this, null);
         }
-
-       // public void HandleOpponentWon(object sender)
     }
 }

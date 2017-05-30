@@ -9,15 +9,22 @@ using GameClient.Model;
 
 namespace GameClient.ViewModel
 {
+    /// <summary>
+    /// Multiplayer menu viewModel.
+    /// </summary>
     class MultiPlayerMenuViewModel : INotifyPropertyChanged
     {
-        //private MultiPlayerMenuModel mpmModel;
-        private ObservableCollection<string> vm_listOfGames;
-
+        /// <summary>
+        /// Settings model.
+        /// </summary>
         private ISettingsModel settingsModel;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public MultiPlayerMenuViewModel()
         {
+            //Set members.
             this.settingsModel = new SettingsModel();
             this.MultiPlayerMenuModel = new MultiPlayerMenuModel(settingsModel);
 
@@ -28,62 +35,56 @@ namespace GameClient.ViewModel
                 {
                     NotifyPropertyChanged("VM_" + e.PropertyName);
                 };
-
-            //Request list from server.
-            // this.mpmModel.RequestList();
         }
 
+        /// <summary>
+        /// Property changed event.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Notifies property changed.
+        /// </summary>
+        /// <param name="propertyName"></param>
         public void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Multiplayer menu model property.
+        /// </summary>
         public MultiPlayerMenuModel MultiPlayerMenuModel { get; set; }
 
+        /// <summary>
+        /// Adds game to list.
+        /// </summary>
+        /// <param name="gameName"></param>
         public void AddGameToList(String gameName)
         {
             this.MultiPlayerMenuModel.AddGameToList(gameName);
         }
 
-        /* public void StartNewGame(string nameOfGame, string rows, string columns)
-         {
-             this.MultiPlayerMenuModel.StartNewGame(rows, columns, nameOfGame);
-         }*/
-
-        /* public void JoinGame(string nameOfGame)
-         {
-             this.MultiPlayerMenuModel.JoinGame(nameOfGame);
-         }*/
-
+        /// <summary>
+        /// Games list getter.
+        /// </summary>
         public void GetGameList()
         {
             this.MultiPlayerMenuModel.RequestList();
         }
 
-
+        /// <summary>
+        /// Games list property.
+        /// </summary>
         public ObservableCollection<String> VM_ListOfGames
         {
             get { return this.MultiPlayerMenuModel.ListOfGames; }
-            /*  set
-              {
-                  this.vm_listOfGames = value;
-                  NotifyPropertyChanged("VM_ListOfGames");
-              }*/
         }
 
-        /*  public String VM_Maze
-          {
-              get
-              {
-                  return this.MultiPlayerMenuModel.Maze.ToString()
-                      .Replace("\r\n", "")
-                      .Replace("*", "0");
-              }
-          }*/
-
+        /// <summary>
+        /// Default rows property.
+        /// </summary>
         public String VM_DefaultNumRows
         {
             get
@@ -93,6 +94,9 @@ namespace GameClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// Default columns property.
+        /// </summary>
         public String VM_DefaultNumCols
         {
             get
@@ -102,8 +106,16 @@ namespace GameClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// Connection lost event.
+        /// </summary>
         public event EventHandler ConnectionLost;
 
+        /// <summary>
+        /// Handles lost connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleConnectionLost(object sender, EventArgs e)
         {
             this.ConnectionLost?.Invoke(this, null);

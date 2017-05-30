@@ -8,29 +8,45 @@ using GameClient.Model;
 using System.ComponentModel;
 using GameClient.ViewModel;
 
-namespace GameClient
+namespace GameClient.ViewModel
 {
-    public class SettingsViewModel : ISettingsViewModel 
+    /// <summary>
+    /// Settings viewModel.
+    /// </summary>
+    public class SettingsViewModel : ISettingsViewModel
     {
-
+        /// <summary>
+        /// Settings model reference.
+        /// </summary>
         private ISettingsModel settingsModel;
 
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="settingsModel">Settings model.</param>
         public SettingsViewModel(ISettingsModel settingsModel)
         {
             this.settingsModel = settingsModel;
         }
 
+        /// <summary>
+        /// Property changed event.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Nitifies property changed.
+        /// </summary>
+        /// <param name="propName"></param>
         public void NotifyChanged(string propName)
         {
-            if(PropertyChanged != null)
-            {
-                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propName));
-            }
+            PropertyChanged?.Invoke(this,
+                new PropertyChangedEventArgs(propName));
         }
 
+        /// <summary>
+        /// Ip property.
+        /// </summary>
         public string VM_IpAdrress
         {
             get { return this.settingsModel.IpAddress; }
@@ -41,12 +57,12 @@ namespace GameClient
             }
         }
 
+        /// <summary>
+        /// Port property.
+        /// </summary>
         public int VM_Port
         {
-            get
-            {
-                return this.settingsModel.Port;
-            }
+            get { return this.settingsModel.Port; }
             set
             {
                 this.settingsModel.Port = value;
@@ -54,12 +70,12 @@ namespace GameClient
             }
         }
 
+        /// <summary>
+        /// Selected algorithm property.
+        /// </summary>
         public int VM_SelectedAlgo
         {
-            get
-            {
-                return this.settingsModel.DefaultAlgo;
-            }
+            get { return this.settingsModel.DefaultAlgo; }
             set
             {
                 this.settingsModel.DefaultAlgo = value;
@@ -67,12 +83,12 @@ namespace GameClient
             }
         }
 
+        /// <summary>
+        /// Default columns property.
+        /// </summary>
         public int VM_DefaultCol
         {
-            get
-            {
-                return this.settingsModel.DefaultCols;
-            }
+            get { return this.settingsModel.DefaultCols; }
             set
             {
                 this.settingsModel.DefaultCols = value;
@@ -80,12 +96,12 @@ namespace GameClient
             }
         }
 
+        /// <summary>
+        /// Default rows property.
+        /// </summary>
         public int VM_DefaultRow
         {
-            get
-            {
-                return this.settingsModel.DefaultRows;
-            }
+            get { return this.settingsModel.DefaultRows; }
             set
             {
                 this.settingsModel.DefaultRows = value;
@@ -93,6 +109,9 @@ namespace GameClient
             }
         }
 
+        /// <summary>
+        /// Saves the changes.
+        /// </summary>
         public void SaveSettings()
         {
             settingsModel.SaveSettings();

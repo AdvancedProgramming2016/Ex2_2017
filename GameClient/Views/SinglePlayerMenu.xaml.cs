@@ -21,22 +21,43 @@ namespace GameClient.Views
     /// </summary>
     public partial class SinglePlayerMenu : Window
     {
+        /// <summary>
+        /// Single player viewModel.
+        /// </summary>
         private SinglePlayerGameViewModel singlePlayerGameViewModel;
+
+        /// <summary>
+        /// Settings model.
+        /// </summary>
         private ISettingsModel settingsModel;
+
+        /// <summary>
+        /// Settings viewModel.
+        /// </summary>
         private ISettingsViewModel settingsViewModel;
 
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public SinglePlayerMenu()
         {
             InitializeComponent();
+
+            //Initialize members.
             settingsModel = new SettingsModel();
             this.singlePlayerGameViewModel = new SinglePlayerGameViewModel
             (new SinglePlayerGameModel(settingsModel),
                 new SettingsViewModel(settingsModel));
 
+            //Set data context.
             this.DataContext = this.singlePlayerGameViewModel;
         }
 
+        /// <summary>
+        /// Ok click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
             // Open maze window.
@@ -50,9 +71,13 @@ namespace GameClient.Views
                 new MainWindow().Show();
             }
             this.Close();
-
         }
 
+        /// <summary>
+        /// Cancel click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();

@@ -15,21 +15,47 @@ using GameClient.Model.Parsers;
 
 namespace GameClient.Model
 {
+    /// <summary>
+    /// Multiplayer game model.
+    /// </summary>
     public class MultiPlayerModel : IMultiPlayerGame
     {
+        /// <summary>
+        /// Maze.
+        /// </summary>
         private Maze maze;
+
+        /// <summary>
+        /// Player position.
+        /// </summary>
         private Position playerPosition;
+
+        /// <summary>
+        /// Opponent position.
+        /// </summary>
         private Position opponentPosition;
+
+        /// <summary>
+        /// Checks if opponent left the game.
+        /// </summary>
         private bool opponentExitStatus;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="settingModel">Settings model.</param>
+        /// <param name="communicationClient">Communication client.</param>
         public MultiPlayerModel(ISettingsModel settingModel,
             CommunicationClient communicationClient)
         {
+            //Initializes variables.
             int port = settingModel.Port;
             string ip = settingModel.IpAddress;
             string serverMessage;
             this.CommunicationClient = communicationClient;
             this.CommunicationClient.ConnectionFailed += HandleConnectionFailed;
+
+            //Sets property changed delegate.
             this.CommunicationClient.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
@@ -46,18 +72,34 @@ namespace GameClient.Model
                 };
         }
 
+        /// <summary>
+        /// Server response property.
+        /// </summary>
         public string ServerResponse { get; set; }
 
+        /// <summary>
+        /// Is single property.
+        /// </summary>
         public bool IsSingleCommand { get; set; }
 
+        /// <summary>
+        /// Property changed event.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Notifiles property changed.
+        /// </summary>
+        /// <param name="propName">Property name.</param>
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propName));
         }
 
+        /// <summary>
+        /// Communication client property.
+        /// </summary>
         public CommunicationClient CommunicationClient { get; set; }
 
         public Maze Maze
@@ -71,6 +113,9 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Opponent position property.
+        /// </summary>
         public Position OpponentPosition
         {
             get { return this.opponentPosition; }
@@ -82,8 +127,14 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Reached destination event.
+        /// </summary>
         public event EventHandler ReachedDestination;
 
+        /// <summary>
+        /// Player position property.
+        /// </summary>
         public Position PlayerPosition
         {
             get { return this.playerPosition; }
@@ -102,8 +153,14 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Exit called event.
+        /// </summary>
         public event EventHandler ExitCalled;
 
+        /// <summary>
+        /// Opponent exit status property.
+        /// </summary>
         public bool OpponentExitStatus
         {
             get { return this.opponentExitStatus; }
@@ -114,16 +171,21 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Connection lost event.
+        /// </summary>
         public event EventHandler ConnectionLost;
 
+        /// <summary>
+        /// Closes the game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
         public void CloseGame(string gameName)
         {
             string command;
 
             //Parse into the right format.
             command = CommandParser.ParseToCloseCommand(gameName);
-
-            //this.IsSingleCommand = "close";
 
             //Send command to the server.
             try
@@ -136,6 +198,12 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Starts the game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="columns">Columns.</param>
         public void StartGame(string gameName, string rows, string columns)
         {
             string command;
@@ -165,6 +233,10 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Joins the game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
         public void JoinGame(string gameName)
         {
             string command;
@@ -192,6 +264,11 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Moves the player.
+        /// </summary>
+        /// <param name="x">X.</param>
+        /// <param name="y">Y.</param>
         public void MovePlayer(int x, int y)
         {
             string command;
@@ -201,16 +278,19 @@ namespace GameClient.Model
             //Parse into the right format.
             command = CommandParser.ParseToPlayCommand(direction);
 
-            //this.IsSingleCommand = "play";
-
             //Send command to the server.
             this.CommunicationClient.SendToServer(command);
 
             PlayerPosition = new Position(x, y);
         }
 
+        /// <summary>
+        /// Handles server result.
+        /// </summary>
+        /// <param name="response">Server Result.</param>
         public void HandleServerResult(string response)
         {
+            //Check if close or move command.
             if (response == "{}\n")
             {
                 this.OpponentExitStatus = true;
@@ -223,6 +303,12 @@ namespace GameClient.Model
             }
         }
 
+        /// <summary>
+        /// Executes the move.
+        /// </summary>
+        /// <param name="position">Positon.</param>
+        /// <param name="direction">Direction.</param>
+        /// <returns></returns>
         public Position ExecuteMove(Position position, string direction)
         {
             switch (direction)
@@ -230,36 +316,52 @@ namespace GameClient.Model
                 case "up":
                     --position.Row;
                     break;
+
                 case "down":
                     ++position.Row;
                     break;
+
                 case "right":
                     ++position.Col;
                     break;
+
                 case "left":
                     --position.Col;
                     break;
             }
+
             return position;
         }
 
+        /// <summary>
+        /// parses the direction to a string.
+        /// </summary>
+        /// <param name="x">X.</param>
+        /// <param name="y">Y.</param>
+        /// <returns></returns>
         private string ParseDirection(int x, int y)
         {
             string direction = null;
 
+            //Check if left direction.
             if (PlayerPosition.Col == y + 1)
             {
                 direction = "left";
             }
+
+            //Check if right direction.
             else if (PlayerPosition.Col == y - 1)
             {
                 direction = "right";
             }
 
+            //Check if uo direction.
             if (PlayerPosition.Row == x + 1)
             {
                 direction = "up";
             }
+
+            //Check if down direction.
             else if (PlayerPosition.Row == x - 1)
             {
                 direction = "down";
@@ -268,13 +370,20 @@ namespace GameClient.Model
             return direction;
         }
 
+        /// <summary>
+        /// Handles maze command.
+        /// </summary>
+        /// <param name="command">Command.</param>
         private void HandleMazeCommand(string command)
         {
             try
             {
+                //Convert maze from Json.
                 Maze maze = Maze.FromJSON(command);
                 this.Maze = maze;
                 IsSingleCommand = false;
+
+                //Set new position.
                 PlayerPosition =
                     new Position(Maze.InitialPos.Row, Maze.InitialPos.Col);
                 OpponentPosition =
@@ -282,12 +391,14 @@ namespace GameClient.Model
             }
             catch (Exception e)
             {
-                MessageBox.Show("A maze with the same name already exists");
             }
-
-            // ServerResponse = null;
         }
 
+        /// <summary>
+        /// Handles failed connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleConnectionFailed(object sender, EventArgs e)
         {
             this.ConnectionLost?.Invoke(this, null);

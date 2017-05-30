@@ -74,7 +74,7 @@ namespace GameClient.Model.Parsers
         public static int MazeSolutionNodesEvaluated(string jsonFormat)
         {
             JObject solutionObject = JObject.Parse(jsonFormat);
-            int nodesEvaluated = (int)solutionObject["nodesEvaluated"];
+            int nodesEvaluated = (int) solutionObject["nodesEvaluated"];
 
             return nodesEvaluated;
         }

@@ -19,12 +19,19 @@ namespace GameClient.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Single player click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void singlePlayer_Click(object sender, RoutedEventArgs e)
         {
             SinglePlayerMenu sp = new SinglePlayerMenu();
@@ -32,7 +39,11 @@ namespace GameClient.Views
             this.Close();
         }
 
-        
+        /// <summary>
+        /// Multiplayer click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void multiPlayer_Click(object sender, RoutedEventArgs e)
         {
             MultiplePlayerMenu mp = new MultiplePlayerMenu();
@@ -40,6 +51,11 @@ namespace GameClient.Views
             this.Close();
         }
 
+        /// <summary>
+        /// Settings click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void settings_Click(object sender, RoutedEventArgs e)
         {
             SettingsMenu sm = new SettingsMenu();
@@ -48,4 +64,3 @@ namespace GameClient.Views
         }
     }
 }
-

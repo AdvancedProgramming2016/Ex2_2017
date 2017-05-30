@@ -24,6 +24,9 @@ namespace GameClient.Model.Listeners
         /// <param name="command">message</param>
         void SendToServer(string command);
 
+        /// <summary>
+        /// Command from user property.
+        /// </summary>
         string CommandFromUser { get; set; }
     }
 }

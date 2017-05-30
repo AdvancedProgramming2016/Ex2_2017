@@ -66,7 +66,7 @@ namespace GameClient.Views
             pathPainter = new SolidColorBrush(Colors.White);
             borderPainter = new SolidColorBrush(Colors.Black);
 
-            //Sets images.
+            //Set player image.
             playerPainter = new ImageBrush
             {
                 ImageSource =
@@ -75,6 +75,7 @@ namespace GameClient.Views
                             @"pack://application:,,,/GameClient;component/images/player.png"))
             };
 
+            //Set destination image.
             destinationPainter = new ImageBrush
             {
                 ImageSource =
@@ -88,6 +89,7 @@ namespace GameClient.Views
             {
                 for (int column = 0; column < Cols; column++)
                 {
+                    //Create new cell.
                     Rectangle rectangle = new Rectangle
                     {
                         Height = cellHeight,
@@ -97,6 +99,7 @@ namespace GameClient.Views
                             : pathPainter
                     };
 
+                    //Add cell to area.
                     MazeCanvas.Children.Add(rectangle);
 
                     Canvas.SetLeft(rectangle, column * cellWidth);
@@ -130,7 +133,7 @@ namespace GameClient.Views
             base.OnInitialized(e);
         }
 
-        
+
         /// <summary>
         /// Player position changed property.
         /// </summary>
@@ -146,9 +149,10 @@ namespace GameClient.Views
                 string nextPos = e.NewValue as string;
 
                 grid.MovePlayerRectangle(nextPos);
-                
+
                 // Check if player reached destination.
-                if (nextPos == grid.GoalPos && (grid.Name =="LeftMaze" || grid.Name == "MazeBoard"))
+                if (nextPos == grid.GoalPos &&
+                    (grid.Name == "LeftMaze" || grid.Name == "MazeBoard"))
                 {
                     MessageBox.Show("You won.", "Victory", MessageBoxButton.OK,
                         MessageBoxImage.Information);
@@ -204,7 +208,7 @@ namespace GameClient.Views
                     break;
 
                 case '1':
-                    // rigth
+                    // right
                     col++;
                     break;
 
@@ -222,6 +226,7 @@ namespace GameClient.Views
                     return "ERROR";
             }
 
+            //Final string.
             string final = "(" + row + "," + col + ")";
 
             return final;
@@ -238,6 +243,7 @@ namespace GameClient.Views
             int rowPos = RowCoordinate(position);
             int colPos = ColumnCoordinate(position);
 
+            //Check direction.
             switch (direction)
             {
                 case "Up":
@@ -254,6 +260,7 @@ namespace GameClient.Views
                     break;
             }
 
+            //Final string.
             string final = "(" + rowPos + "," + colPos + ")";
 
             return final;
@@ -268,6 +275,7 @@ namespace GameClient.Views
         /// <returns></returns>
         public bool IsLegalMove(int rowPos, int colPos, string direction)
         {
+            //Check direction.
             switch (direction)
             {
                 case "Up":
@@ -321,6 +329,67 @@ namespace GameClient.Views
         }
 
         /// <summary>
+        ///Rows property.
+        /// </summary>
+        /// <value>
+        /// The rows.
+        /// </value>
+        public int Rows
+        {
+            get { return (int) GetValue(RowsProperty); }
+            set { SetValue(RowsProperty, value); }
+        }
+
+
+        /// <summary>
+        /// Columns property.
+        /// </summary>
+        /// <value>
+        /// The cols.
+        /// </value>
+        public int Cols
+        {
+            get { return (int) GetValue(ColsProperty); }
+            set { SetValue(ColsProperty, value); }
+        }
+
+        /// <summary>
+        /// Initial position property.
+        /// </summary>
+        /// <value>
+        /// The initial position.
+        /// </value>
+        public string InitialPos
+        {
+            get { return (string) GetValue(InitialPosProperty); }
+            set { SetValue(InitialPosProperty, value); }
+        }
+
+        /// <summary>
+        /// Destination position.
+        /// </summary>
+        /// <value>
+        /// The goal position.
+        /// </value>
+        public string GoalPos
+        {
+            get { return (string) GetValue(GoalPosProperty); }
+            set { SetValue(GoalPosProperty, value); }
+        }
+
+        /// <summary>
+        /// Player position property.
+        /// </summary>
+        /// <value>
+        /// The player position.
+        /// </value>
+        public string PlayerPos
+        {
+            get { return (string) GetValue(PlayerPosProperty); }
+            set { SetValue(PlayerPosProperty, value); }
+        }
+
+        /// <summary>
         /// Moves the player rectangle.
         /// </summary>
         /// <param name="newPosition">The new position.</param>
@@ -339,17 +408,6 @@ namespace GameClient.Views
             DependencyProperty.Register("Maze", typeof(string),
                 typeof(MazeGrid), null);
 
-        /// <summary>
-        ///Rows property.
-        /// </summary>
-        /// <value>
-        /// The rows.
-        /// </value>
-        public int Rows
-        {
-            get { return (int) GetValue(RowsProperty); }
-            set { SetValue(RowsProperty, value); }
-        }
 
         /// <summary>
         /// Rows dependency property
@@ -358,17 +416,6 @@ namespace GameClient.Views
             DependencyProperty.Register("Rows", typeof(int), typeof(MazeGrid),
                 null);
 
-        /// <summary>
-        /// Columns property.
-        /// </summary>
-        /// <value>
-        /// The cols.
-        /// </value>
-        public int Cols
-        {
-            get { return (int) GetValue(ColsProperty); }
-            set { SetValue(ColsProperty, value); }
-        }
 
         /// <summary>
         /// Columns dependency property.
@@ -379,18 +426,6 @@ namespace GameClient.Views
 
 
         /// <summary>
-        /// Initial position property.
-        /// </summary>
-        /// <value>
-        /// The initial position.
-        /// </value>
-        public string InitialPos
-        {
-            get { return (string) GetValue(InitialPosProperty); }
-            set { SetValue(InitialPosProperty, value); }
-        }
-
-        /// <summary>
         /// Initial position dependency property.
         /// </summary>
         public static readonly DependencyProperty InitialPosProperty =
@@ -399,35 +434,12 @@ namespace GameClient.Views
 
 
         /// <summary>
-        /// Destination position.
-        /// </summary>
-        /// <value>
-        /// The goal position.
-        /// </value>
-        public string GoalPos
-        {
-            get { return (string) GetValue(GoalPosProperty); }
-            set { SetValue(GoalPosProperty, value); }
-        }
-
-        /// <summary>
         /// Destination dependency position.
         /// </summary>
         public static readonly DependencyProperty GoalPosProperty =
             DependencyProperty.Register("GoalPos", typeof(string),
                 typeof(MazeGrid), null);
 
-        /// <summary>
-        /// Player position property.
-        /// </summary>
-        /// <value>
-        /// The player position.
-        /// </value>
-        public string PlayerPos
-        {
-            get { return (string) GetValue(PlayerPosProperty); }
-            set { SetValue(PlayerPosProperty, value); }
-        }
 
         /// <summary>
         /// Player position dependency property.
@@ -452,6 +464,11 @@ namespace GameClient.Views
             }
         }
 
+        /// <summary>
+        /// Lost focus event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UserControl_LostKeyboardFocus(object sender,
             KeyboardFocusChangedEventArgs e)
         {
