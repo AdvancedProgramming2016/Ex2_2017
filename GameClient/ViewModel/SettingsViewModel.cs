@@ -92,5 +92,10 @@ namespace GameClient
                 this.NotifyChanged("VM_DefaultRow");
             }
         }
+
+        public void SaveSettings()
+        {
+            settingsModel.SaveSettings();
+        }
     }
 }

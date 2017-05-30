@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace GameClient.Views
         private CommunicationClient communicationClient;
         private MazeGrid rightMazeGrid;
         private string gameName;
+        private bool isGameOn;
 
         public MultiplePlayerGameMaze(string gameName, string rows,
             string columns)
@@ -43,15 +45,20 @@ namespace GameClient.Views
             this.multiPlayerGameViewModel.ConnectionLost +=
                 HandleConnectionLost;
 
+            this.multiPlayerGameViewModel.OpponentWon += HandleOpponentWon;
+
+            this.multiPlayerGameViewModel.ReachedGoal += HandleReachedGoal;
+
             try
             {
-                this.multiPlayerGameViewModel.StartGame(gameName, rows, columns);
+                this.multiPlayerGameViewModel.StartGame(gameName, rows,
+                    columns);
             }
             catch (Exception e)
             {
-               throw new Exception();
+                throw new Exception();
             }
-          
+
 
             /*  this.multiPlayerGameViewModel.VM_Maze = maze.ToString();
               this.multiPlayerGameViewModel.VM_Cols = maze.Cols.ToString();
@@ -94,6 +101,12 @@ namespace GameClient.Views
 
             this.multiPlayerGameViewModel.OpponentExitCalled +=
                 HandleExitCalled;
+
+            this.multiPlayerGameViewModel.ReachedGoal += HandleReachedGoal;
+
+            this.multiPlayerGameViewModel.OpponentWon += HandleOpponentWon;
+
+            //   this.multiPlayerGameViewModel.ReachedGoal += HandleReachedGoal;
             /*  this.multiPlayerGameViewModel.OpponentDirectionCalled +=
                   HandleDirectionCalled;*/
             //LeftMaze.PlayerMoved += PlayerMovedHandler;
@@ -104,6 +117,7 @@ namespace GameClient.Views
 
         protected override void OnInitialized(EventArgs e)
         {
+            this.isGameOn = true;
             InitializeComponent();
             base.OnInitialized(e);
         }
@@ -121,9 +135,9 @@ namespace GameClient.Views
         /// <param name="e"></param>
         private void BackMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            this.multiPlayerGameViewModel.CloseGame(gameName);
-            MainWindow mw = new MainWindow();
-            mw.Show();
+            //this.multiPlayerGameViewModel.CloseGame(gameName);
+            //MainWindow mw = new MainWindow();
+            //mw.Show();
             this.Close();
         }
 
@@ -134,7 +148,21 @@ namespace GameClient.Views
 
         private void HandleExitCalled(object sender, EventArgs e)
         {
-            MessageBox.Show("Opponent exited the game.", "Game ended");
+            isGameOn = false;
+
+            MessageBox.Show("Opponent exited the game.", "Game ended",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            try
+            {
+                //new MainWindow().Show();
+
+                this.Close();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.InnerException);
+            }
             /* MainWindow mw = new MainWindow();
              mw.Show();
              this.Close();*/
@@ -149,16 +177,40 @@ namespace GameClient.Views
                   this.RightMaze.PlayerPosition);*/
         }
 
+        public void HandleOpponentWon(object sender, EventArgs e)
+        {
+            //  MessageBox.Show("You lost.");
+        }
+
         public void HandleConnectionLost(object sender, EventArgs e)
         {
-            MessageBox.Show("Connection lost.");
+            MessageBox.Show("Connection lost.", "Error", MessageBoxButton.OK,
+                MessageBoxImage.Information);
             try
             {
                 this.Close();
+                new MainWindow().Show();
             }
             catch (Exception exception)
             {
             }
+        }
+
+        public void HandleReachedGoal(object sender, EventArgs e)
+        {
+            //  MessageBox.Show("You won.");
+        }
+
+        private void MultiplePlayerGameMaze_OnClosing(object sender,
+            CancelEventArgs e)
+        {
+            if (isGameOn)
+            {
+                this.multiPlayerGameViewModel.CloseGame(gameName);
+            }
+
+            MainWindow mw = new MainWindow();
+            mw.Show();
         }
     }
 }

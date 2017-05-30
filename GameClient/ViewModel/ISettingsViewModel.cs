@@ -18,5 +18,6 @@ namespace GameClient.ViewModel
         int VM_DefaultCol { get; set; }
 
         int VM_DefaultRow { get; set; }
+        void SaveSettings();
     }
 }

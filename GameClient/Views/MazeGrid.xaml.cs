@@ -130,6 +130,7 @@ namespace GameClient.Views
             base.OnInitialized(e);
         }
 
+        
         /// <summary>
         /// Player position changed property.
         /// </summary>
@@ -145,11 +146,18 @@ namespace GameClient.Views
                 string nextPos = e.NewValue as string;
 
                 grid.MovePlayerRectangle(nextPos);
-
+                
                 // Check if player reached destination.
-                if (nextPos == grid.GoalPos)
+                if (nextPos == grid.GoalPos && grid.Name =="LeftMaze")
                 {
                     MessageBox.Show("You won.", "Victory", MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+
+                // Check if opponent reached destination.
+                if (nextPos == grid.GoalPos && grid.Name == "RightMaze")
+                {
+                    MessageBox.Show("You lost.", "Defeat", MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
             }

@@ -153,7 +153,7 @@ namespace GameClient.Model
                                         PlayerPosition, "down");
                                 break;
                         }
-                        Thread.Sleep(500);
+                        Thread.Sleep(250);
                     }
                 }
                 catch (ArgumentNullException)

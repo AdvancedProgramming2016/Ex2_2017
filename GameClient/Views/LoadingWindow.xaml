@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:GameClient.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="LoadingWindow" Height="300" Width="300">
-    <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Loading"></TextBlock>
+        Title="Loading" Height="300" Width="300" WindowStartupLocation="CenterScreen">
+    <Grid Background="LightSlateGray">
+        <TextBlock HorizontalAlignment="Center" Foreground="LimeGreen" FontSize="18" VerticalAlignment="Center" Text="Loading..."></TextBlock>
     </Grid>
 </Window>

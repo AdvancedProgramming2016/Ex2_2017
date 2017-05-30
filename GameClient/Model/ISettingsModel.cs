@@ -9,16 +9,16 @@ namespace GameClient.Model
 {
     public interface ISettingsModel : INotifyPropertyChanged
     {
+        String IpAddress { get; set; }
 
-    String IpAddress { get; set; }
-        
-    int Port { get; set; }
+        int Port { get; set; }
 
-    int DefaultRows { get; set; }
+        int DefaultRows { get; set; }
 
-    int DefaultCols { get; set; }
+        int DefaultCols { get; set; }
 
-    int DefaultAlgo { get; set; }
+        int DefaultAlgo { get; set; }
 
+        void SaveSettings();
     }
 }

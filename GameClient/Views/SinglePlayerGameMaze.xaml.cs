@@ -95,7 +95,8 @@ namespace GameClient.Views
 
         public void HandleConnectionLost(object sender, EventArgs e)
         {
-            MessageBox.Show("Connection failed.");
+            MessageBox.Show("Connection lost.", "Error", MessageBoxButton.OK,
+                MessageBoxImage.Information);
             try
             {
                 this.Close();

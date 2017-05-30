@@ -21,7 +21,7 @@ namespace GameClient.Model
         private Position playerPosition;
         private Position opponentPosition;
         private bool opponentExitStatus;
-      
+
         public MultiPlayerModel(ISettingsModel settingModel,
             CommunicationClient communicationClient)
         {
@@ -82,6 +82,8 @@ namespace GameClient.Model
             }
         }
 
+        public event EventHandler ReachedDestination;
+
         public Position PlayerPosition
         {
             get { return this.playerPosition; }
@@ -89,12 +91,19 @@ namespace GameClient.Model
             set
             {
                 this.playerPosition = value;
+
+                if (this.playerPosition.Col == Maze.GoalPos.Col &&
+                    this.playerPosition.Row == Maze.GoalPos.Row)
+                {
+                    this.ReachedDestination?.Invoke(this, null);
+                }
+
                 this.NotifyPropertyChanged("PlayerPosition");
             }
         }
 
         public event EventHandler ExitCalled;
-     
+
         public bool OpponentExitStatus
         {
             get { return this.opponentExitStatus; }
@@ -107,7 +116,7 @@ namespace GameClient.Model
 
         public event EventHandler ConnectionLost;
 
-      public void CloseGame(string gameName)
+        public void CloseGame(string gameName)
         {
             string command;
 
@@ -121,11 +130,10 @@ namespace GameClient.Model
             {
                 this.CommunicationClient.SendToServer(command);
             }
-            catch (Exception)
+            catch (ArgumentNullException)
             {
-              this.ConnectionLost?.Invoke(this, null);
+                this.ConnectionLost?.Invoke(this, null);
             }
-           
         }
 
         public void StartGame(string gameName, string rows, string columns)
@@ -151,11 +159,10 @@ namespace GameClient.Model
 
                 HandleMazeCommand(ServerResponse);
             }
-            catch (Exception e)
+            catch (ArgumentNullException)
             {
-              throw new Exception();
+                this.ConnectionLost?.Invoke(this, null);
             }
-           
         }
 
         public void JoinGame(string gameName)
@@ -179,14 +186,13 @@ namespace GameClient.Model
 
                 HandleMazeCommand(ServerResponse);
             }
-            catch (Exception e)
+            catch (ArgumentNullException)
             {
-              this.ConnectionLost?.Invoke(this, null);
+                this.ConnectionLost?.Invoke(this, null);
             }
-          
         }
 
-       public void MovePlayer(int x,  int y)
+        public void MovePlayer(int x, int y)
         {
             string command;
 
@@ -214,7 +220,6 @@ namespace GameClient.Model
                 string direction = FromJsonConverter.PlayDirection(response);
                 this.OpponentPosition =
                     ExecuteMove(OpponentPosition, direction);
-
             }
         }
 
@@ -270,14 +275,16 @@ namespace GameClient.Model
                 Maze maze = Maze.FromJSON(command);
                 this.Maze = maze;
                 IsSingleCommand = false;
-                PlayerPosition = new Position(Maze.InitialPos.Row, Maze.InitialPos.Col);
-                OpponentPosition = new Position(Maze.InitialPos.Row, Maze.InitialPos.Col);
+                PlayerPosition =
+                    new Position(Maze.InitialPos.Row, Maze.InitialPos.Col);
+                OpponentPosition =
+                    new Position(Maze.InitialPos.Row, Maze.InitialPos.Col);
             }
             catch (Exception e)
             {
                 MessageBox.Show("A maze with the same name already exists");
             }
-         
+
             // ServerResponse = null;
         }
 

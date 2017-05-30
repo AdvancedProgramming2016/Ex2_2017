@@ -65,8 +65,7 @@ namespace GameClient.Model.Listeners
                 }
                 catch (Exception e)
                 {
-                    this.ConnectionFailed?.Invoke(this, null);
-                    return;
+                    throw new ArgumentNullException();
                 }
               
                 stream = tcpClient.GetStream();

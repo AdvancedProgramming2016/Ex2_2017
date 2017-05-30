@@ -12,8 +12,7 @@ namespace GameClient.ViewModel
     public class MultiPlayerGameViewModel : INotifyPropertyChanged
     {
         private IMultiPlayerGame mpModel;
-        private ISettingsViewModel settingsViewModel;
-      
+        private ISettingsViewModel settingsViewModel;      
 
         public MultiPlayerGameViewModel(IMultiPlayerGame model,
             ISettingsViewModel settingsViewModel)
@@ -21,6 +20,8 @@ namespace GameClient.ViewModel
             this.settingsViewModel = settingsViewModel;
             this.mpModel = model;
             this.mpModel.ConnectionLost += HandleConnecionLost;
+            this.mpModel.ReachedDestination += HandleReachedGoal;
+          //  this.mpModel.OpponentWon += HandleOpponentWon;
             model.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
@@ -84,9 +85,19 @@ namespace GameClient.ViewModel
              }
          }*/
 
+        public event EventHandler OpponentWon;
+
         public String VM_OpponentPosition
         {
-            get { return this.mpModel.OpponentPosition.ToString(); }
+            get
+            {
+                if (mpModel.OpponentPosition.Col == mpModel.Maze.GoalPos.Col &&
+                    mpModel.OpponentPosition.Row == mpModel.Maze.GoalPos.Row)
+                {
+                    this.OpponentWon?.Invoke(this, null);
+                }
+                return this.mpModel.OpponentPosition.ToString();
+            }
             /* set
              {
                  this.vm_opponentPosition = value;
@@ -196,5 +207,14 @@ namespace GameClient.ViewModel
         {
             this.ConnectionLost?.Invoke(this, null);
         }
+
+        public event EventHandler ReachedGoal;
+
+        public void HandleReachedGoal(object sender, EventArgs e)
+        {
+            this.ReachedGoal?.Invoke(this, null);
+        }
+
+       // public void HandleOpponentWon(object sender)
     }
 }

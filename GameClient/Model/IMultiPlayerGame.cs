@@ -25,5 +25,6 @@ namespace GameClient.Model
         void JoinGame(string gameName);
         event EventHandler ExitCalled;
         event EventHandler ConnectionLost;
-    }
+        event EventHandler ReachedDestination;
+       }
 }

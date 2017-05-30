@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameClient.Views"
         mc:Ignorable="d"
-        Title="SinglePlayerMenu" Height="300" Width="300">
+        Title="SinglePlayerMenu" Height="300" Width="300" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBlock x:Name="mazeNameBlock" HorizontalAlignment="Left" Margin="3,70,0,0" TextWrapping="Wrap" Text="Maze Name:" VerticalAlignment="Top"/>
         <TextBox x:Name="MazeNameBox" HorizontalAlignment="Left" Height="25" Margin="118,70,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
 
         <TextBlock x:Name="NumOfRows" HorizontalAlignment="Left" Margin="86,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
 
-        <Button x:Name="okButton" Content="Ok" HorizontalAlignment="Left" Margin="110,224,0,0" VerticalAlignment="Top" Width="74" Click="okButton_Click"/>
+        <Button x:Name="okButton" Content="Ok" HorizontalAlignment="Left" Margin="164,223,0,0" VerticalAlignment="Top" Width="74" Click="okButton_Click"/>
         <TextBlock x:Name="title" HorizontalAlignment="Left" Margin="110,6,0,0" TextWrapping="Wrap" Text="Single player menu" VerticalAlignment="Top"/>
 
         <TextBlock x:Name="numOfRowsBlock" HorizontalAlignment="Left" Margin="3,114,0,0" TextWrapping="Wrap" Text="Number of rows:" VerticalAlignment="Top"/>
@@ -20,5 +20,6 @@
 
         <TextBlock x:Name="numOfColsBlock" HorizontalAlignment="Left" Margin="3,156,0,0" TextWrapping="Wrap" Text="Number of columns:" VerticalAlignment="Top"/>
         <TextBox x:Name="numOfCols" HorizontalAlignment="Left" Height="23" Margin="118,156,0,0" TextWrapping="Wrap" Text="{Binding Path=VM_DefaultNumberCols, Mode=OneWay}" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="36,223,0,0" VerticalAlignment="Top" Width="75" Click="CancelBtn_Click"/>
     </Grid>
 </Window>

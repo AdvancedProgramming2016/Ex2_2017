@@ -35,5 +35,20 @@ namespace GameClient.Views
             this.svm = new SettingsViewModel(settingsModel);
             this.DataContext = svm;
         }
+
+        private void okButton_Click(object sender, RoutedEventArgs e)
+        {
+            svm.SaveSettings();
+            MainWindow win = new MainWindow();
+            win.Show();
+            this.Close();
+        }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow win = new MainWindow();
+            win.Show();
+            this.Close();
+        }
     }
 }
