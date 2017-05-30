@@ -28,16 +28,21 @@ namespace GameClient.Views
         private ISettingsViewModel settingsViewModel;
         private ObservableCollection<string> listOfGames;
         private Maze maze;
+        private bool listPressed;
 
         public MultiplePlayerMenu()
         {
             InitializeComponent();
             //this.listOfGames = ObservableCollection<string>(); Might need to initialize the collection
             this.multiPlayerMenuViewModel = new MultiPlayerMenuViewModel();
+
+            this.multiPlayerMenuViewModel.ConnectionLost +=
+                HandleConnectionLost;
            //this.settingsModel = new SettingsModel();
             //this.multiPlayerGameViewModel = new MultiPlayerGameViewModel
             //    (new MultiPlayerModel(settingsModel), new SettingsViewModel(settingsModel));
             this.DataContext = this.multiPlayerMenuViewModel;
+            listPressed = false;
         }
 
         private void startGame_Click(object sender, RoutedEventArgs e)
@@ -69,6 +74,19 @@ namespace GameClient.Views
             this.Close();
         }
 
+        public void HandleConnectionLost(object sender, EventArgs e)
+        {
+            if (listPressed)
+            {
+                MessageBox.Show("Connection lost.", "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                new MainWindow().Show();
+                this.Close();
+            }
+          
+        }
+
         private void joinGameButton_Click(object sender, RoutedEventArgs e)
         {
             string gameName = listOfGameComboBox.SelectionBoxItem.ToString();
@@ -83,6 +101,7 @@ namespace GameClient.Views
         private void listOfGameComboBox_DropDownOpened(object sender,
             EventArgs e)
         {
+            listPressed = true;
             this.multiPlayerMenuViewModel.GetGameList();
         }
 

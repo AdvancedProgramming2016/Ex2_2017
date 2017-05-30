@@ -13,12 +13,15 @@ namespace GameClient.ViewModel
     {
         //private MultiPlayerMenuModel mpmModel;
         private ObservableCollection<string> vm_listOfGames;
+
         private ISettingsModel settingsModel;
 
         public MultiPlayerMenuViewModel()
         {
             this.settingsModel = new SettingsModel();
             this.MultiPlayerMenuModel = new MultiPlayerMenuModel(settingsModel);
+
+            this.MultiPlayerMenuModel.ConnectionLost += HandleConnectionLost;
 
             this.MultiPlayerMenuModel.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
@@ -27,7 +30,7 @@ namespace GameClient.ViewModel
                 };
 
             //Request list from server.
-           // this.mpmModel.RequestList();
+            // this.mpmModel.RequestList();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,40 +48,41 @@ namespace GameClient.ViewModel
             this.MultiPlayerMenuModel.AddGameToList(gameName);
         }
 
-       /* public void StartNewGame(string nameOfGame, string rows, string columns)
-        {
-            this.MultiPlayerMenuModel.StartNewGame(rows, columns, nameOfGame);
-        }*/
+        /* public void StartNewGame(string nameOfGame, string rows, string columns)
+         {
+             this.MultiPlayerMenuModel.StartNewGame(rows, columns, nameOfGame);
+         }*/
 
-       /* public void JoinGame(string nameOfGame)
-        {
-            this.MultiPlayerMenuModel.JoinGame(nameOfGame);
-        }*/
+        /* public void JoinGame(string nameOfGame)
+         {
+             this.MultiPlayerMenuModel.JoinGame(nameOfGame);
+         }*/
 
         public void GetGameList()
         {
             this.MultiPlayerMenuModel.RequestList();
         }
 
+
         public ObservableCollection<String> VM_ListOfGames
         {
             get { return this.MultiPlayerMenuModel.ListOfGames; }
-            set
-            {
-                this.vm_listOfGames = value;
-                NotifyPropertyChanged("VM_ListOfGames");
-            }
+            /*  set
+              {
+                  this.vm_listOfGames = value;
+                  NotifyPropertyChanged("VM_ListOfGames");
+              }*/
         }
 
-      /*  public String VM_Maze
-        {
-            get
-            {
-                return this.MultiPlayerMenuModel.Maze.ToString()
-                    .Replace("\r\n", "")
-                    .Replace("*", "0");
-            }
-        }*/
+        /*  public String VM_Maze
+          {
+              get
+              {
+                  return this.MultiPlayerMenuModel.Maze.ToString()
+                      .Replace("\r\n", "")
+                      .Replace("*", "0");
+              }
+          }*/
 
         public String VM_DefaultNumRows
         {
@@ -96,6 +100,13 @@ namespace GameClient.ViewModel
                 return GameClient.Properties.Settings.Default.DefaultCols
                     .ToString();
             }
+        }
+
+        public event EventHandler ConnectionLost;
+
+        public void HandleConnectionLost(object sender, EventArgs e)
+        {
+            this.ConnectionLost?.Invoke(this, null);
         }
     }
 }

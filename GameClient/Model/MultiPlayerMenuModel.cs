@@ -77,28 +77,28 @@ namespace GameClient.Model
             ListOfGames.Add(gameName);
         }
 
-       /* public void StartNewGame(string numOfRows, string numOfCols,
-            string nameOfMaze)
-        {
-            string command;
-
-            //Parse into the right format.
-            command = CommandParser.ParseToStartCommand(nameOfMaze,
-                numOfRows,
-                numOfCols);
-
-            IsSingleCommand = "start";
-
-            //Send command to the server.
-            CommunicationClient.SendToServer(command);
-
-            while (string.IsNullOrEmpty(ServerResponse))
-            {
-                continue;
-            }
-
-            HandleServerResult(ServerResponse);
-        }*/
+        /* public void StartNewGame(string numOfRows, string numOfCols,
+             string nameOfMaze)
+         {
+             string command;
+ 
+             //Parse into the right format.
+             command = CommandParser.ParseToStartCommand(nameOfMaze,
+                 numOfRows,
+                 numOfCols);
+ 
+             IsSingleCommand = "start";
+ 
+             //Send command to the server.
+             CommunicationClient.SendToServer(command);
+ 
+             while (string.IsNullOrEmpty(ServerResponse))
+             {
+                 continue;
+             }
+ 
+             HandleServerResult(ServerResponse);
+         }*/
 
         /*public void JoinGame(string gameName)
         {
@@ -120,6 +120,8 @@ namespace GameClient.Model
             HandleServerResult(ServerResponse);
         }*/
 
+        public event EventHandler ConnectionLost;
+
         public void RequestList()
         {
             string command;
@@ -130,14 +132,21 @@ namespace GameClient.Model
             CommandPropertyChanged = "list";
 
             //Send command to the server.
-            CommunicationClient.SendToServer(command);
-
-            while (string.IsNullOrEmpty(ServerResponse))
+            try
             {
-                continue;
-            }
+                CommunicationClient.SendToServer(command);
 
-            HandleServerResult(ServerResponse);
+                while (string.IsNullOrEmpty(ServerResponse))
+                {
+                    continue;
+                }
+
+                HandleServerResult(ServerResponse);
+            }
+            catch (ArgumentNullException)
+            {
+                this.ConnectionLost?.Invoke(this, null);
+            }
         }
 
 
@@ -151,11 +160,11 @@ namespace GameClient.Model
             switch (CommandPropertyChanged)
             {
                 case "start":
-                //    HandlStartCommand(command);
+                    //    HandlStartCommand(command);
                     break;
 
                 case "join":
-                  //  HandleJoinCommand(command);
+                    //  HandleJoinCommand(command);
                     break;
 
                 case "list":
@@ -164,19 +173,19 @@ namespace GameClient.Model
             }
         }
 
-       /* private void HandlStartCommand(string command)
-        {
-            Maze maze = Maze.FromJSON(command);
-            this.Maze = maze;
-            // ServerResponse = null;
-        }
-
-        private void HandleJoinCommand(string command)
-        {
-            Maze maze = Maze.FromJSON(command);
-            this.Maze = maze;
-            //ServerResponse = null;
-        }*/
+        /* private void HandlStartCommand(string command)
+         {
+             Maze maze = Maze.FromJSON(command);
+             this.Maze = maze;
+             // ServerResponse = null;
+         }
+ 
+         private void HandleJoinCommand(string command)
+         {
+             Maze maze = Maze.FromJSON(command);
+             this.Maze = maze;
+             //ServerResponse = null;
+         }*/
 
         private void HandleListCommand(string command)
         {

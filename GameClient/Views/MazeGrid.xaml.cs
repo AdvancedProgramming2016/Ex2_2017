@@ -148,7 +148,7 @@ namespace GameClient.Views
                 grid.MovePlayerRectangle(nextPos);
                 
                 // Check if player reached destination.
-                if (nextPos == grid.GoalPos && grid.Name =="LeftMaze")
+                if (nextPos == grid.GoalPos && (grid.Name =="LeftMaze" || grid.Name == "MazeBoard"))
                 {
                     MessageBox.Show("You won.", "Victory", MessageBoxButton.OK,
                         MessageBoxImage.Information);
